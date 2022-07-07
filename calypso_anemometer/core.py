@@ -112,10 +112,16 @@ class CalypsoDeviceApi:
                     logger.info(f"    Value: {value}")
 
     async def get_info(self):
+        data = {}
         ch = await self.client.read_gatt_char("00002a29-0000-1000-8000-00805f9b34fb")
-        print(ch.decode())
-        # print(dir(ch))
-        # print(ch.V)
+        data["manufacturer"] = ch.decode()
+        ch = await self.client.read_gatt_char("00002a24-0000-1000-8000-00805f9b34fb")
+        data["model_number"] = ch.decode()
+        ch = await self.client.read_gatt_char("00002a25-0000-1000-8000-00805f9b34fb")
+        data["serial_number"] = ch.decode()
+        ch = await self.client.read_gatt_char("00002a26-0000-1000-8000-00805f9b34fb")
+        data["firmware_revision"] = ch.decode()
+        return data
 
 
 def get_adapter_name(client):

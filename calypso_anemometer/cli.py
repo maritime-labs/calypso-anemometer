@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import sys
@@ -43,7 +44,7 @@ async def info(ctx):
     try:
         await calypso.connect()
         info = await calypso.get_info()
-        print(info)
+        print(json.dumps(info, indent=2))
     finally:
         await calypso.disconnect()
 

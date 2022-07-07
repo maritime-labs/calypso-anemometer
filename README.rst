@@ -45,7 +45,11 @@ Synopsis
 
 Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 
-    time python calypso.py
+    # Get device information.
+    calypso-anemometer info
+
+    # Explore all services and characteristics. Useful for debugging purposes.
+    calypso-anemometer explore
 
 If you already discovered your device and know its address, use the
 ``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::

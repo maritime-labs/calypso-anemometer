@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.rst")).read()
@@ -24,7 +24,7 @@ setup(
         "wind-meter",
         "environmental-monitoring",
         "bluetooth",
-        "bluetooth-le"
+        "bluetooth-le",
         "bluetooth-low-energy",
         "ble",
         "solar",
@@ -63,11 +63,12 @@ setup(
     ],
     entry_points={
         "console_scripts": [
+            "calypso-anemometer = calypso_anemometer.cli:cli",
         ],
     },
     install_requires=[
         "bleak<1",
+        "click<9",
     ],
-    extras_require={
-    },
+    extras_require={},
 )

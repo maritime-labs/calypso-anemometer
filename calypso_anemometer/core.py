@@ -16,6 +16,7 @@ from typing import Optional
 from bleak import BleakClient, BleakError, BleakScanner
 
 from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError, BluetoothDiscoveryError
+from calypso_anemometer.model import BleCharSpec, CalypsoDeviceInfo
 
 # Configuration section.
 DISCOVERY_TIMEOUT = 15.0
@@ -29,6 +30,15 @@ class CalypsoDeviceApi:
 
     NAME = "calypso-up10"
     DESCRIPTION = "Calypso UP10 anemometer"
+
+    DEVICE_INFO_CHARACTERISTICS = [
+        BleCharSpec(uuid="00002a29-0000-1000-8000-00805f9b34fb", name="manufacturer_name"),
+        BleCharSpec(uuid="00002a24-0000-1000-8000-00805f9b34fb", name="model_number"),
+        BleCharSpec(uuid="00002a25-0000-1000-8000-00805f9b34fb", name="serial_number"),
+        BleCharSpec(uuid="00002a27-0000-1000-8000-00805f9b34fb", name="hardware_revision"),
+        BleCharSpec(uuid="00002a26-0000-1000-8000-00805f9b34fb", name="firmware_revision"),
+        BleCharSpec(uuid="00002a28-0000-1000-8000-00805f9b34fb", name="software_revision"),
+    ]
 
     def __init__(self, ble_address: Optional[str] = None):
         self.ble_address = ble_address
@@ -130,21 +140,17 @@ class CalypsoDeviceApi:
                         logger.exception(f"    Reading descriptor failed: {descriptor}")
                     logger.info(f"    Value: {value}")
 
-    async def get_info(self):
+    async def get_info(self) -> CalypsoDeviceInfo:
+        logger.info("Getting device information")
         data = {}
-        ch = await self.client.read_gatt_char("00002a29-0000-1000-8000-00805f9b34fb")
-        data["manufacturer"] = ch.decode()
-        ch = await self.client.read_gatt_char("00002a24-0000-1000-8000-00805f9b34fb")
-        data["model_number"] = ch.decode()
-        ch = await self.client.read_gatt_char("00002a25-0000-1000-8000-00805f9b34fb")
-        data["serial_number"] = ch.decode()
-        ch = await self.client.read_gatt_char("00002a27-0000-1000-8000-00805f9b34fb")
-        data["hardware_revision"] = ch.decode()
-        ch = await self.client.read_gatt_char("00002a26-0000-1000-8000-00805f9b34fb")
-        data["firmware_revision"] = ch.decode()
-        ch = await self.client.read_gatt_char("00002a28-0000-1000-8000-00805f9b34fb")
-        data["software_revision"] = ch.decode()
-        return data
+        for charspec in self.DEVICE_INFO_CHARACTERISTICS:
+            value = (await self.client.read_gatt_char(charspec.uuid)).decode()
+            data[charspec.name] = value
+        return CalypsoDeviceInfo(ble_address=self.ble_address, **data)
+
+    async def read_characteristic(self, characteristic_id: str) -> str:
+        char = await self.client.read_gatt_char(characteristic_id)
+        return char.decode()
 
 
 def get_adapter_name(client):

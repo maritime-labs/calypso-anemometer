@@ -35,7 +35,7 @@ async def info(ctx):
     try:
         async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
             device_info = await calypso.get_info()
-            print(json.dumps(device_info, indent=2))
+            print(json.dumps(device_info.asdict(), indent=2))
     except Exception as ex:
         logger.error(ex)
         sys.exit(1)

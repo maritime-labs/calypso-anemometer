@@ -1,10 +1,14 @@
-class BluetoothAdapterError(Exception):
+class CalypsoError(Exception):
     pass
 
 
-class BluetoothDiscoveryError(Exception):
+class BluetoothAdapterError(CalypsoError):
     pass
 
 
-class BluetoothConversationError(Exception):
+class BluetoothDiscoveryError(CalypsoError):
+    pass
+
+
+class BluetoothConversationError(CalypsoError):
     pass

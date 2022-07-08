@@ -5,6 +5,7 @@ import sys
 import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
+from calypso_anemometer.exception import CalypsoError
 from calypso_anemometer.util import make_sync, setup_logging, to_json
 
 logger = logging.getLogger(__name__)
@@ -34,10 +35,10 @@ async def info(ctx):
     try:
         async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
             device_info = await calypso.get_info()
-    except Exception as ex:
             print(to_json(device_info))
             device_status = await calypso.get_status()
             print(to_json(device_status.aslabeldict()))
+    except CalypsoError as ex:
         logger.error(ex)
         sys.exit(1)
 
@@ -49,7 +50,7 @@ async def explore(ctx):
     try:
         async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
             await calypso.explore()
-    except Exception as ex:
+    except CalypsoError as ex:
         logger.error(ex)
         sys.exit(1)
 

@@ -28,37 +28,29 @@ def cli(ctx, verbose, debug):
 """
 
 
-async def api_factory() -> CalypsoDeviceApi:
-    calypso = CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS"))
-    if not await calypso.discover():
-        logger.error("Unable to discover device")
-        sys.exit(1)
-    return calypso
-
-
 @click.command()
 @click.pass_context
 @make_sync
 async def info(ctx):
-    calypso = await api_factory()
     try:
-        await calypso.connect()
-        info = await calypso.get_info()
-        print(json.dumps(info, indent=2))
-    finally:
-        await calypso.disconnect()
+        async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
+            device_info = await calypso.get_info()
+            print(json.dumps(device_info, indent=2))
+    except Exception as ex:
+        logger.error(ex)
+        sys.exit(1)
 
 
 @click.command()
 @click.pass_context
 @make_sync
 async def explore(ctx):
-    calypso = await api_factory()
     try:
-        await calypso.connect()
-        await calypso.explore()
-    finally:
-        await calypso.disconnect()
+        async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
+            await calypso.explore()
+    except Exception as ex:
+        logger.error(ex)
+        sys.exit(1)
 
 
 cli.add_command(info, name="info")

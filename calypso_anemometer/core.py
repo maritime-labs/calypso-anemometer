@@ -15,7 +15,7 @@ from typing import Optional
 
 from bleak import BleakClient, BleakError, BleakScanner
 
-from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError
+from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError, BluetoothDiscoveryError
 
 # Configuration section.
 DISCOVERY_TIMEOUT = 7.5
@@ -34,6 +34,22 @@ class CalypsoDeviceApi:
         self.ble_address = ble_address
         self.client: BleakClient = None
 
+    async def __aenter__(self):
+
+        if self.ble_address is None:
+            if not await self.discover():
+                raise BluetoothDiscoveryError(
+                    f"Unable to discover device {self.DESCRIPTION}"
+                )
+
+        await self.connect()
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.disconnect()
+        if exc_val is not None:
+            raise exc_val
+
     async def discover(self, force=False) -> bool:
         """
         Discover device via BLE.
@@ -44,7 +60,12 @@ class CalypsoDeviceApi:
             return True
 
         logger.info(f"Using BLE discovery to find {self.DESCRIPTION}")
-        devices = await BleakScanner.discover(timeout=DISCOVERY_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
+        try:
+            devices = await BleakScanner.discover(timeout=DISCOVERY_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
+        except BleakError as ex:
+            message = f"{ex.__class__.__name__}: {ex}"
+            if "Bluetooth device is turned off" in message:
+                raise BluetoothAdapterError(message) from None
         for device in devices:
             if device.name == "ULTRASONIC":
                 logger.info(f"Found device at address: {device}")

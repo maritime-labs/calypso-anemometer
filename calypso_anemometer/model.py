@@ -1,11 +1,13 @@
 import dataclasses
-from typing import Optional
+from enum import Enum, IntEnum
+from typing import Optional, Union
 
 
 @dataclasses.dataclass
 class BleCharSpec:
     name: str
     uuid: str
+    decoder: Optional[Union[Enum]] = None
 
 
 @dataclasses.dataclass
@@ -20,3 +22,34 @@ class CalypsoDeviceInfo:
 
     def asdict(self):
         return dataclasses.asdict(self)
+
+
+class CalypsoDeviceMode(IntEnum):
+    SLEEP_MODE = 0x00
+    LOW_POWER = 0x01
+    NORMAL_MODE = 0x02
+
+
+class CalypsoDeviceDataRate(IntEnum):
+    HZ_1 = 0x01
+    HZ_4 = 0x04
+    HZ_8 = 0x08
+
+
+class CalypsoDeviceCompassStatus(IntEnum):
+    OFF = 0x00
+    ON = 0x01
+
+
+@dataclasses.dataclass
+class CalypsoDeviceStatus:
+    mode: Optional[CalypsoDeviceMode] = None
+    rate: Optional[CalypsoDeviceDataRate] = None
+    compass: Optional[CalypsoDeviceCompassStatus] = None
+
+    def aslabeldict(self):
+        return {
+            "mode": self.mode.name,
+            "rate": self.rate.name,
+            "compass": self.compass.name,
+        }

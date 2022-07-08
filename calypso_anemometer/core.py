@@ -16,7 +16,14 @@ from typing import Optional
 from bleak import BleakClient, BleakError, BleakScanner
 
 from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError, BluetoothDiscoveryError
-from calypso_anemometer.model import BleCharSpec, CalypsoDeviceInfo
+from calypso_anemometer.model import (
+    BleCharSpec,
+    CalypsoDeviceCompassStatus,
+    CalypsoDeviceDataRate,
+    CalypsoDeviceInfo,
+    CalypsoDeviceMode,
+    CalypsoDeviceStatus,
+)
 
 # Configuration section.
 DISCOVERY_TIMEOUT = 15.0
@@ -38,6 +45,11 @@ class CalypsoDeviceApi:
         BleCharSpec(uuid="00002a27-0000-1000-8000-00805f9b34fb", name="hardware_revision"),
         BleCharSpec(uuid="00002a26-0000-1000-8000-00805f9b34fb", name="firmware_revision"),
         BleCharSpec(uuid="00002a28-0000-1000-8000-00805f9b34fb", name="software_revision"),
+    ]
+    DEVICE_STATUS_CHARACTERISTICS = [
+        BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode),
+        BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate),
+        BleCharSpec(uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus),
     ]
 
     def __init__(self, ble_address: Optional[str] = None):
@@ -147,6 +159,16 @@ class CalypsoDeviceApi:
             value = (await self.client.read_gatt_char(charspec.uuid)).decode()
             data[charspec.name] = value
         return CalypsoDeviceInfo(ble_address=self.ble_address, **data)
+
+    async def get_status(self) -> CalypsoDeviceStatus:
+        logger.info("Getting status information")
+        status = CalypsoDeviceStatus()
+        for charspec in self.DEVICE_STATUS_CHARACTERISTICS:
+            rawvalue: bytearray = await self.client.read_gatt_char(charspec.uuid)
+            value: int = rawvalue[0]
+            outcome = charspec.decoder(value)
+            setattr(status, charspec.name, outcome)
+        return status
 
     async def read_characteristic(self, characteristic_id: str) -> str:
         char = await self.client.read_gatt_char(characteristic_id)

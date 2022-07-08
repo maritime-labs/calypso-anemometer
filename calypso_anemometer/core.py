@@ -18,8 +18,8 @@ from bleak import BleakClient, BleakError, BleakScanner
 from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError, BluetoothDiscoveryError
 
 # Configuration section.
-DISCOVERY_TIMEOUT = 7.5
-DEVICE_TIMEOUT = 10.0
+DISCOVERY_TIMEOUT = 15.0
+CONNECT_TIMEOUT = 15.0
 BLUETOOTH_ADAPTER = "hci0"
 
 logger = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ class CalypsoDeviceApi:
         return False
 
     async def connect(self):
-        self.client = BleakClient(self.ble_address, timeout=DEVICE_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
+        self.client = BleakClient(self.ble_address, timeout=CONNECT_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
         logger.info(f"Connecting to device at {self.ble_address} with adapter {get_adapter_name(self.client)}")
         try:
             await self.client.connect()

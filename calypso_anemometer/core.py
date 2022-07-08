@@ -22,7 +22,7 @@ DISCOVERY_TIMEOUT = 7.5
 DEVICE_TIMEOUT = 10.0
 BLUETOOTH_ADAPTER = "hci0"
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 class CalypsoDeviceApi:
@@ -38,9 +38,7 @@ class CalypsoDeviceApi:
 
         if self.ble_address is None:
             if not await self.discover():
-                raise BluetoothDiscoveryError(
-                    f"Unable to discover device {self.DESCRIPTION}"
-                )
+                raise BluetoothDiscoveryError(f"Unable to discover device {self.DESCRIPTION}")
 
         await self.connect()
         return self
@@ -140,8 +138,12 @@ class CalypsoDeviceApi:
         data["model_number"] = ch.decode()
         ch = await self.client.read_gatt_char("00002a25-0000-1000-8000-00805f9b34fb")
         data["serial_number"] = ch.decode()
+        ch = await self.client.read_gatt_char("00002a27-0000-1000-8000-00805f9b34fb")
+        data["hardware_revision"] = ch.decode()
         ch = await self.client.read_gatt_char("00002a26-0000-1000-8000-00805f9b34fb")
         data["firmware_revision"] = ch.decode()
+        ch = await self.client.read_gatt_char("00002a28-0000-1000-8000-00805f9b34fb")
+        data["software_revision"] = ch.decode()
         return data
 
 

@@ -8,7 +8,7 @@ import click
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.util import make_sync, setup_logging
 
-logger = logging.getLogger()
+logger = logging.getLogger(__name__)
 
 
 @click.group()

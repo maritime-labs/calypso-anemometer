@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from typing import Callable, Optional
 
 import click
 
@@ -28,31 +29,33 @@ def cli(ctx, verbose, debug):
 """
 
 
+async def calypso_run(callback: Callable):
+    try:
+        async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
+            await callback(calypso)
+    except CalypsoError as ex:
+        logger.error(ex)
+        sys.exit(1)
+
+
 @click.command()
 @click.pass_context
 @make_sync
 async def info(ctx):
-    try:
-        async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
-            device_info = await calypso.get_info()
-            print(to_json(device_info))
-            device_status = await calypso.get_status()
-            print(to_json(device_status.aslabeldict()))
-    except CalypsoError as ex:
-        logger.error(ex)
-        sys.exit(1)
+    async def handler(calypso: CalypsoDeviceApi):
+        device_info = await calypso.get_info()
+        print(to_json(device_info))
+        device_status = await calypso.get_status()
+        print(to_json(device_status.aslabeldict()))
+
+    await calypso_run(handler)
 
 
 @click.command()
 @click.pass_context
 @make_sync
 async def explore(ctx):
-    try:
-        async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
-            await calypso.explore()
-    except CalypsoError as ex:
-        logger.error(ex)
-        sys.exit(1)
+    await calypso_run(lambda calypso: calypso.explore())
 
 
 cli.add_command(info, name="info")

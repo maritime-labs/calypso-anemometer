@@ -13,6 +13,7 @@ in progress
 - Rework device info acquisition
 - Read and decode device status bytes: mode, rate, compass
 - Add ``set-option`` subcommand
+- Add ``read`` subcommand
 
 
 2022-xx-xx 0.0.0

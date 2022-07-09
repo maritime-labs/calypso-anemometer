@@ -77,6 +77,18 @@ async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None):
     await calypso_run(handler)
 
 
+@click.command()
+@click.pass_context
+@make_sync
+async def read(ctx):
+    async def handler(calypso: CalypsoDeviceApi):
+        reading = await calypso.get_reading()
+        print(to_json(reading))
+
+    await calypso_run(handler)
+
+
 cli.add_command(info, name="info")
 cli.add_command(explore, name="explore")
 cli.add_command(set_option, name="set-option")
+cli.add_command(read, name="read")

@@ -23,6 +23,7 @@ from calypso_anemometer.model import (
     CalypsoDeviceInfo,
     CalypsoDeviceMode,
     CalypsoDeviceStatus,
+    CalypsoReading,
 )
 
 # Configuration section.
@@ -34,6 +35,9 @@ logger = logging.getLogger(__name__)
 
 
 CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
+CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
+
+
 class CalypsoDeviceApi:
 
     NAME = "calypso-up10"
@@ -173,6 +177,10 @@ class CalypsoDeviceApi:
 
     async def set_mode(self, mode: CalypsoDeviceMode):
         await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
+
+    async def get_reading(self):
+        rawvalue: bytearray = await self.client.read_gatt_char(CHARSPEC_DATA.uuid)
+        return CalypsoReading.from_buffer(rawvalue)
 
     async def read_characteristic(self, characteristic_id: str) -> str:
         char = await self.client.read_gatt_char(characteristic_id)

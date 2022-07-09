@@ -1,6 +1,10 @@
 import dataclasses
+import logging
+import struct
 from enum import Enum, IntEnum
 from typing import Optional, Union
+
+logger = logging.getLogger(__name__)
 
 
 @dataclasses.dataclass
@@ -25,9 +29,9 @@ class CalypsoDeviceInfo:
 
 
 class CalypsoDeviceMode(IntEnum):
-    SLEEP_MODE = 0x00
+    SLEEP = 0x00
     LOW_POWER = 0x01
-    NORMAL_MODE = 0x02
+    NORMAL = 0x02
 
 
 class CalypsoDeviceDataRate(IntEnum):

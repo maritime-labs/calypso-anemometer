@@ -12,6 +12,7 @@ in progress
 - Increase default timeout values to 15 seconds
 - Rework device info acquisition
 - Read and decode device status bytes: mode, rate, compass
+- Add ``set-option`` subcommand
 
 
 2022-xx-xx 0.0.0

@@ -33,6 +33,7 @@ BLUETOOTH_ADAPTER = "hci0"
 logger = logging.getLogger(__name__)
 
 
+CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
 class CalypsoDeviceApi:
 
     NAME = "calypso-up10"
@@ -47,7 +48,7 @@ class CalypsoDeviceApi:
         BleCharSpec(uuid="00002a28-0000-1000-8000-00805f9b34fb", name="software_revision"),
     ]
     DEVICE_STATUS_CHARACTERISTICS = [
-        BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode),
+        CHARSPEC_MODE,
         BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate),
         BleCharSpec(uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus),
     ]
@@ -169,6 +170,9 @@ class CalypsoDeviceApi:
             outcome = charspec.decoder(value)
             setattr(status, charspec.name, outcome)
         return status
+
+    async def set_mode(self, mode: CalypsoDeviceMode):
+        await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
 
     async def read_characteristic(self, characteristic_id: str) -> str:
         char = await self.client.read_gatt_char(characteristic_id)

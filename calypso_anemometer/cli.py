@@ -7,7 +7,8 @@ import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
-from calypso_anemometer.util import make_sync, setup_logging, to_json
+from calypso_anemometer.model import CalypsoDeviceMode
+from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json
 
 logger = logging.getLogger(__name__)
 
@@ -58,5 +59,24 @@ async def explore(ctx):
     await calypso_run(lambda calypso: calypso.explore())
 
 
+@click.command()
+@click.option(
+    "--mode",
+    type=EnumChoice(CalypsoDeviceMode, case_sensitive=False),
+    required=False,
+    help="Set device mode to one of SLEEP, LOW_POWER, or NORMAL.",
+)
+@click.pass_context
+@make_sync
+async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None):
+    async def handler(calypso: CalypsoDeviceApi):
+        if mode is not None:
+            logger.info(f"Setting device mode to {mode}")
+            await calypso.set_mode(mode)
+
+    await calypso_run(handler)
+
+
 cli.add_command(info, name="info")
 cli.add_command(explore, name="explore")
+cli.add_command(set_option, name="set-option")

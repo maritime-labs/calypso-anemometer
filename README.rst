@@ -51,10 +51,18 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device reading.
     calypso-anemometer read
 
-    # Get device readings, continuously.
+    # Get device readings, continuously at 4 Hz (default).
     calypso-anemometer read --subscribe
 
+    # Get device readings, continuously at 1 Hz.
+    calypso-anemometer read --subscribe --rate=hz_1
+
+    # Set device data rate to one of HZ_1, HZ_4, or HZ_8.
+    # Note: Works only for the upcoming conversation. Will be back at HZ_4 afterwards.
+    calypso-anemometer set-option --rate=hz_1
+
     # Set device mode to one of SLEEP, LOW_POWER, or NORMAL.
+    # Note: Does not work, the setting is read-only.
     calypso-anemometer set-option --mode=normal
 
     # Explore all services and characteristics. Useful for debugging purposes.

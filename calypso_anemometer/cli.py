@@ -7,7 +7,7 @@ import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
-from calypso_anemometer.model import CalypsoDeviceMode
+from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json, wait_forever
 
 logger = logging.getLogger(__name__)
@@ -59,6 +59,14 @@ async def explore(ctx):
     await calypso_run(lambda calypso: calypso.explore())
 
 
+rate_option = click.option(
+    "--rate",
+    type=EnumChoice(CalypsoDeviceDataRate, case_sensitive=False),
+    required=False,
+    help="Set device data rate to one of HZ_1, HZ_4, or HZ_8.",
+)
+
+
 @click.command()
 @click.option(
     "--mode",
@@ -66,22 +74,27 @@ async def explore(ctx):
     required=False,
     help="Set device mode to one of SLEEP, LOW_POWER, or NORMAL.",
 )
+@rate_option
 @click.pass_context
 @make_sync
-async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None):
+async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None, rate: Optional[CalypsoDeviceDataRate] = None):
     async def handler(calypso: CalypsoDeviceApi):
         if mode is not None:
             logger.info(f"Setting device mode to {mode}")
             await calypso.set_mode(mode)
+        if rate is not None:
+            logger.info(f"Setting device data rate to {rate}")
+            await calypso.set_datarate(rate)
 
     await calypso_run(handler)
 
 
 @click.command()
 @click.option("--subscribe", is_flag=True, required=False, help="Continuously receive readings")
+@rate_option
 @click.pass_context
 @make_sync
-async def read(ctx, subscribe: bool = False):
+async def read(ctx, subscribe: bool = False, rate: Optional[CalypsoDeviceDataRate] = None):
     async def handler(calypso: CalypsoDeviceApi):
 
         # One-shot reading.
@@ -91,6 +104,10 @@ async def read(ctx, subscribe: bool = False):
 
         # Continuous readings.
         else:
+            if rate is not None:
+                logger.info(f"Setting device data rate to {rate}")
+                await calypso.set_datarate(rate)
+
             await calypso.subscribe_reading(lambda reading: reading.print())
             await wait_forever()
 

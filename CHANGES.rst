@@ -15,6 +15,8 @@ in progress
 - Add ``set-option`` subcommand
 - Add ``read`` subcommand
 - Implement ``--subscribe`` flag to ``read`` subcommand
+- Add ``--rate`` option to ``read`` subcommand to set the device
+  data rate before starting the conversation
 
 
 2022-xx-xx 0.0.0

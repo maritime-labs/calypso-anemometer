@@ -41,6 +41,7 @@ logger = logging.getLogger(__name__)
 
 
 CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
+CHARSPEC_DATARATE = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate)
 CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
 
 
@@ -59,7 +60,7 @@ class CalypsoDeviceApi:
     ]
     DEVICE_STATUS_CHARACTERISTICS = [
         CHARSPEC_MODE,
-        BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate),
+        CHARSPEC_DATARATE,
         BleCharSpec(uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus),
     ]
 
@@ -187,6 +188,9 @@ class CalypsoDeviceApi:
 
     async def set_mode(self, mode: CalypsoDeviceMode):
         await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
+
+    async def set_datarate(self, mode: CalypsoDeviceDataRate):
+        await self.client.write_gatt_char(CHARSPEC_DATARATE.uuid, data=bytes([mode.value]), response=True)
 
     async def get_reading(self):
         logger.info("Requesting reading")

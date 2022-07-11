@@ -12,3 +12,7 @@ class BluetoothDiscoveryError(CalypsoError):
 
 class BluetoothConversationError(CalypsoError):
     pass
+
+
+class BluetoothTimeoutError(CalypsoError):
+    pass

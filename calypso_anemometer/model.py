@@ -4,6 +4,8 @@ import struct
 from enum import Enum, IntEnum
 from typing import Optional, Union
 
+from calypso_anemometer.util import to_json
+
 logger = logging.getLogger(__name__)
 
 
@@ -99,7 +101,6 @@ class CalypsoReading:
         8-9.  360 - hex2dec(00 00) => 360 - 0 => 360
 
         """
-        logger.info(f"Received buffer: {buffer}")
 
         # Decode from binary.
         data = struct.unpack("HHBBBBH", buffer)
@@ -118,3 +119,6 @@ class CalypsoReading:
             compass=360 - compass,
         )
         return reading
+
+    def print(self):
+        print(to_json(self))

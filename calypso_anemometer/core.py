@@ -8,14 +8,20 @@ References
 - https://github.com/hbldh/bleak/blob/develop/examples/get_services.py
 - https://github.com/hbldh/bleak/blob/develop/examples/service_explorer.py
 """
+import asyncio
 import concurrent
 import logging
 import time
-from typing import Optional
+from typing import Callable, Optional
 
 from bleak import BleakClient, BleakError, BleakScanner
 
-from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConversationError, BluetoothDiscoveryError
+from calypso_anemometer.exception import (
+    BluetoothAdapterError,
+    BluetoothConversationError,
+    BluetoothDiscoveryError,
+    BluetoothTimeoutError,
+)
 from calypso_anemometer.model import (
     BleCharSpec,
     CalypsoDeviceCompassStatus,
@@ -106,13 +112,17 @@ class CalypsoDeviceApi:
         logger.info(f"Connecting to device at {self.ble_address} with adapter {get_adapter_name(self.client)}")
         try:
             await self.client.connect()
-        except (BleakError, concurrent.futures.TimeoutError) as ex:
+        except BleakError as ex:
             message = f"{ex.__class__.__name__}: {ex}"
             logger.error(f"Conversation went south: {message}")
             if "Bluetooth device is turned off" in message:
                 raise BluetoothAdapterError(message) from None
             else:
                 raise BluetoothConversationError(message) from None
+        except (concurrent.futures.TimeoutError, asyncio.exceptions.TimeoutError) as ex:
+            message = f"{ex.__class__.__name__}: {ex}"
+            logger.error(message)
+            raise BluetoothTimeoutError(message)
         # finally:
         #    logger.info("Disconnecting")
         #    await self.disconnect()
@@ -179,8 +189,35 @@ class CalypsoDeviceApi:
         await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
 
     async def get_reading(self):
-        rawvalue: bytearray = await self.client.read_gatt_char(CHARSPEC_DATA.uuid)
-        return CalypsoReading.from_buffer(rawvalue)
+        logger.info("Requesting reading")
+        data: bytearray = await self.client.read_gatt_char(CHARSPEC_DATA.uuid)
+        reading = self.decode_reading(data)
+        self.on_reading(reading)
+        return reading
+
+    async def subscribe_reading(self, callback: Optional[Callable] = None):
+        logger.info("Subscribing to readings")
+        callback = callback or self.on_reading
+
+        async def handler(sender: int, data: bytearray):
+            reading = self.decode_reading(data, sender=sender)
+            callback(reading)
+
+        await self.client.start_notify(CHARSPEC_DATA.uuid, handler)
+
+    async def unsubscribe_reading(self):
+        logger.info("Unsubscribing to readings")
+        await self.client.stop_notify(CHARSPEC_DATA.uuid)
+
+    @staticmethod
+    def decode_reading(data: bytearray, sender: Optional[int] = None):
+        logger.debug(f"Received buffer:  {data}")
+        reading = CalypsoReading.from_buffer(data)
+        logger.debug(f"Received reading: {reading}")
+        return reading
+
+    def on_reading(self, reading: CalypsoReading):
+        logger.debug(f"Received reading: {reading}")
 
     async def read_characteristic(self, characteristic_id: str) -> str:
         char = await self.client.read_gatt_char(characteristic_id)

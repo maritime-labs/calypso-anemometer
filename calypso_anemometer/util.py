@@ -68,3 +68,8 @@ class EnumChoice(click.Choice):
         if value is None:
             return None
         return self.enum_type[value]
+
+
+async def wait_forever():
+    future = asyncio.Future()
+    return await asyncio.wait_for(future, timeout=None)

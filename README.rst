@@ -48,6 +48,12 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device information.
     calypso-anemometer info
 
+    # Get device reading.
+    calypso-anemometer read
+
+    # Get device readings, continuously.
+    calypso-anemometer read --subscribe
+
     # Set device mode to one of SLEEP, LOW_POWER, or NORMAL.
     calypso-anemometer set-option --mode=normal
 

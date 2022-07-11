@@ -8,7 +8,7 @@ import click
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
 from calypso_anemometer.model import CalypsoDeviceMode
-from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json
+from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json, wait_forever
 
 logger = logging.getLogger(__name__)
 
@@ -78,12 +78,21 @@ async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None):
 
 
 @click.command()
+@click.option("--subscribe", is_flag=True, required=False, help="Continuously receive readings")
 @click.pass_context
 @make_sync
-async def read(ctx):
+async def read(ctx, subscribe: bool = False):
     async def handler(calypso: CalypsoDeviceApi):
-        reading = await calypso.get_reading()
-        print(to_json(reading))
+
+        # One-shot reading.
+        if not subscribe:
+            reading = await calypso.get_reading()
+            reading.print()
+
+        # Continuous readings.
+        else:
+            await calypso.subscribe_reading(lambda reading: reading.print())
+            await wait_forever()
 
     await calypso_run(handler)
 

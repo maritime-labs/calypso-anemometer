@@ -43,13 +43,7 @@ async def calypso_run(callback: Callable):
 @click.pass_context
 @make_sync
 async def info(ctx):
-    async def handler(calypso: CalypsoDeviceApi):
-        device_info = await calypso.get_info()
-        print(to_json(device_info))
-        device_status = await calypso.get_status()
-        print(to_json(device_status.aslabeldict()))
-
-    await calypso_run(handler)
+    await calypso_run(lambda calypso: calypso.about())
 
 
 @click.command()
@@ -85,6 +79,7 @@ async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None, rate: Option
         if rate is not None:
             logger.info(f"Setting device data rate to {rate}")
             await calypso.set_datarate(rate)
+        await calypso.about()
 
     await calypso_run(handler)
 

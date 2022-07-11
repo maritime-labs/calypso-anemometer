@@ -33,6 +33,8 @@ from calypso_anemometer.model import (
 )
 
 # Configuration section.
+from calypso_anemometer.util import to_json
+
 DISCOVERY_TIMEOUT = 15.0
 CONNECT_TIMEOUT = 15.0
 BLUETOOTH_ADAPTER = "hci0"
@@ -167,6 +169,12 @@ class CalypsoDeviceApi:
                     except Exception as e:
                         logger.exception(f"    Reading descriptor failed: {descriptor}")
                     logger.info(f"    Value: {value}")
+
+    async def about(self):
+        device_info = await self.get_info()
+        print(to_json(device_info))
+        device_status = await self.get_status()
+        print(to_json(device_status.aslabeldict()))
 
     async def get_info(self) -> CalypsoDeviceInfo:
         logger.info("Getting device information")

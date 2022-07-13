@@ -37,11 +37,26 @@ Features
 
 - Device discovery
 - Basic conversation
+- Acquire device status and readings (one shot)
+- Acquire device readings continuously (subscribe/notify)
+- Set sample rate
+- Telemetry to SignalK
+
+
+*****
+Setup
+*****
+::
+
+    pip install git+https://github.com/daq-tools/calypso-anemometer
 
 
 ********
 Synopsis
 ********
+
+Usage
+=====
 
 Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 
@@ -57,21 +72,10 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device readings, continuously at 1 Hz.
     calypso-anemometer read --subscribe --rate=hz_1
 
-    # Get device readings and submit them in SignalK Delta Format.
+    # Continuously receive device readings and submit them in SignalK Delta Format via UDP.
     # See section "SignalK telemetry" about how to create an UDP receiver
     # data connection in your Signal K server beforehand.
     calypso-anemometer read --subscribe --target=udp+signalk+delta://openplotter.local:4123
-
-    # Set device data rate to one of HZ_1, HZ_4, or HZ_8.
-    # Note: Works only for the upcoming conversation. Will be back at HZ_4 afterwards.
-    calypso-anemometer set-option --rate=hz_1
-
-    # Set device mode to one of SLEEP, LOW_POWER, or NORMAL.
-    # Note: Does not work, the setting is read-only.
-    calypso-anemometer set-option --mode=normal
-
-    # Explore all services and characteristics. Useful for debugging purposes.
-    calypso-anemometer explore
 
 If you already discovered your device and know its address, use the
 ``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::
@@ -85,10 +89,25 @@ If you already discovered your device and know its address, use the
     # Activate discovery again.
     unset CALYPSO_ADDRESS
 
+Development
+===========
+::
 
-***************
-Getting started
-***************
+    # Set device data rate to one of HZ_1, HZ_4, or HZ_8.
+    # Note: Works only for the upcoming conversation. Will be back at HZ_4 afterwards.
+    calypso-anemometer set-option --rate=hz_1
+
+    # Set device mode to one of SLEEP, LOW_POWER, or NORMAL.
+    # Note: Does not work, the setting is read-only.
+    calypso-anemometer set-option --mode=normal
+
+    # Explore all services and characteristics. Useful for debugging purposes.
+    calypso-anemometer explore
+
+
+*****************
+Pre-flight checks
+*****************
 
 You will need a working Bluetooth/BLE stack. This section outlines a few
 commands to discover an ``ULTRASONIC`` device nearby.
@@ -136,14 +155,6 @@ connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ in
 .. figure:: https://user-images.githubusercontent.com/453543/178626096-04fcc1b6-dbfc-4317-815d-4f733fee4b67.png
 
     SignalK UDP receiver on port 4123.
-
-
-*****
-Setup
-*****
-::
-
-    pip install git+https://github.com/daq-tools/calypso-anemometer
 
 
 ***********

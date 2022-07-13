@@ -43,8 +43,8 @@ logger = logging.getLogger(__name__)
 
 
 CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
-CHARSPEC_DATARATE = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate)
-CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
+CHARSPEC_DATARATE = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate")
+CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="data")
 
 
 class CalypsoDeviceApi:

@@ -7,7 +7,8 @@ import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode
+from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode, CalypsoReading
+from calypso_anemometer.telemetry import TelemetryAdapter
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json, wait_forever
 
 logger = logging.getLogger(__name__)
@@ -86,10 +87,18 @@ async def set_option(ctx, mode: Optional[CalypsoDeviceMode] = None, rate: Option
 
 @click.command()
 @click.option("--subscribe", is_flag=True, required=False, help="Continuously receive readings")
+@click.option("--target", type=str, required=False, help="Submit telemetry data to target")
 @rate_option
 @click.pass_context
 @make_sync
-async def read(ctx, subscribe: bool = False, rate: Optional[CalypsoDeviceDataRate] = None):
+async def read(
+    ctx, subscribe: bool = False, target: Optional[str] = None, rate: Optional[CalypsoDeviceDataRate] = None
+):
+
+    telemetry = None
+    if target is not None:
+        telemetry = TelemetryAdapter(uri=target)
+
     async def handler(calypso: CalypsoDeviceApi):
 
         # One-shot reading.
@@ -103,7 +112,12 @@ async def read(ctx, subscribe: bool = False, rate: Optional[CalypsoDeviceDataRat
                 logger.info(f"Setting device data rate to {rate}")
                 await calypso.set_datarate(rate)
 
-            await calypso.subscribe_reading(lambda reading: reading.print())
+            def process_reading(reading: CalypsoReading):
+                reading.print()
+                if telemetry is not None:
+                    telemetry.submit(reading)
+
+            await calypso.subscribe_reading(process_reading)
             await wait_forever()
 
     await calypso_run(handler)

@@ -1,0 +1,138 @@
+import dataclasses
+import json
+import logging
+import socket
+import typing as t
+
+from calypso_anemometer.core import CalypsoDeviceApi
+from calypso_anemometer.model import CalypsoReading
+from calypso_anemometer.telemetry.model import NetworkProtocol
+
+logger = logging.getLogger(__name__)
+
+
+@dataclasses.dataclass
+class SignalKDeltaItem:
+    """
+    Represent a SignalK Delta Format measurement item with `path` and `value` attributes.
+    """
+
+    path: str
+    value: t.Union[t.AnyStr, t.SupportsInt, t.SupportsFloat, t.Dict, None]
+
+    def asdict(self):
+        return dataclasses.asdict(self)
+
+
+@dataclasses.dataclass
+class SignalKDeltaMessage:
+    source: str
+    location: str
+    items: t.Optional[t.List[SignalKDeltaItem]] = None
+
+    def set_reading(self, reading: CalypsoReading):
+        """
+        Derive SignalK Delta Format update items from measurement reading.
+
+        The path name mapping has been derived from `signalk-calypso-ultrasonic` [1]. Thanks!
+
+        [1] https://github.com/daq-tools/signalk-calypso-ultrasonic/blob/1.0.18/lib/calypso-ultrasonic.js#L446-L472
+        """
+        self.items = [
+            SignalKDeltaItem(path="environment.outside.temperature", value=reading.temperature),
+            SignalKDeltaItem(path="environment.wind.angleApparent", value=reading.wind_direction),
+            SignalKDeltaItem(path="environment.wind.speedApparent", value=reading.wind_speed),
+            SignalKDeltaItem(path="navigation.attitude.roll", value=reading.roll),
+            SignalKDeltaItem(path="navigation.attitude.pitch", value=reading.pitch),
+            SignalKDeltaItem(path="navigation.attitude.yaw", value=reading.compass),
+            SignalKDeltaItem(path="navigation.headingMagnetic", value=reading.compass),
+            SignalKDeltaItem(path="electrical.batteries.99.name", value=self.source),
+            SignalKDeltaItem(path="electrical.batteries.99.location", value=self.location),
+            SignalKDeltaItem(path="electrical.batteries.99.capacity.stateOfCharge", value=reading.battery_level),
+        ]
+
+    def asdict(self):
+        """
+        Create message in SignalK Delta Format [1,2],
+
+        The implementation has been derived from sensord [3] and M5StickEngineTemp [4]. Thanks!
+
+        [1] https://github.com/SignalK/specification/blob/master/schemas/delta.json
+        [2] https://github.com/SignalK/specification/blob/master/mdbook/src/data_model.md#delta-format
+        [3] https://github.com/itemir/rpi_boat_utils/blob/f639653/sensord/sensord.py#L58-L63
+        [4] https://github.com/andyrbarrow/M5StickEngineTemp/blob/609109d/src/tempsensor.cpp#L83-L111
+        """
+        data = {
+            "updates": [
+                {
+                    "$source": CalypsoDeviceApi.NAME,
+                    "values": list(map(SignalKDeltaItem.asdict, self.items)),
+                },
+            ]
+        }
+        return data
+
+
+class SignalKTelemetry:
+    """
+    Submit data to Signal K server in JSON format using TCP or UDP.
+    """
+
+    def __init__(self, host: str, port: int, protocol: NetworkProtocol = NetworkProtocol.UDP):
+        self.host = host
+        self.port = port
+        self.protocol = protocol
+        if self.protocol == NetworkProtocol.TCP:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        elif self.protocol == NetworkProtocol.UDP:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+    def submit(self, data: t.Dict):
+        payload = json.dumps(data)
+        self.send(payload)
+
+    def send(self, payload: str):
+        logger.info(f"Submitting payload to SignalK server:\n{payload}")
+        address = (self.host, self.port)
+        if self.protocol == NetworkProtocol.TCP:
+            self.socket.connect(address)
+            self.socket.send(payload.encode("utf-8"))
+            self.socket.close()
+        elif self.protocol == NetworkProtocol.UDP:
+            self.socket.sendto(payload.encode("utf-8"), address)
+
+
+def signalk_telemetry_demo():
+    """
+    Demonstrate submitting telemetry data in SignalK Delta Format to `openplotter.local:4123`.
+
+    Synopsis::
+
+        python -m calypso_anemometer.telemetry.signalk
+    """
+
+    # Setup logging.
+    from calypso_anemometer.util import setup_logging
+
+    setup_logging(level=logging.DEBUG)
+
+    # Define example reading.
+    reading = CalypsoReading(
+        wind_speed=5.69,
+        wind_direction=206,
+        battery_level=90,
+        temperature=33,
+        roll=30,
+        pitch=-60,
+        compass=235,
+    )
+
+    # Submit telemetry message to SignalK.
+    telemetry = SignalKTelemetry(host="openplotter.local", port=4123, protocol=NetworkProtocol.UDP)
+    msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
+    msg.set_reading(reading)
+    telemetry.submit(msg.asdict())
+
+
+if __name__ == "__main__":
+    signalk_telemetry_demo()

@@ -57,6 +57,11 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device readings, continuously at 1 Hz.
     calypso-anemometer read --subscribe --rate=hz_1
 
+    # Get device readings and submit them in SignalK Delta Format.
+    # See section "SignalK telemetry" about how to create an UDP receiver
+    # data connection in your Signal K server beforehand.
+    calypso-anemometer read --subscribe --target=udp+signalk+delta://openplotter.local:4123
+
     # Set device data rate to one of HZ_1, HZ_4, or HZ_8.
     # Note: Works only for the upcoming conversation. Will be back at HZ_4 afterwards.
     calypso-anemometer set-option --rate=hz_1
@@ -120,6 +125,19 @@ Run a BLE device scan using Bleak::
     bleak-lescan -i hci1
 
 
+*****************
+SignalK telemetry
+*****************
+
+This program can optionally submit telemetry data in SignalK Delta Format via UDP.
+To make a `SignalK server`_ receive the data, create an "UDP receiver" data
+connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ instance.
+
+.. figure:: https://user-images.githubusercontent.com/453543/178626096-04fcc1b6-dbfc-4317-815d-4f733fee4b67.png
+
+    SignalK UDP receiver on port 4123.
+
+
 *****
 Setup
 *****
@@ -143,3 +161,5 @@ Development
 .. _Bleak: https://github.com/hbldh/bleak
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
+.. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
+.. _SignalK server: https://github.com/SignalK/signalk-server

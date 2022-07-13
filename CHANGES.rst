@@ -17,6 +17,7 @@ in progress
 - Implement ``--subscribe`` flag to ``read`` subcommand
 - Add ``--rate`` option to ``read`` subcommand to set the device
   data rate before starting the conversation
+- Add telemetry subsystem, to be used with new ``--target`` option
 
 
 2022-xx-xx 0.0.0

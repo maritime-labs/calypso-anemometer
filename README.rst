@@ -66,6 +66,10 @@ Setup
 *****
 ::
 
+    pip install calypso-anemometer
+
+To install the latest version from the repository, invoke::
+
     pip install git+https://github.com/daq-tools/calypso-anemometer
 
 

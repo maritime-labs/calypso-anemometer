@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+# (c) 2022 Andreas Motl <andreas.motl@panodata.org>
+# License: GNU Affero General Public License, Version 3
 """
 Discover the Calypso UP10 ``ULTRASONIC`` BLE device and run a conversation on it.
-License: AGPL-3.
 
 References
 ==========

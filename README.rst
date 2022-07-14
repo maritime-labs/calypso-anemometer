@@ -1,6 +1,23 @@
-#########################################
-Python driver for Calypso UP10 anemometer
-#########################################
+.. image:: https://img.shields.io/pypi/pyversions/calypso-anemometer.svg
+    :target: https://pypi.org/project/calypso-anemometer/
+
+.. image:: https://img.shields.io/pypi/status/calypso-anemometer.svg
+    :target: https://pypi.org/project/calypso-anemometer/
+
+.. image:: https://img.shields.io/pypi/v/calypso-anemometer.svg
+    :target: https://pypi.org/project/calypso-anemometer/
+
+.. image:: https://pepy.tech/badge/calypso-anemometer/month
+    :target: https://pypi.org/project/calypso-anemometer/
+
+.. image:: https://img.shields.io/pypi/l/calypso-anemometer.svg
+    :target: https://github.com/daq-tools/calypso-anemometer/blob/main/LICENSE
+
+|
+
+#############################################
+Python driver for the Calypso UP10 anemometer
+#############################################
 
 
 *****
@@ -40,7 +57,7 @@ Features
 - Acquire device status and readings (one shot)
 - Acquire device readings continuously (subscribe/notify)
 - Set sample rate
-- Telemetry to SignalK
+- SignalK telemetry
 - NMEA-0183 telemetry
 
 
@@ -76,7 +93,8 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Continuously receive device readings and submit them in SignalK Delta Format via UDP.
     # See section "SignalK telemetry" about how to create an UDP receiver
     # data connection in your Signal K server beforehand.
-    calypso-anemometer read --subscribe --target=udp+signalk+delta://openplotter.local:4123
+    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+signalk+delta://openplotter.local:4123
+
     # Continuously receive device readings and submit them in NMEA-0183 format via UDP.
     # See section "NMEA-0183 telemetry" about how to create an UDP receiver
     # data connection in OpenCPN beforehand.
@@ -153,7 +171,7 @@ Run a BLE device scan using Bleak::
 SignalK telemetry
 *****************
 
-This program can optionally submit telemetry data in SignalK Delta Format via UDP.
+The program can optionally submit telemetry data in SignalK Delta Format via UDP.
 To make a `SignalK server`_ receive the data, create an "UDP receiver" data
 connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ instance.
 

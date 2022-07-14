@@ -18,6 +18,7 @@ in progress
 - Add ``--rate`` option to ``read`` subcommand to set the device
   data rate before starting the conversation
 - Add telemetry subsystem, to be used with new ``--target`` option
+- Add telemetry adapter for ``UDP_SIGNALK_DELTA``
 - Add telemetry adapter for ``UDP_BROADCAST_NMEA0183``
 
 

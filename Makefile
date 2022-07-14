@@ -18,3 +18,6 @@ publish: setup-virtualenv
 	$(pip) install build twine
 	$(python) -m build
 	$(twine) upload --skip-existing --verbose dist/*.tar.gz
+
+test: setup-virtualenv
+	$(pytest)

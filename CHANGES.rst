@@ -5,6 +5,7 @@ calypso-anemometer changelog
 
 in progress
 ===========
+- Add software tests for telemetry subsystem
 
 
 2022-07-14 0.1.0

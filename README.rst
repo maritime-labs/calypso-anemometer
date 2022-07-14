@@ -41,6 +41,7 @@ Features
 - Acquire device readings continuously (subscribe/notify)
 - Set sample rate
 - Telemetry to SignalK
+- NMEA-0183 telemetry
 
 
 *****
@@ -76,6 +77,10 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # See section "SignalK telemetry" about how to create an UDP receiver
     # data connection in your Signal K server beforehand.
     calypso-anemometer read --subscribe --target=udp+signalk+delta://openplotter.local:4123
+    # Continuously receive device readings and submit them in NMEA-0183 format via UDP.
+    # See section "NMEA-0183 telemetry" about how to create an UDP receiver
+    # data connection in OpenCPN beforehand.
+    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://openplotter.local:10110
 
 If you already discovered your device and know its address, use the
 ``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::
@@ -157,6 +162,19 @@ connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ in
     SignalK UDP receiver on port 4123.
 
 
+*******************
+NMEA-0183 telemetry
+*******************
+
+The program can optionally submit telemetry data in NMEA-0183 format via UDP.
+To make `OpenCPN`_ receive the data, create a corresponding data connection
+like outlined in this screenshot.
+
+.. figure:: https://user-images.githubusercontent.com/453543/179080301-3244c579-b76f-4ace-b754-44bae8e572a6.png
+
+    NMEA-0183 UDP receiver on port 2000.
+
+
 ***********
 Development
 ***********
@@ -171,6 +189,7 @@ Development
 
 .. _Bleak: https://github.com/hbldh/bleak
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
+.. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
 .. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
 .. _SignalK server: https://github.com/SignalK/signalk-server

@@ -3,7 +3,8 @@ import typing as t
 
 from calypso_anemometer.model import CalypsoReading
 from calypso_anemometer.telemetry.common import NetworkTelemetry
-from calypso_anemometer.telemetry.model import NetworkProtocol, TelemetryProtocol
+from calypso_anemometer.telemetry.model import NetworkProtocol, NetworkProtocolMode, TelemetryProtocol
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183Messages
 from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,7 @@ class TelemetryAdapter:
 
     ACCEPTED_PROTOCOLS = [
         TelemetryProtocol.UDP_SIGNALK_DELTA,
+        TelemetryProtocol.UDP_BROADCAST_NMEA0183,
     ]
 
     def __init__(self, uri: str):
@@ -41,10 +43,14 @@ class TelemetryAdapter:
         raise KeyError(f"NetworkProtocol for URI '{value}' not supported")
 
     def setup(self):
+        host_port = self.uri.replace(f"{self.protocol.value}://", "")
+        host, port = host_port.split(":")
         if self.protocol == TelemetryProtocol.UDP_SIGNALK_DELTA:
-            host_port = self.uri.replace(f"{self.protocol.value}://", "")
-            host, port = host_port.split(":")
             self.handler = NetworkTelemetry(host=host, port=int(port), protocol=NetworkProtocol.UDP)
+        elif self.protocol == TelemetryProtocol.UDP_BROADCAST_NMEA0183:
+            self.handler = NetworkTelemetry(
+                host=host, port=int(port), protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST
+            )
 
     def submit(self, reading: CalypsoReading):
         if self.handler is None:
@@ -52,5 +58,9 @@ class TelemetryAdapter:
         if self.protocol == TelemetryProtocol.UDP_SIGNALK_DELTA:
             # TODO: Parameterize `source` and `location`.
             msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
+            msg.set_reading(reading)
+            self.handler.send(msg.render())
+        elif self.protocol == TelemetryProtocol.UDP_BROADCAST_NMEA0183:
+            msg = Nmea0183Messages()
             msg.set_reading(reading)
             self.handler.send(msg.render())

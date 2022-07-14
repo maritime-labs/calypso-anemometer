@@ -26,14 +26,6 @@ def cli(ctx, verbose, debug):
     setup_logging(level=logging.INFO)
 
 
-"""
-@click.argument("kind", type=str, required=True)
-@click.option("--flavor", type=str, required=False,
-              help="Use `--flavor=docker-compose` for generating a configuration file suitable "
-                   "for use within the provided Docker Compose environment.")
-"""
-
-
 async def calypso_run(callback: Callable):
     try:
         async with CalypsoDeviceApi(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:

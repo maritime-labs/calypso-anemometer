@@ -73,7 +73,7 @@ class Nmea0183GenericMessage:
     fields: t.List[t.Union[t.AnyStr, t.SupportsInt, t.SupportsFloat, None]]
 
     def render(self):
-        parts = [f"${self.identifier}"] + self.fields
+        parts = [self.identifier] + self.fields
         parts = [part is not None and str(part) or "" for part in parts]
         message = ",".join(parts)
         return message
@@ -152,7 +152,7 @@ class Nmea0183Messages:
         return messages
 
     def render(self):
-        return "\n".join(self.aslist()) + "\n"
+        return "\n".join(self.aslist())
 
 
 def nmea0183_telemetry_demo():

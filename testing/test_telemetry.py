@@ -35,4 +35,4 @@ def test_telemetry_signalk():
 def test_telemetry_nmea0183():
     msg = Nmea0183Messages()
     msg.set_reading(test_reading)
-    assert msg.render() == "$$IIVWR,206.0,,,N,5.69,M,,K\n"
+    assert msg.render() == "$IIVWR,206.0,,,N,5.69,M,,K"

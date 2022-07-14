@@ -6,6 +6,7 @@ calypso-anemometer changelog
 in progress
 ===========
 - Add software tests for telemetry subsystem
+- NMEA-0183: Fix message structure
 
 
 2022-07-14 0.1.0

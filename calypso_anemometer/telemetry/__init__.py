@@ -53,4 +53,4 @@ class TelemetryAdapter:
             # TODO: Parameterize `source` and `location`.
             msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
             msg.set_reading(reading)
-            self.handler.send_json(msg.asdict())
+            self.handler.send(msg.render())

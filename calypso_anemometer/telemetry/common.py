@@ -1,7 +1,5 @@
-import json
 import logging
 import socket
-import typing as t
 
 from calypso_anemometer.telemetry.model import NetworkProtocol
 
@@ -23,7 +21,7 @@ class NetworkTelemetry:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def send(self, payload: str):
-        logger.info(f"Submitting payload to SignalK server:\n{payload}")
+        logger.info(f"Sending message to {self.protocol.value}://{self.host}:{self.port}. {payload}")
         address = (self.host, self.port)
         if isinstance(payload, str):
             payload = payload.encode("utf-8")
@@ -33,7 +31,3 @@ class NetworkTelemetry:
             self.socket.close()
         elif self.protocol == NetworkProtocol.UDP:
             self.socket.sendto(payload, address)
-
-    def send_json(self, data: t.Dict):
-        payload = json.dumps(data)
-        self.send(payload)

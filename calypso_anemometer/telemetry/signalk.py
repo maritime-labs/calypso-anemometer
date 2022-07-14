@@ -1,4 +1,5 @@
 import dataclasses
+import json
 import logging
 import typing as t
 
@@ -45,6 +46,7 @@ class SignalKDeltaMessage:
             SignalKDeltaItem(path="navigation.attitude.pitch", value=reading.pitch),
             SignalKDeltaItem(path="navigation.attitude.yaw", value=reading.compass),
             SignalKDeltaItem(path="navigation.headingMagnetic", value=reading.compass),
+            # TODO: Improve `path` naming.
             SignalKDeltaItem(path="electrical.batteries.99.name", value=self.source),
             SignalKDeltaItem(path="electrical.batteries.99.location", value=self.location),
             SignalKDeltaItem(path="electrical.batteries.99.capacity.stateOfCharge", value=reading.battery_level),
@@ -70,6 +72,9 @@ class SignalKDeltaMessage:
             ]
         }
         return data
+
+    def render(self):
+        return json.dumps(self.asdict())
 
 
 def signalk_telemetry_demo():
@@ -102,7 +107,7 @@ def signalk_telemetry_demo():
     telemetry = NetworkTelemetry(host="openplotter.local", port=4123, protocol=NetworkProtocol.UDP)
     msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
     msg.set_reading(reading)
-    telemetry.send_json(msg.asdict())
+    telemetry.send(msg.render())
 
 
 if __name__ == "__main__":

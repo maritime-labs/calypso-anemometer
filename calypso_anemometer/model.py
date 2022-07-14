@@ -74,6 +74,21 @@ class CalypsoReading:
     pitch: int
     compass: int
 
+    @property
+    def wind_direction_180(self) -> int:
+        angle = self.wind_direction
+        return (angle > 180) and angle - 360 or angle
+
+    @property
+    def wind_left_right_indicator(self) -> str:
+        if self.wind_direction_180 < 0:
+            indicator = "L"
+        elif self.wind_direction_180 > 0:
+            indicator = "R"
+        else:
+            indicator = "-"
+        return indicator
+
     @classmethod
     def from_buffer(cls, buffer: bytearray):
         """

@@ -139,7 +139,8 @@ class Nmea0183Messages:
         """
         self.items = [
             Nmea0183MessageIIVWR(
-                direction_magnitude_in_degrees=reading.wind_direction,
+                direction_magnitude_in_degrees=abs(reading.wind_direction_180),
+                direction_left_right_of_bow=reading.wind_left_right_indicator,
                 speed_meters_per_second=reading.wind_speed,
             ).to_message()
         ]

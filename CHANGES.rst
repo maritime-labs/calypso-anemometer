@@ -6,6 +6,9 @@ calypso-anemometer changelog
 in progress
 ===========
 
+
+2022-07-14 0.1.0
+================
 - Minimal implementation, connecting to the device
 - Add CLI interface with subcommands ``info`` and ``explore``
 - Implement client interface as context manager
@@ -20,7 +23,3 @@ in progress
 - Add telemetry subsystem, to be used with new ``--target`` option
 - Add telemetry adapter for ``UDP_SIGNALK_DELTA``
 - Add telemetry adapter for ``UDP_BROADCAST_NMEA0183``
-
-
-2022-xx-xx 0.0.0
-================

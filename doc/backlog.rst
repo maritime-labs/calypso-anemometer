@@ -11,22 +11,38 @@ Iteration +0
 - [x] Send readings to SignalK via UDP
 - [x] File headers
 - [x] Badges
-- [o] Release 0.1.0
+- [x] Release 0.1.0
 
 
 ************
 Iteration +1
 ************
+- [x] Start with software tests
+- [x] Fix ``NMEA-0183`` wind direction and add "left/right of bow"
+  indicator with formula ``(angle > 180) and angle - 360 or angle``
 - [o] Systemd unit (installer)
 - [o] Documentation about running in production
-- [o] Unlock adjusting offset and calibration values
-- [o] Optimize discovery: Stop scanning when device was found
+- [o] Turn off logging to STDOUT
+- [o] Get rid of port 2000 throughout the documentation
 
 
 ************
 Iteration +2
 ************
-- [o] Software tests
-- [o] Naming things
+- [o] CI: Run software tests on GHA
+- [o] Make up ``NMEA-0183`` messages for other parameters ``battery_level``,
+  ``temperature``, ``roll``, ``pitch``, and ``compass``
+- [o] Unlock adjusting offset and calibration values
+- [o] Optimize discovery: Stop scanning when device was found
+
+
+************
+Iteration +3
+************
+- [o] Improve SignalK telemetry measurement ``path`` attributes,
+  like ``electrical.batteries.99``
+- [o] Add more software tests
+- [o] Improve inline documentation
+- [o] Improve "naming things"
 - [o] Make everything configurable
-- [o] SignalK ws-client
+- [o] Add SignalK WebSocket client

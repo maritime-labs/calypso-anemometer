@@ -29,6 +29,7 @@ setup(
         "nmea-0183",
         "signalk",
         "signalk-plugin",
+        "opencpn",
         "environmental-monitoring",
         "bluetooth",
         "bluetooth-le",

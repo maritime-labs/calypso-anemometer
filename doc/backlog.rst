@@ -26,7 +26,8 @@ Iteration +1
 ************
 Iteration +2
 ************
-- [o] Systemd unit (installer)
+- [o] Systemd unit, with installer
+- [o] Day/night switching
 - [o] Documentation about running in production
 - [o] Turn off logging to STDOUT
 - [o] Docs: Get rid of mentioning port 2000

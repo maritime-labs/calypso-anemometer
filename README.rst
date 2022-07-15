@@ -1,3 +1,10 @@
+.. image:: https://github.com/daq-tools/calypso-anemometer/workflows/Tests/badge.svg
+    :target: https://github.com/daq-tools/calypso-anemometer/actions?workflow=Tests
+
+.. image:: https://codecov.io/gh/daq-tools/calypso-anemometer/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/daq-tools/calypso-anemometer
+    :alt: Test suite code coverage
+
 .. image:: https://img.shields.io/pypi/pyversions/calypso-anemometer.svg
     :target: https://pypi.org/project/calypso-anemometer/
 

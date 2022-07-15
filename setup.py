@@ -78,5 +78,10 @@ setup(
         "bleak<1",
         "click<9",
     ],
-    extras_require={},
+    extras_require={
+        "test": [
+            "pytest<8",
+            "pytest-cov<4",
+        ]
+    },
 )

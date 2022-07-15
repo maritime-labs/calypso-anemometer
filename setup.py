@@ -77,6 +77,7 @@ setup(
     install_requires=[
         "bleak<1",
         "click<9",
+        "dataclasses;python_version<='3.6'",
     ],
     extras_require={
         "test": [

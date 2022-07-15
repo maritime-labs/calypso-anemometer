@@ -9,11 +9,11 @@ References
 - https://github.com/hbldh/bleak/blob/develop/examples/discover.py
 - https://github.com/hbldh/bleak/blob/develop/examples/get_services.py
 - https://github.com/hbldh/bleak/blob/develop/examples/service_explorer.py
+- https://github.com/hbldh/bleak/blob/develop/examples/scanner_byname.py
 """
 import asyncio
 import concurrent
 import logging
-import time
 from typing import Callable, Optional
 
 from bleak import BleakClient, BleakError, BleakScanner
@@ -37,7 +37,6 @@ from calypso_anemometer.model import (
 # Configuration section.
 from calypso_anemometer.util import to_json
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -50,6 +49,8 @@ class CalypsoDeviceApi:
 
     NAME = "calypso-up10"
     DESCRIPTION = "Calypso UP10 anemometer"
+    BLUETOOTH_DEVICE_NAME = "ULTRASONIC"
+
     DISCOVERY_TIMEOUT = 10.0
     CONNECT_TIMEOUT = 10.0
     BLUETOOTH_ADAPTER = "hci0"
@@ -89,28 +90,33 @@ class CalypsoDeviceApi:
     async def discover(self, force=False) -> bool:
         """
         Discover device via BLE.
-        TODO: Use https://github.com/hbldh/bleak/blob/develop/examples/scanner_byname.py.
         """
+
         # Skip discovery when already discovered and not forced.
         if self.ble_address is not None and not force:
             return True
 
         logger.info(f"Using BLE discovery to find {self.DESCRIPTION}")
         try:
-            devices = await BleakScanner.discover(timeout=self.DISCOVERY_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)
+            device = await BleakScanner.find_device_by_filter(
+                filterfunc=lambda d, ad: d.name == self.BLUETOOTH_DEVICE_NAME,
+                timeout=self.DISCOVERY_TIMEOUT,
+                adapter=self.BLUETOOTH_ADAPTER,
+            )
         except BleakError as ex:
             message = f"{ex.__class__.__name__}: {ex}"
             if "Bluetooth device is turned off" in message:
                 raise BluetoothAdapterError(message) from None
-        for device in devices:
-            if device.name == "ULTRASONIC":
-                logger.info(f"Found device at address: {device}")
-                # Add some delay between discovery and readout. It looks like this stabilizes readings.
-                time.sleep(0.5)
-                self.ble_address = device.address
-                return True
-        logger.error("Unable to find device")
-        return False
+            else:
+                raise
+
+        if device is not None:
+            self.ble_address = device.address
+            logger.info(f"Found device at address: {device}")
+            return True
+        else:
+            logger.error("Unable to find device")
+            return False
 
     async def connect(self):
         self.client = BleakClient(self.ble_address, timeout=self.CONNECT_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)

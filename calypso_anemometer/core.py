@@ -37,9 +37,6 @@ from calypso_anemometer.model import (
 # Configuration section.
 from calypso_anemometer.util import to_json
 
-DISCOVERY_TIMEOUT = 15.0
-CONNECT_TIMEOUT = 15.0
-BLUETOOTH_ADAPTER = "hci0"
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +50,9 @@ class CalypsoDeviceApi:
 
     NAME = "calypso-up10"
     DESCRIPTION = "Calypso UP10 anemometer"
+    DISCOVERY_TIMEOUT = 10.0
+    CONNECT_TIMEOUT = 10.0
+    BLUETOOTH_ADAPTER = "hci0"
 
     DEVICE_INFO_CHARACTERISTICS = [
         BleCharSpec(uuid="00002a29-0000-1000-8000-00805f9b34fb", name="manufacturer_name"),
@@ -97,7 +97,7 @@ class CalypsoDeviceApi:
 
         logger.info(f"Using BLE discovery to find {self.DESCRIPTION}")
         try:
-            devices = await BleakScanner.discover(timeout=DISCOVERY_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
+            devices = await BleakScanner.discover(timeout=self.DISCOVERY_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)
         except BleakError as ex:
             message = f"{ex.__class__.__name__}: {ex}"
             if "Bluetooth device is turned off" in message:
@@ -113,7 +113,7 @@ class CalypsoDeviceApi:
         return False
 
     async def connect(self):
-        self.client = BleakClient(self.ble_address, timeout=CONNECT_TIMEOUT, adapter=BLUETOOTH_ADAPTER)
+        self.client = BleakClient(self.ble_address, timeout=self.CONNECT_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)
         logger.info(f"Connecting to device at {self.ble_address} with adapter {get_adapter_name(self.client)}")
         try:
             await self.client.connect()

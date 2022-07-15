@@ -5,6 +5,7 @@ calypso-anemometer changelog
 
 in progress
 ===========
+- CI: Run software tests on GHA
 
 
 2022-07-15 0.2.0

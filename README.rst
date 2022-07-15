@@ -28,7 +28,7 @@ Hardware device
 ===============
 
 The `Calypso UP10 ultrasonic portable solar wind meter`_ is a Bluetooth, solar-powered,
-pocket-sized ultrasonic anemometer. No power cords or data wires needed.
+pocket-sized, ultrasonic anemometer. No power cords or data wires needed.
 
 Resources:
 
@@ -43,7 +43,6 @@ Software library
 
 The device driver library is written in Python and based on the `Bleak`_
 library, the *Bluetooth Low Energy platform Agnostic Klient for Python*.
-
 It was verified to work well on a Raspberry Pi / OpenPlotter installation and a
 macOS workstation.
 
@@ -56,9 +55,8 @@ Features
 - Basic conversation
 - Acquire device status and readings (one shot)
 - Acquire device readings continuously (subscribe/notify)
-- Set sample rate
-- SignalK telemetry
-- NMEA-0183 telemetry
+- Set device data rate
+- Telemetry: NMEA-0183 and SignalK over UDP
 
 
 *****
@@ -68,7 +66,7 @@ Setup
 
     pip install calypso-anemometer
 
-To install the latest version from the repository, invoke::
+To install the latest development version from the repository, invoke::
 
     pip install git+https://github.com/daq-tools/calypso-anemometer
 

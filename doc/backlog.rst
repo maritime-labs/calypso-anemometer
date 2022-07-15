@@ -20,20 +20,21 @@ Iteration +1
 - [x] Start with software tests
 - [x] Fix ``NMEA-0183`` wind direction and add "left/right of bow"
   indicator with formula ``(angle > 180) and angle - 360 or angle``
-- [o] Systemd unit (installer)
-- [o] Documentation about running in production
-- [o] Turn off logging to STDOUT
-- [o] Get rid of port 2000 throughout the documentation
+- [x] Optimize discovery: Stop scanning when device was found
 
 
 ************
 Iteration +2
 ************
+- [o] Systemd unit (installer)
+- [o] Documentation about running in production
+- [o] Turn off logging to STDOUT
+- [o] Docs: Get rid of mentioning port 2000
+- [o] Docs: Replace screenshot ``NMEA-0183 UDP receiver on port 2000``
 - [o] CI: Run software tests on GHA
 - [o] Make up ``NMEA-0183`` messages for other parameters ``battery_level``,
   ``temperature``, ``roll``, ``pitch``, and ``compass``
 - [o] Unlock adjusting offset and calibration values
-- [o] Optimize discovery: Stop scanning when device was found
 
 
 ************

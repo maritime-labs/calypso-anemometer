@@ -5,6 +5,10 @@ calypso-anemometer changelog
 
 in progress
 ===========
+
+
+2022-07-15 0.2.0
+================
 - Add software tests for telemetry subsystem
 - NMEA-0183: Fix message structure
 - NMEA-0183: Fix wind direction and add "left/right of bow" indicator

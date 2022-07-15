@@ -8,7 +8,7 @@ README = open(os.path.join(here, "README.rst")).read()
 
 setup(
     name="calypso-anemometer",
-    version="0.1.0",
+    version="0.2.0",
     author="Andreas Motl",
     author_email="andreas.motl@panodata.org",
     url="https://github.com/daq-tools/calypso-anemometer",

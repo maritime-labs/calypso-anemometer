@@ -30,9 +30,10 @@ Iteration +1.5
 - [x] Docs: Get rid of mentioning port 2000, only use port 10110
 - [x] Docs: Replace screenshot ``NMEA-0183 UDP receiver on port 2000``
 - [o] CLI-parameterised dummy measurement sending
-- [o] Don't send ``-`` as directon indicator
+- [o] NMEA-0183: Compute missing ``speed_`` from other ``speed_`` values.
+- [o] NMEA-0183: Don't send ``-`` as directon indicator
+- [o] NMEA-0183: Implement checksum
 - [o] Synthesize direction-nulling
-- [o] Implement NMEA-0183 checksum
 
 
 ************

@@ -107,7 +107,7 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Continuously receive device readings and submit them in NMEA-0183 format via UDP.
     # See section "NMEA-0183 telemetry" about how to create an UDP receiver
     # data connection in OpenCPN beforehand.
-    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://openplotter.local:10110
+    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://255.255.255.255:10110
 
 If you already discovered your device and know its address, use the
 ``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::
@@ -197,9 +197,9 @@ The program can optionally submit telemetry data in NMEA-0183 format via UDP.
 To make `OpenCPN`_ receive the data, create a corresponding data connection
 like outlined in this screenshot.
 
-.. figure:: https://user-images.githubusercontent.com/453543/179080301-3244c579-b76f-4ace-b754-44bae8e572a6.png
+.. figure:: https://user-images.githubusercontent.com/453543/179367303-14e1b958-16ae-4bf8-b077-4f96d929e8b0.png
 
-    NMEA-0183 UDP receiver on port 2000.
+    NMEA-0183 UDP receiver on port 10110.
 
 
 ***********

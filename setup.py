@@ -30,6 +30,7 @@ setup(
         "signalk",
         "signalk-plugin",
         "opencpn",
+        "openplotter",
         "environmental-monitoring",
         "bluetooth",
         "bluetooth-le",

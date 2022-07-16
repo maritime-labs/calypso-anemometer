@@ -47,11 +47,13 @@ Submit and receive NMEA-0183 over UDP broadcast on the command line.
 ::
 
     # Submit
-    echo '$IIVWR,045.0,L,12.6,N,6.5,M,23.3,K*52' | socat -u -t5 - udp-datagram:openplotter.local:2000,broadcast
+    echo '$IIVWR,045.0,L,12.6,N,6.5,M,23.3,K*52' | socat -u - udp-datagram:255.255.255.255:10110,bind=:56123,broadcast
 
     # Receive
-    socat -u udp4-recvfrom:2000,reuseaddr,fork system:cat
-    nc -lu 10.10.10.255 2000
+    # Note: To stop this process, hit CTRL+C two times in quick succession.
+    # Note: If you receive error messages like `E bind(6, {LEN=0 AF=2 0.0.0.0:10110}, 16): Address already in use`,
+    #       make sure no other process is listening on that port. For example, OpenCPN.
+    while true; do socat -u udp-recvfrom:10110,reuseaddr,reuseport system:cat; sleep 0.3; done
 """
 import dataclasses
 import logging
@@ -159,7 +161,7 @@ class Nmea0183Messages:
 def nmea0183_telemetry_demo():
     """
     Demonstrate submitting telemetry data in NMEA-0183 sentence format
-    over UDP broadcast to `openplotter.local:10110`.
+    over UDP broadcast to `255.255.255.255:10110`.
 
     Synopsis::
 
@@ -182,9 +184,9 @@ def nmea0183_telemetry_demo():
         compass=235,
     )
 
-    # Submit telemetry message to OpenCPN.
+    # Broadcast telemetry message, e.g. to OpenCPN.
     telemetry = NetworkTelemetry(
-        host="openplotter.local", port=10110, protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST
+        host="255.255.255.255", port=10110, protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST
     )
     msg = Nmea0183Messages()
     msg.set_reading(reading)

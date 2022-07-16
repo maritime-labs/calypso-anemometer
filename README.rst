@@ -113,10 +113,10 @@ If you already discovered your device and know its address, use the
 ``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::
 
     # Linux
-    export CALYPSO_ADDRESS=E7:B6:1B:DB:02:DF
+    export CALYPSO_ADDRESS=F8:C7:2C:EC:13:D0
 
     # macOS
-    export CALYPSO_ADDRESS=FB2D3935-AEBA-41D4-AB46-CD0C5FB291A1
+    export CALYPSO_ADDRESS=0C3E4A46-BFCB-52E5-BC57-DE1D60C3A2B2
 
     # Activate discovery again.
     unset CALYPSO_ADDRESS

@@ -152,7 +152,7 @@ class CalypsoDeviceApi:
         Possible errors:
 
         - bleak.exc.BleakDBusError: [org.bluez.Error.Failed] Software caused connection abort
-        - bleak.exc.BleakError: Device with address E7:B6:1B:DB:02:DF was not found.
+        - bleak.exc.BleakError: Device with address F8:C7:2C:EC:13:D0 was not found.
         - futures.TimeoutError:
         """
         services = await self.client.get_services()

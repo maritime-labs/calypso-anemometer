@@ -2,6 +2,7 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 import json
+from copy import deepcopy
 
 from calypso_anemometer.telemetry import Nmea0183Messages, SignalKDeltaMessage
 from testing.conf import test_reading
@@ -32,7 +33,33 @@ def test_telemetry_signalk():
     assert "updates" in json.loads(msg.render())
 
 
-def test_telemetry_nmea0183():
+def test_telemetry_nmea0183_wind_into():
     msg = Nmea0183Messages()
-    msg.set_reading(test_reading)
+    reading = deepcopy(test_reading)
+    reading.wind_direction = 0
+    msg.set_reading(reading)
+    assert msg.render() == "$IIVWR,0.0,,,N,5.69,M,,K"
+
+
+def test_telemetry_nmea0183_wind_downwind():
+    msg = Nmea0183Messages()
+    reading = deepcopy(test_reading)
+    reading.wind_direction = 180
+    msg.set_reading(reading)
+    assert msg.render() == "$IIVWR,180.0,,,N,5.69,M,,K"
+
+
+def test_telemetry_nmea0183_wind_left_of_bow():
+    msg = Nmea0183Messages()
+    reading = deepcopy(test_reading)
+    reading.wind_direction = 206
+    msg.set_reading(reading)
     assert msg.render() == "$IIVWR,154.0,L,,N,5.69,M,,K"
+
+
+def test_telemetry_nmea0183_wind_right_of_bow():
+    msg = Nmea0183Messages()
+    reading = deepcopy(test_reading)
+    reading.wind_direction = 42
+    msg.set_reading(reading)
+    assert msg.render() == "$IIVWR,42.0,R,,N,5.69,M,,K"

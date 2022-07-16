@@ -7,6 +7,7 @@ in progress
 ===========
 - CI: Run software tests on GHA
 - Fix installation on Python 3.6
+- NMEA-0183: Fix computing ``LR`` direction indicator
 
 
 2022-07-15 0.2.0

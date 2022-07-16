@@ -81,12 +81,12 @@ class CalypsoReading:
 
     @property
     def wind_left_right_indicator(self) -> str:
-        if self.wind_direction_180 < 0:
+        if -180 < self.wind_direction_180 < 0:
             indicator = "L"
-        elif self.wind_direction_180 > 0:
+        elif 0 < self.wind_direction_180 < 180:
             indicator = "R"
         else:
-            indicator = "-"
+            indicator = ""
         return indicator
 
     @classmethod

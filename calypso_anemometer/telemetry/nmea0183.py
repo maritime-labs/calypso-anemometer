@@ -90,11 +90,35 @@ class Nmea0183MessageIIVWR:
     """
 
     IDENTIFIER = "$IIVWR"
-    direction_magnitude_in_degrees: t.Optional[float] = None
-    direction_left_right_of_bow: t.Optional[str] = None
-    speed_knots: t.Optional[float] = None
-    speed_meters_per_second: t.Optional[float] = None
-    speed_kilometers_per_hour: t.Optional[float] = None
+    direction_degrees: float
+    speed_meters_per_second: float
+
+    @property
+    def direction_magnitude_in_degrees(self) -> float:
+        return abs(self.wind_direction_180)
+
+    @property
+    def wind_direction_180(self) -> int:
+        angle = self.direction_degrees
+        return (angle > 180) and angle - 360 or angle
+
+    @property
+    def direction_left_right_of_bow(self) -> str:
+        if -180 < self.wind_direction_180 < 0:
+            indicator = "L"
+        elif 0 < self.wind_direction_180 < 180:
+            indicator = "R"
+        else:
+            indicator = ""
+        return indicator
+
+    @property
+    def speed_knots(self) -> float:
+        return round(self.speed_meters_per_second * 1.943844, 2)
+
+    @property
+    def speed_kilometers_per_hour(self) -> float:
+        return round(self.speed_meters_per_second * 3.6, 2)
 
     def to_message(self):
         """
@@ -139,13 +163,11 @@ class Nmea0183Messages:
         """
         Derive NMEA-0183 IIVWR message from measurement reading.
         """
-        self.items = [
-            Nmea0183MessageIIVWR(
-                direction_magnitude_in_degrees=abs(reading.wind_direction_180),
-                direction_left_right_of_bow=reading.wind_left_right_indicator,
-                speed_meters_per_second=reading.wind_speed,
-            ).to_message()
-        ]
+        iivwr = Nmea0183MessageIIVWR(
+            direction_degrees=reading.wind_direction,
+            speed_meters_per_second=reading.wind_speed,
+        )
+        self.items = [iivwr.to_message()]
 
     def aslist(self):
         """

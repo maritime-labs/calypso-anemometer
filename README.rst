@@ -106,18 +106,8 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device readings, continuously at 1 Hz.
     calypso-anemometer read --subscribe --rate=hz_1
 
-If you already discovered your device and know its address, use the
-``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few
-cycles::
-
-    # Linux
-    export CALYPSO_ADDRESS=F8:C7:2C:EC:13:D0
-
-    # macOS
-    export CALYPSO_ADDRESS=0C3E4A46-BFCB-52E5-BC57-DE1D60C3A2B2
-
-    # Activate discovery again.
-    unset CALYPSO_ADDRESS
+If you already discovered your device, know its address, and want to connect
+directly without automatic device discovery, see `skip discovery`_.
 
 
 ***************
@@ -230,3 +220,4 @@ The project is licensed under the terms of the AGPL license.
 .. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
 .. _signalk-calypso-ultrasonic: https://github.com/decipherindustries/signalk-calypso-ultrasonic
 .. _SignalK server: https://github.com/SignalK/signalk-server
+.. _skip discovery: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/production.rst#device-discovery-vs-multiple-devices

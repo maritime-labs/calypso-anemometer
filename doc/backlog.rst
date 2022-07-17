@@ -45,6 +45,7 @@ Topic: Documentation improvements, more fixes
 - [x] Docs: Project information on README
 - [x] Docs: Other projects / credits
 - [x] Docs: README: Adjust layout of badges
+- [x] Docs: FAQ: Connected to wrong device?
 - [o] BLE: Select BLE adapter
 - [o] BLE: Obtain peripheral address from both ``--ble-address`` and ``CALYPSO_BLE_ADDRESS``
 - [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``
@@ -56,10 +57,9 @@ Iteration +2.5
 **************
 Topic: Going into production
 
+- [o] Systemd unit, with installer
 - [o] Day/night switching
 - [o] Turn off logging to STDOUT
-- [o] Systemd unit, with installer
-- [o] Docs: FAQ: Connected to wrong device?
 
 
 ************

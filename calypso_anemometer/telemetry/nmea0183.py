@@ -57,7 +57,9 @@ Submit and receive NMEA-0183 over UDP broadcast on the command line.
 """
 import dataclasses
 import logging
+import struct
 import typing as t
+from binascii import hexlify
 
 from calypso_anemometer.model import CalypsoReading
 from calypso_anemometer.telemetry import NetworkProtocol, NetworkProtocolMode, NetworkTelemetry
@@ -78,7 +80,27 @@ class Nmea0183GenericMessage:
         parts = [self.identifier] + self.fields
         parts = [part is not None and str(part) or "" for part in parts]
         message = ",".join(parts)
+        checksum = self.checksum_hexlified(message)
+        message += f"*{checksum}"
         return message
+
+    @classmethod
+    def checksum(cls, message) -> int:
+        """
+        Calculating the checksum is very easy. It is the representation of two hexadecimal characters of
+        an XOR of all characters in the sentence between – but not including – the $ and the * character.
+
+        https://rietman.wordpress.com/2008/09/25/how-to-calculate-the-nmea-checksum/
+        """
+        checksum: int = 0
+        for char in message[1:]:
+            checksum ^= ord(char)
+        return checksum
+
+    @classmethod
+    def checksum_hexlified(cls, message) -> str:
+        checksum = cls.checksum(message)
+        return hexlify(struct.pack("B", checksum)).decode().upper()
 
 
 @dataclasses.dataclass

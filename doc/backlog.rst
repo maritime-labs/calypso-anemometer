@@ -32,24 +32,34 @@ Iteration +1.5
 - [x] NMEA-0183: Fix computing ``LR`` direction indicator
 - [x] NMEA-0183: Compute missing ``speed_`` from other ``speed_`` values.
 - [x] Telemetry: Synthesize zeroing of wind direction, when wind speed goes zero
-- [o] NMEA-0183: Implement checksum
-- [o] CLI-parameterised dummy measurement sending
+- [x] NMEA-0183: Implement checksum
 
 
 ************
 Iteration +2
 ************
-- [o] Select BLE adapter
+Topic: Documentation improvements, more fixes
+
+- [x] Documentation about getting started (socat) vs. running in production (systemd)
+  => Use separate pages than README
+- [x] Docs: Project information on README
+- [x] Docs: Other projects / credits
+- [x] Docs: README: Adjust layout of badges
+- [o] BLE: Select BLE adapter
+- [o] BLE: Obtain peripheral address from both ``--ble-address`` and ``CALYPSO_BLE_ADDRESS``
+- [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``
+- [o] Telemetry: Submit fake measurements, for supplying synthetic data to OpenCPN and ``nmea-ui``
+
+
+**************
+Iteration +2.5
+**************
+Topic: Going into production
+
 - [o] Day/night switching
 - [o] Turn off logging to STDOUT
-- [o] Obtain peripheral address from both ``--ble-address`` and ``CALYPSO_BLE_ADDRESS``
 - [o] Systemd unit, with installer
-- [o] Documentation about getting started (socat) vs. running in production (systemd)
-  => Use separate pages than README
 - [o] Docs: FAQ: Connected to wrong device?
-- [o] Docs: Project information on README
-- [o] Docs: README: Adjust layout of badges
-- [o] Docs: Other projects / credits
 
 
 ************

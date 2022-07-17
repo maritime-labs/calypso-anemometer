@@ -36,24 +36,15 @@ The NMEA-0183 sentence information for "relative wind"
       8) K = Kilometers Per Hour
       9) Checksum
 
--- http://www.nmea.de/nmea0183datensaetze.html
+-- http://www.nmea.de/nmea0183datensaetze.html#vwr
 
 
 CLI sender / receiver
 =====================
 
 Submit and receive NMEA-0183 over UDP broadcast on the command line.
+See https://github.com/daq-tools/calypso-anemometer/blob/main/doc/preflight.rst#nmea-0183-telemetry-over-udp
 
-::
-
-    # Submit
-    echo '$IIVWR,045.0,L,12.6,N,6.5,M,23.3,K*52' | socat -u - udp-datagram:255.255.255.255:10110,bind=:56123,broadcast
-
-    # Receive
-    # Note: To stop this process, hit CTRL+C two times in quick succession.
-    # Note: If you receive error messages like `E bind(6, {LEN=0 AF=2 0.0.0.0:10110}, 16): Address already in use`,
-    #       make sure no other process is listening on that port. For example, OpenCPN.
-    while true; do socat -u udp-recvfrom:10110,reuseaddr,reuseport system:cat; sleep 0.3; done
 """
 import dataclasses
 import logging

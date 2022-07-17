@@ -5,16 +5,16 @@
     :target: https://codecov.io/gh/daq-tools/calypso-anemometer
     :alt: Test suite code coverage
 
-.. image:: https://img.shields.io/pypi/pyversions/calypso-anemometer.svg
-    :target: https://pypi.org/project/calypso-anemometer/
-
-.. image:: https://img.shields.io/pypi/status/calypso-anemometer.svg
+.. image:: https://pepy.tech/badge/calypso-anemometer/month
     :target: https://pypi.org/project/calypso-anemometer/
 
 .. image:: https://img.shields.io/pypi/v/calypso-anemometer.svg
     :target: https://pypi.org/project/calypso-anemometer/
 
-.. image:: https://pepy.tech/badge/calypso-anemometer/month
+.. image:: https://img.shields.io/pypi/status/calypso-anemometer.svg
+    :target: https://pypi.org/project/calypso-anemometer/
+
+.. image:: https://img.shields.io/pypi/pyversions/calypso-anemometer.svg
     :target: https://pypi.org/project/calypso-anemometer/
 
 .. image:: https://img.shields.io/pypi/l/calypso-anemometer.svg
@@ -48,10 +48,9 @@ Resources:
 Software library
 ================
 
-The device driver library is written in Python and based on the `Bleak`_
-library, the *Bluetooth Low Energy platform Agnostic Klient for Python*.
-It was verified to work well on a Raspberry Pi / OpenPlotter installation and a
-macOS workstation.
+The device driver library is written in Python, based on the `Bleak`_ library.
+It was verified to work well on an OpenPlotter installation on a Raspberry Pi,
+as well as a macOS workstation.
 
 
 ********
@@ -62,7 +61,7 @@ Features
 - Acquire device status and readings (one shot)
 - Acquire device readings continuously (subscribe/notify)
 - Set device data rate
-- Telemetry: NMEA-0183 and SignalK over UDP
+- Telemetry with NMEA-0183 and SignalK over UDP
 
 
 *****
@@ -70,19 +69,28 @@ Setup
 *****
 ::
 
-    pip install calypso-anemometer
+    pip install --upgrade calypso-anemometer
 
 To install the latest development version from the repository, invoke::
 
-    pip install git+https://github.com/daq-tools/calypso-anemometer
+    pip install --upgrade git+https://github.com/daq-tools/calypso-anemometer
 
 
-********
-Synopsis
-********
+*****************
+Pre-flight checks
+*****************
 
+There is some documentation about investigating and configuring your Bluetooth/BLE
+stack and about simulating the telemetry messaging. On this matter, you might want
+to run through a sequence of `preflight checks`_ before going into `production`_.
+
+
+*****
 Usage
-=====
+*****
+
+Getting started
+===============
 
 Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 
@@ -98,18 +106,9 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device readings, continuously at 1 Hz.
     calypso-anemometer read --subscribe --rate=hz_1
 
-    # Continuously receive device readings and submit them in SignalK Delta Format via UDP.
-    # See section "SignalK telemetry" about how to create an UDP receiver
-    # data connection in your Signal K server beforehand.
-    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+signalk+delta://openplotter.local:4123
-
-    # Continuously receive device readings and submit them in NMEA-0183 format via UDP broadcast.
-    # See section "NMEA-0183 telemetry" about how to create an UDP receiver data connection
-    # in OpenCPN beforehand. If you don't have _any_ networking configured, just use `localhost`.
-    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://255.255.255.255:10110
-
 If you already discovered your device and know its address, use the
-``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few cycles::
+``CALYPSO_ADDRESS`` environment variable to skip discovery, saving a few
+cycles::
 
     # Linux
     export CALYPSO_ADDRESS=F8:C7:2C:EC:13:D0
@@ -120,66 +119,21 @@ If you already discovered your device and know its address, use the
     # Activate discovery again.
     unset CALYPSO_ADDRESS
 
-Development
-===========
-::
 
-    # Set device data rate to one of HZ_1, HZ_4, or HZ_8.
-    # Note: Works only for the upcoming conversation. Will be back at HZ_4 afterwards.
-    calypso-anemometer set-option --rate=hz_1
+***************
+Telemetry setup
+***************
 
-    # Set device mode to one of SLEEP, LOW_POWER, or NORMAL.
-    # Note: Does not work, the setting is read-only.
-    calypso-anemometer set-option --mode=normal
-
-    # Explore all services and characteristics. Useful for debugging purposes.
-    calypso-anemometer explore
+The program can optionally submit telemetry messages in different formats.
 
 
-*****************
-Pre-flight checks
-*****************
-
-You will need a working Bluetooth/BLE stack. This section outlines a few
-commands to discover an ``ULTRASONIC`` device nearby.
-
-Enumerate Bluetooth adapters::
-
-    hcitool dev
-    Devices:
-        hci1    E4:5F:01:BB:71:FC
-        hci0    00:1A:7D:DA:71:15
-
-    lsusb
-    Bus 001 Device 004: ID 0a12:0001 Cambridge Silicon Radio, Ltd Bluetooth Dongle (HCI mode)
-
-Display information about two Bluetooth adapters::
-
-    hciconfig hci0 name
-    hci0:	Type: Primary  Bus: USB
-        BD Address: 00:1A:7D:DA:71:15  ACL MTU: 310:10  SCO MTU: 64:8
-        Name: 'openplotter #1'
-
-    hciconfig hci1 name
-    hci1:   Type: Primary  Bus: UART
-        BD Address: E4:5F:01:BB:71:FC  ACL MTU: 1021:8  SCO MTU: 64:1
-        Name: 'openplotter'
-
-Run a BLE device scan on a specific adapter::
-
-    sudo hcitool -i hci0 lescan
-
-Run a BLE device scan using Bleak::
-
-    bleak-lescan -i hci0
-    bleak-lescan -i hci1
-
-
-*****************
 SignalK telemetry
-*****************
+=================
 
-The program can optionally submit telemetry data in SignalK Delta Format via UDP.
+Continuously receive device readings and submit them in SignalK Delta Format via UDP::
+
+    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+signalk+delta://openplotter.local:4123
+
 To make a `SignalK server`_ receive the data, create an "UDP receiver" data
 connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ instance.
 
@@ -187,35 +141,92 @@ connection on the `Server » Data Connections`_ dialog of your `OpenPlotter`_ in
 
     SignalK UDP receiver on port 4123.
 
-
-*******************
 NMEA-0183 telemetry
-*******************
+===================
 
-The program can optionally submit telemetry data in NMEA-0183 format via UDP.
+Continuously receive device readings and submit them in NMEA-0183 format via UDP broadcast::
+
+    calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://255.255.255.255:10110
+
+.. note::
+
+    If you don't have **any** networking configured on your machine, just use
+    ``localhost`` as target address.
+
 To make `OpenCPN`_ receive the data, create a corresponding data connection
-like outlined in this screenshot.
+like outlined in those screenshots.
+
+.. figure:: https://user-images.githubusercontent.com/453543/179416658-abb831b8-8e5a-46e1-8f82-4eb5655c7e0b.png
+
+    Add NMEA-0183 UDP receiver on port 10110.
 
 .. figure:: https://user-images.githubusercontent.com/453543/179367303-14e1b958-16ae-4bf8-b077-4f96d929e8b0.png
 
-    NMEA-0183 UDP receiver on port 10110.
+    Configured NMEA-0183 UDP receiver on port 10110.
+
+An example NMEA-0183 sentence emitted is::
+
+    $IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65
 
 
-***********
-Development
-***********
-::
 
-    git clone https://github.com/daq-tools/calypso-anemometer
-    cd calypso-anemometer
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install --editable=.
+**************
+Other projects
+**************
+
+- The `signalk-calypso-ultrasonic`_ project by `Fabian Tollenaar`_
+  is a Signal K server plugin for the Calypso Ultrasonic wireless anemometer.
+
+
+****************
+Acknowledgements
+****************
+
+- Kudos to `Henrik Blidh`_, `David Lechner`_, and contributors for conceiving
+  and maintaining the excellent `Bleak`_ library.
+- Special thanks to `Fabian Tollenaar`_ for creating `signalk-calypso-ultrasonic`_.
+
+
+*******************
+Project information
+*******************
+
+Contributions
+=============
+
+Any kind of contribution, feedback or patches are very much welcome! Just `create
+an issue`_ or submit a patch if you think we should include a new feature, or to
+report or fix a bug.
+
+In order to setup a development environment on your workstation, please head over
+to the `development sandbox`_ documentation. When you see the software tests succeed,
+you should be ready to start hacking.
+
+Resources
+=========
+
+- `Source code repository <https://github.com/daq-tools/calypso-anemometer>`_
+- `Documentation <https://github.com/daq-tools/calypso-anemometer/blob/main/README.rst>`_
+- `Python Package Index (PyPI) <https://pypi.org/project/calypso-anemometer/>`_
+
+License
+=======
+
+The project is licensed under the terms of the AGPL license.
+
 
 
 .. _Bleak: https://github.com/hbldh/bleak
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
+.. _create an issue: https://github.com/daq-tools/calypso-anemometer/issues
+.. _David Lechner: https://github.com/dlech
+.. _Fabian Tollenaar: https://github.com/fabdrol
+.. _Henrik Blidh: https://github.com/hbldh
 .. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
+.. _preflight checks: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/preflight.rst
+.. _production: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/production.rst
+.. _development sandbox: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/sandbox.rst
 .. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
+.. _signalk-calypso-ultrasonic: https://github.com/decipherindustries/signalk-calypso-ultrasonic
 .. _SignalK server: https://github.com/SignalK/signalk-server

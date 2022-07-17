@@ -58,8 +58,7 @@ macOS workstation.
 Features
 ********
 
-- Device discovery
-- Basic conversation
+- Run device discovery
 - Acquire device status and readings (one shot)
 - Acquire device readings continuously (subscribe/notify)
 - Set device data rate
@@ -104,9 +103,9 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # data connection in your Signal K server beforehand.
     calypso-anemometer read --subscribe --rate=hz_1 --target=udp+signalk+delta://openplotter.local:4123
 
-    # Continuously receive device readings and submit them in NMEA-0183 format via UDP.
-    # See section "NMEA-0183 telemetry" about how to create an UDP receiver
-    # data connection in OpenCPN beforehand.
+    # Continuously receive device readings and submit them in NMEA-0183 format via UDP broadcast.
+    # See section "NMEA-0183 telemetry" about how to create an UDP receiver data connection
+    # in OpenCPN beforehand. If you don't have _any_ networking configured, just use `localhost`.
     calypso-anemometer read --subscribe --rate=hz_1 --target=udp+broadcast+nmea0183://255.255.255.255:10110
 
 If you already discovered your device and know its address, use the

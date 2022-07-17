@@ -230,8 +230,10 @@ def nmea0183_telemetry_demo():
     )
 
     # Broadcast telemetry message, e.g. to OpenCPN.
+    target_host = "255.255.255.255"
+    # target_host = "localhost"
     telemetry = NetworkTelemetry(
-        host="255.255.255.255", port=10110, protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST
+        host=target_host, port=10110, protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST
     )
     msg = Nmea0183Messages()
     msg.set_reading(reading)

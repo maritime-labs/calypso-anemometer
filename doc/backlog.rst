@@ -29,16 +29,17 @@ Iteration +1.5
 - [x] CI: Run software tests on GHA
 - [x] Docs: Get rid of mentioning port 2000, only use port 10110
 - [x] Docs: Replace screenshot ``NMEA-0183 UDP receiver on port 2000``
-- [o] CLI-parameterised dummy measurement sending
-- [o] NMEA-0183: Compute missing ``speed_`` from other ``speed_`` values.
-- [o] NMEA-0183: Don't send ``-`` as directon indicator
+- [x] NMEA-0183: Fix computing ``LR`` direction indicator
+- [x] NMEA-0183: Compute missing ``speed_`` from other ``speed_`` values.
+- [x] Telemetry: Synthesize zeroing of wind direction, when wind speed goes zero
 - [o] NMEA-0183: Implement checksum
-- [o] Synthesize direction-nulling
+- [o] CLI-parameterised dummy measurement sending
 
 
 ************
 Iteration +2
 ************
+- [o] Select BLE adapter
 - [o] Day/night switching
 - [o] Turn off logging to STDOUT
 - [o] Obtain peripheral address from both ``--ble-address`` and ``CALYPSO_BLE_ADDRESS``
@@ -48,6 +49,7 @@ Iteration +2
 - [o] Docs: FAQ: Connected to wrong device?
 - [o] Docs: Project information on README
 - [o] Docs: README: Adjust layout of badges
+- [o] Docs: Other projects / credits
 
 
 ************
@@ -55,6 +57,7 @@ Iteration +3
 ************
 - [o] Make up ``NMEA-0183`` messages for other parameters ``battery_level``,
   ``temperature``, ``roll``, ``pitch``, and ``compass``
+  - What about ``$IIXDR,C,20,C,TempAir``? -- https://forum.arduino.cc/t/nmea0183-checksum/559531
 - [o] Unlock adjusting offset and calibration values
 - [o] Improve SignalK telemetry measurement ``path`` attributes,
   like ``electrical.batteries.99``

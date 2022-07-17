@@ -74,7 +74,7 @@ Submit::
 
 Receive::
 
-    while true; do socat -u udp-recvfrom:10110,reuseaddr,reuseport system:cat; sleep 0.3; done
+    while true; do socat -u udp-recvfrom:10110,reuseaddr,reuseport system:cat; sleep 0.05; done
 
 .. note::
 
@@ -89,3 +89,15 @@ Receive::
     Vice versa, take care to stop any ``socat`` processes listening on the designated
     port **before** starting OpenCPN. It will not croak with any error messages, but
     will just silently not receive anything.
+
+
+*****************
+Emulate telemetry
+*****************
+
+If you don't have a corresponding device on your desk, you can still use the
+program to emulate parts of its functionality. For example, use the following
+command to submit synthetic measurement readings as NMEA-0183 messages::
+
+    calypso-anemometer fake --subscribe --rate=hz_8 --target=udp+broadcast+nmea0183://255.255.255.255:10110
+

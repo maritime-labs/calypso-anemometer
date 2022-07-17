@@ -5,6 +5,7 @@ calypso-anemometer changelog
 
 in progress
 ===========
+- Telemetry: Generate fake device readings, for supplying synthetic data
 
 
 2022-07-17 0.3.0

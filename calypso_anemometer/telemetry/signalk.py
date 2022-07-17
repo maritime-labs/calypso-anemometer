@@ -41,6 +41,7 @@ class SignalKDeltaMessage:
 
         [1] https://github.com/daq-tools/signalk-calypso-ultrasonic/blob/1.0.18/lib/calypso-ultrasonic.js#L446-L472
         """
+        reading = reading.adjusted()
         self.items = [
             SignalKDeltaItem(path="environment.outside.temperature", value=reading.temperature),
             SignalKDeltaItem(path="environment.wind.angleApparent", value=reading.wind_direction),

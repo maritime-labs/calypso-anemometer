@@ -123,5 +123,16 @@ class CalypsoReading:
         )
         return reading
 
+    def adjusted(self):
+        """
+        Compensate sticky wind direction when wind speed goes zero.
+        """
+        if self.wind_speed == 0.0:
+            return dataclasses.replace(self, wind_direction=0)
+        return self
+
+    def asdict(self):
+        return dataclasses.asdict(self)
+
     def print(self):
         print(to_json(self))

@@ -9,6 +9,7 @@ in progress
 - Fix installation on Python 3.6
 - NMEA-0183: Fix computing ``LR`` direction indicator
 - NMEA-0183: Compute missing ``speed_`` from other ``speed_`` values
+- Telemetry: Synthesize zeroing of wind direction, when wind speed goes zero
 
 
 2022-07-15 0.2.0

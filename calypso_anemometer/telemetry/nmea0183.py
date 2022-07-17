@@ -163,6 +163,7 @@ class Nmea0183Messages:
         """
         Derive NMEA-0183 IIVWR message from measurement reading.
         """
+        reading = reading.adjusted()
         iivwr = Nmea0183MessageIIVWR(
             direction_degrees=reading.wind_direction,
             speed_meters_per_second=reading.wind_speed,

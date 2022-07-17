@@ -63,3 +63,11 @@ def test_telemetry_nmea0183_wind_right_of_bow():
     reading.wind_direction = 42
     msg.set_reading(reading)
     assert msg.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K"
+
+
+def test_telemetry_nmea0183_wind_zero():
+    msg = Nmea0183Messages()
+    reading = deepcopy(test_reading)
+    reading.wind_speed = 0
+    msg.set_reading(reading)
+    assert msg.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K"

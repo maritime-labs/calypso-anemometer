@@ -20,5 +20,5 @@ publish: setup-virtualenv
 	$(twine) upload --skip-existing --verbose dist/*.tar.gz
 
 test: setup-virtualenv
-	$(pip) install --editable=.[test]
+	$(pip) install --editable=.[test,fake]
 	$(pytest)

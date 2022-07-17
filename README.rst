@@ -106,6 +106,10 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
     # Get device readings, continuously at 1 Hz.
     calypso-anemometer read --subscribe --rate=hz_1
 
+    # Generate fake device readings, continuously at 8 Hz.
+    pip install --upgrade calypso-anemometer[fake]
+    calypso-anemometer fake --subscribe --rate=hz_8
+
 If you already discovered your device, know its address, and want to connect
 directly without automatic device discovery, see `skip discovery`_.
 

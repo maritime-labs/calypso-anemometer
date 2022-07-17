@@ -84,6 +84,9 @@ setup(
         "test": [
             "pytest<8",
             "pytest-cov<4",
-        ]
+        ],
+        "fake": [
+            "aiorate>1,<2;python_version>='3.7'",
+        ],
     },
 )

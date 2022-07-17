@@ -206,8 +206,8 @@ class CalypsoDeviceApi:
     async def set_mode(self, mode: CalypsoDeviceMode):
         await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
 
-    async def set_datarate(self, mode: CalypsoDeviceDataRate):
-        await self.client.write_gatt_char(CHARSPEC_DATARATE.uuid, data=bytes([mode.value]), response=True)
+    async def set_datarate(self, rate: CalypsoDeviceDataRate):
+        await self.client.write_gatt_char(CHARSPEC_DATARATE.uuid, data=bytes([rate.value]), response=True)
 
     async def get_reading(self):
         logger.info("Requesting reading")

@@ -159,7 +159,6 @@ An example NMEA-0183 sentence emitted is::
     $IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65
 
 
-
 **************
 Other projects
 **************
@@ -187,6 +186,9 @@ Contributions
 Any kind of contribution, feedback or patches are very much welcome! Just `create
 an issue`_ or submit a patch if you think we should include a new feature, or to
 report or fix a bug.
+
+Development
+===========
 
 In order to setup a development environment on your workstation, please head over
 to the `development sandbox`_ documentation. When you see the software tests succeed,

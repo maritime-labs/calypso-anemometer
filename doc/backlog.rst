@@ -46,10 +46,12 @@ Topic: Documentation improvements, more fixes
 - [x] Docs: Other projects / credits
 - [x] Docs: README: Adjust layout of badges
 - [x] Docs: FAQ: Connected to wrong device?
-- [o] BLE: Select BLE adapter
-- [o] BLE: Obtain peripheral address from both ``--ble-address`` and ``CALYPSO_BLE_ADDRESS``
+- [x] Telemetry: Submit fake measurements, for supplying synthetic data to OpenCPN
+  and other clients, like ``nmea-ui``
+- [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
+- [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
 - [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``
-- [o] Telemetry: Submit fake measurements, for supplying synthetic data to OpenCPN and ``nmea-ui``
+- [o] Add more software tests
 
 
 **************
@@ -71,8 +73,7 @@ Iteration +3
 - [o] Unlock adjusting offset and calibration values
 - [o] Improve SignalK telemetry measurement ``path`` attributes,
   like ``electrical.batteries.99``
-- [o] Add more software tests
 - [o] Improve inline documentation
 - [o] Improve "naming things"
-- [o] Make everything configurable
+- [o] Make more yet hardcoded details configurable
 - [o] Add SignalK WebSocket client

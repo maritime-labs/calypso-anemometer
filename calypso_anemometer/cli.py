@@ -12,7 +12,7 @@ from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
 from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode, CalypsoReading
 from calypso_anemometer.telemetry import TelemetryAdapter
-from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, to_json, wait_forever
+from calypso_anemometer.util import EnumChoice, make_sync, setup_logging, wait_forever
 
 logger = logging.getLogger(__name__)
 

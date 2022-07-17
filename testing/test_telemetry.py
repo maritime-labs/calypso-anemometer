@@ -38,7 +38,7 @@ def test_telemetry_nmea0183_wind_into():
     reading = deepcopy(test_reading)
     reading.wind_direction = 0
     msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,0.0,,11.06,N,5.69,M,20.48,K"
+    assert msg.render() == "$IIVWR,0.0,,11.06,N,5.69,M,20.48,K*29"
 
 
 def test_telemetry_nmea0183_wind_downwind():
@@ -46,7 +46,7 @@ def test_telemetry_nmea0183_wind_downwind():
     reading = deepcopy(test_reading)
     reading.wind_direction = 180
     msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,180.0,,11.06,N,5.69,M,20.48,K"
+    assert msg.render() == "$IIVWR,180.0,,11.06,N,5.69,M,20.48,K*20"
 
 
 def test_telemetry_nmea0183_wind_left_of_bow():
@@ -54,7 +54,7 @@ def test_telemetry_nmea0183_wind_left_of_bow():
     reading = deepcopy(test_reading)
     reading.wind_direction = 206
     msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,154.0,L,11.06,N,5.69,M,20.48,K"
+    assert msg.render() == "$IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65"
 
 
 def test_telemetry_nmea0183_wind_right_of_bow():
@@ -62,7 +62,7 @@ def test_telemetry_nmea0183_wind_right_of_bow():
     reading = deepcopy(test_reading)
     reading.wind_direction = 42
     msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K"
+    assert msg.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K*4D"
 
 
 def test_telemetry_nmea0183_wind_zero():
@@ -70,4 +70,4 @@ def test_telemetry_nmea0183_wind_zero():
     reading = deepcopy(test_reading)
     reading.wind_speed = 0
     msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K"
+    assert msg.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K*1B"

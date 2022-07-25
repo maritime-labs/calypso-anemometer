@@ -39,7 +39,7 @@ class SignalKDeltaMessage:
 
         The path name mapping has been derived from `signalk-calypso-ultrasonic` [1]. Thanks!
 
-        [1] https://github.com/daq-tools/signalk-calypso-ultrasonic/blob/1.0.18/lib/calypso-ultrasonic.js#L446-L472
+        [1] https://github.com/maritime-labs/signalk-calypso-ultrasonic/blob/1.0.18/lib/calypso-ultrasonic.js#L446-L472
         """
         reading = reading.adjusted()
         self.items = [

@@ -1,8 +1,8 @@
-.. image:: https://github.com/daq-tools/calypso-anemometer/workflows/Tests/badge.svg
-    :target: https://github.com/daq-tools/calypso-anemometer/actions?workflow=Tests
+.. image:: https://github.com/maritime-labs/calypso-anemometer/workflows/Tests/badge.svg
+    :target: https://github.com/maritime-labs/calypso-anemometer/actions?workflow=Tests
 
-.. image:: https://codecov.io/gh/daq-tools/calypso-anemometer/branch/main/graph/badge.svg
-    :target: https://codecov.io/gh/daq-tools/calypso-anemometer
+.. image:: https://codecov.io/gh/maritime-labs/calypso-anemometer/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/maritime-labs/calypso-anemometer
     :alt: Test suite code coverage
 
 .. image:: https://pepy.tech/badge/calypso-anemometer/month
@@ -18,7 +18,7 @@
     :target: https://pypi.org/project/calypso-anemometer/
 
 .. image:: https://img.shields.io/pypi/l/calypso-anemometer.svg
-    :target: https://github.com/daq-tools/calypso-anemometer/blob/main/LICENSE
+    :target: https://github.com/maritime-labs/calypso-anemometer/blob/main/LICENSE
 
 |
 
@@ -73,7 +73,7 @@ Setup
 
 To install the latest development version from the repository, invoke::
 
-    pip install --upgrade git+https://github.com/daq-tools/calypso-anemometer
+    pip install --upgrade git+https://github.com/maritime-labs/calypso-anemometer
 
 
 *****************
@@ -201,8 +201,8 @@ you should be ready to start hacking.
 Resources
 =========
 
-- `Source code repository <https://github.com/daq-tools/calypso-anemometer>`_
-- `Documentation <https://github.com/daq-tools/calypso-anemometer/blob/main/README.rst>`_
+- `Source code repository <https://github.com/maritime-labs/calypso-anemometer>`_
+- `Documentation <https://github.com/maritime-labs/calypso-anemometer/blob/main/README.rst>`_
 - `Python Package Index (PyPI) <https://pypi.org/project/calypso-anemometer/>`_
 
 License
@@ -214,16 +214,16 @@ The project is licensed under the terms of the AGPL license.
 
 .. _Bleak: https://github.com/hbldh/bleak
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
-.. _create an issue: https://github.com/daq-tools/calypso-anemometer/issues
+.. _create an issue: https://github.com/maritime-labs/calypso-anemometer/issues
 .. _David Lechner: https://github.com/dlech
 .. _Fabian Tollenaar: https://github.com/fabdrol
 .. _Henrik Blidh: https://github.com/hbldh
 .. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
-.. _preflight checks: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/preflight.rst
-.. _production: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/production.rst
-.. _development sandbox: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/sandbox.rst
+.. _preflight checks: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/preflight.rst
+.. _production: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst
+.. _development sandbox: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/sandbox.rst
 .. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
 .. _signalk-calypso-ultrasonic: https://github.com/decipherindustries/signalk-calypso-ultrasonic
 .. _SignalK server: https://github.com/SignalK/signalk-server
-.. _skip discovery: https://github.com/daq-tools/calypso-anemometer/blob/main/doc/production.rst#device-discovery-vs-multiple-devices
+.. _skip discovery: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst#device-discovery-vs-multiple-devices

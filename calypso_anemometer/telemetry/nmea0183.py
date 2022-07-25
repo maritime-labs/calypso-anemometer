@@ -43,7 +43,7 @@ CLI sender / receiver
 =====================
 
 Submit and receive NMEA-0183 over UDP broadcast on the command line.
-See https://github.com/daq-tools/calypso-anemometer/blob/main/doc/preflight.rst#nmea-0183-telemetry-over-udp
+See https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/preflight.rst#nmea-0183-telemetry-over-udp
 
 """
 import dataclasses

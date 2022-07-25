@@ -17,7 +17,7 @@ Usage
 *****
 ::
 
-    git clone https://github.com/daq-tools/calypso-anemometer
+    git clone https://github.com/maritime-labs/calypso-anemometer
     cd calypso-anemometer
     make test
 

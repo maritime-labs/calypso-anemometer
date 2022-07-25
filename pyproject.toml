@@ -8,7 +8,7 @@ multi_line_output = 3
 
 [tool.pytest.ini_options]
 minversion = "2.0"
-addopts = "-rfEX -p pytester --strict-markers --verbosity=3 --cov --cov-report=xml"
+addopts = "-rfEX -p pytester --strict-markers --verbosity=3 --cov --cov-report=term-missing --cov-report=xml"
 testpaths = ["testing"]
 xfail_strict = true
 markers = [

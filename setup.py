@@ -11,7 +11,7 @@ setup(
     version="0.3.0",
     author="Andreas Motl",
     author_email="andreas.motl@panodata.org",
-    url="https://github.com/daq-tools/calypso-anemometer",
+    url="https://github.com/maritime-labs/calypso-anemometer",
     description="Python driver for the Calypso UP10 anemometer",
     long_description=README,
     download_url="https://pypi.org/project/calypso-anemometer/",

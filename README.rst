@@ -167,8 +167,19 @@ An example NMEA-0183 sentence emitted is::
 Other projects
 **************
 
-- The `signalk-calypso-ultrasonic`_ project by `Fabian Tollenaar`_
-  is a Signal K server plugin for the Calypso Ultrasonic wireless anemometer.
+- `signalk-calypso-ultrasonic`_ is a Signal K server plugin for the Calypso
+  Ultrasonic wireless anemometer, written in JavaScript.
+
+- `CalypsoUltrasonicAPI`_ is a library for the Calypso Ultrasonic Anemometer,
+  written in Visual Basic .NET and Java, (also) for Android.
+
+
+***************
+Troubleshooting
+***************
+
+For helping you to find solutions for known problems, we are maintaining
+a dedicated page at `troubleshooting`_.
 
 
 ****************
@@ -208,12 +219,13 @@ Resources
 License
 =======
 
-The project is licensed under the terms of the AGPL license.
+The project is licensed under the terms of the GNU AGPL license.
 
 
 
 .. _Bleak: https://github.com/hbldh/bleak
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
+.. _CalypsoUltrasonicAPI: https://github.com/volkerpetersen/CalypsoUltrasonicAPI
 .. _create an issue: https://github.com/maritime-labs/calypso-anemometer/issues
 .. _David Lechner: https://github.com/dlech
 .. _Fabian Tollenaar: https://github.com/fabdrol
@@ -227,3 +239,4 @@ The project is licensed under the terms of the AGPL license.
 .. _signalk-calypso-ultrasonic: https://github.com/decipherindustries/signalk-calypso-ultrasonic
 .. _SignalK server: https://github.com/SignalK/signalk-server
 .. _skip discovery: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst#device-discovery-vs-multiple-devices
+.. _troubleshooting: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/troubleshooting.rst

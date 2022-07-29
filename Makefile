@@ -17,7 +17,7 @@ format: setup-virtualenv
 publish: setup-virtualenv
 	$(pip) install build twine
 	$(python) -m build
-	$(twine) upload --skip-existing --verbose dist/*.tar.gz
+	$(twine) upload --skip-existing --verbose dist/*{.tar.gz,.whl}
 
 test: setup-virtualenv
 	$(pip) install --editable=.[test,fake]

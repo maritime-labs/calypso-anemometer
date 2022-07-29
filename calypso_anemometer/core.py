@@ -130,7 +130,7 @@ class CalypsoDeviceApi:
                 raise BluetoothAdapterError(message) from None
             else:
                 raise BluetoothConversationError(message) from None
-        except (concurrent.futures.TimeoutError, asyncio.exceptions.TimeoutError) as ex:
+        except (concurrent.futures.TimeoutError, asyncio.TimeoutError) as ex:
             message = f"{ex.__class__.__name__}: {ex}"
             logger.error(message)
             raise BluetoothTimeoutError(message)

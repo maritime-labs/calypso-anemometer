@@ -48,6 +48,18 @@ Topic: Documentation improvements, more fixes
 - [x] Docs: FAQ: Connected to wrong device?
 - [x] Telemetry: Submit fake measurements, for supplying synthetic data to OpenCPN
   and other clients, like ``nmea-ui``
+
+
+**************
+Iteration +2.2
+**************
+- [x] Exception: ``AttributeError: module 'asyncio' has no attribute 'exceptions'``
+- [x] Error when sending to ``255.255.255.255``: ``PermissionError: [Errno 13] Permission denied``
+
+
+**************
+Iteration +2.3
+**************
 - [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
 - [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
 - [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``

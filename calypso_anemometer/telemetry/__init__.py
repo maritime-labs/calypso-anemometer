@@ -63,7 +63,9 @@ class TelemetryAdapter:
             msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
             msg.set_reading(reading)
             self.handler.send(msg.render())
+            return msg
         elif self.protocol == TelemetryProtocol.UDP_BROADCAST_NMEA0183:
             msg = Nmea0183Messages()
             msg.set_reading(reading)
             self.handler.send(msg.render())
+            return msg

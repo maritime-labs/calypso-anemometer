@@ -3,6 +3,13 @@
 # License: GNU Affero General Public License, Version 3
 from copy import deepcopy
 
+from calypso_anemometer.model import (
+    CalypsoDeviceCompassStatus,
+    CalypsoDeviceDataRate,
+    CalypsoDeviceInfo,
+    CalypsoDeviceMode,
+    CalypsoDeviceStatus,
+)
 from testing.conf import test_reading
 
 
@@ -36,3 +43,30 @@ def test_calypso_reading_adjusted():
         pitch=-60,
         compass=235,
     )
+
+
+def test_device_info():
+    device_info = CalypsoDeviceInfo(
+        ble_address="foo",
+        manufacturer_name="bar",
+        model_number="baz",
+        serial_number="qux",
+    )
+    assert device_info.asdict() == {
+        "ble_address": "foo",
+        "manufacturer_name": "bar",
+        "model_number": "baz",
+        "serial_number": "qux",
+        "hardware_revision": None,
+        "firmware_revision": None,
+        "software_revision": None,
+    }
+
+
+def test_device_status():
+    device_status = CalypsoDeviceStatus(
+        mode=CalypsoDeviceMode.NORMAL,
+        rate=CalypsoDeviceDataRate.HZ_8,
+        compass=CalypsoDeviceCompassStatus.ON,
+    )
+    assert device_status.aslabeldict() == {"compass": "ON", "mode": "NORMAL", "rate": "HZ_8"}

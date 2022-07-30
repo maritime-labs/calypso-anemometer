@@ -83,6 +83,7 @@ setup(
     extras_require={
         "test": [
             "pytest<8",
+            "pytest-asyncio<1",
             "pytest-cov<4",
         ],
         "fake": [

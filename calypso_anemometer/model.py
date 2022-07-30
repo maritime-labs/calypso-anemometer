@@ -25,9 +25,9 @@ class CalypsoDeviceInfo:
     manufacturer_name: str
     model_number: str
     serial_number: str
-    hardware_revision: Optional[str]
-    firmware_revision: Optional[str]
-    software_revision: Optional[str]
+    hardware_revision: Optional[str] = None
+    firmware_revision: Optional[str] = None
+    software_revision: Optional[str] = None
 
     def asdict(self):
         return dataclasses.asdict(self)

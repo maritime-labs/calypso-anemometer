@@ -41,7 +41,6 @@ setup(
     classifiers=[
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -78,7 +77,6 @@ setup(
     install_requires=[
         "bleak<1",
         "click<9",
-        "dataclasses;python_version<='3.6'",
     ],
     extras_require={
         "test": [

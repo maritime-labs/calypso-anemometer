@@ -9,6 +9,7 @@ in progress
   ``AttributeError: module 'asyncio' has no attribute 'exceptions'``
 - Add more software tests
 - Add a few example programs
+- Drop support for Python 3.6
 
 
 2022-07-25 0.4.0

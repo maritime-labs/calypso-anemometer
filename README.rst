@@ -89,8 +89,9 @@ to run through a sequence of `preflight checks`_ before going into `production`_
 Usage
 *****
 
-Getting started
-===============
+
+Command line
+============
 
 Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 
@@ -112,6 +113,14 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 
 If you already discovered your device, know its address, and want to connect
 directly without automatic device discovery, see `skip discovery`_.
+
+
+Library
+=======
+
+In order to use the library API, please consult the programs in the
+``examples`` folder.
+
 
 
 ***************

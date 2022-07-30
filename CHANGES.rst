@@ -7,6 +7,7 @@ in progress
 ===========
 - Fix import error on Python 3.7.
   ``AttributeError: module 'asyncio' has no attribute 'exceptions'``
+- Add more software tests
 
 
 2022-07-25 0.4.0

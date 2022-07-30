@@ -2,13 +2,17 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 import json
+import re
 from copy import deepcopy
 
-from calypso_anemometer.telemetry import Nmea0183Messages, SignalKDeltaMessage
+import pytest
+
+from calypso_anemometer.telemetry import Nmea0183Messages, SignalKDeltaMessage, TelemetryAdapter
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183MessageIIVWR
 from testing.conf import test_reading
 
 
-def test_telemetry_signalk():
+def test_telemetry_signalk_message():
     msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
     msg.set_reading(test_reading)
     assert msg.asdict() == {
@@ -71,3 +75,40 @@ def test_telemetry_nmea0183_wind_zero():
     reading.wind_speed = 0
     msg.set_reading(reading)
     assert msg.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K*1B"
+
+
+def test_nmea0183messageiivwr_convert_value():
+    assert Nmea0183MessageIIVWR.convert_value(42.42) == 42.42
+    assert Nmea0183MessageIIVWR.convert_value(None) == ""
+
+
+def test_nmea0183messageiivwr_render_success():
+    msg = Nmea0183MessageIIVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
+    assert msg.to_message().render() == "$IIVWR,42.42,R,10.54,N,5.42,M,19.51,K*76"
+
+
+def test_telemetry_adapter_signalk_success():
+    telemetry = TelemetryAdapter(uri="udp+signalk+delta://localhost:4123")
+    msg = telemetry.submit(test_reading)
+    assert isinstance(msg, SignalKDeltaMessage)
+
+
+def test_telemetry_adapter_nmea0183_success():
+    telemetry = TelemetryAdapter(uri="udp+broadcast+nmea0183://255.255.255.255:10110")
+    msg = telemetry.submit(test_reading)
+    assert isinstance(msg, Nmea0183Messages)
+
+
+def test_telemetry_adapter_unknown_failure():
+    with pytest.raises(KeyError) as ex:
+        telemetry = TelemetryAdapter(uri="foobar://localhost:12345")
+        telemetry.submit(test_reading)
+    assert ex.match(re.escape("NetworkProtocol for URI 'foobar://localhost:12345' not supported"))
+
+
+def test_telemetry_adapter_handler_failure():
+    with pytest.raises(KeyError) as ex:
+        telemetry = TelemetryAdapter(uri="udp+broadcast+nmea0183://255.255.255.255:10110")
+        telemetry.handler = None
+        telemetry.submit(test_reading)
+    assert ex.match("No telemetry handler established")

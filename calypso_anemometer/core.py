@@ -71,7 +71,7 @@ class CalypsoDeviceApi:
 
     def __init__(self, ble_address: Optional[str] = None):
         self.ble_address = ble_address
-        self.client: BleakClient = None
+        self.client: BleakClient
 
     async def __aenter__(self):
 

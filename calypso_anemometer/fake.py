@@ -69,16 +69,19 @@ class CalypsoDeviceApiFake:
         logger.info("Producing reading")
         return await self.produce_fake_reading()
 
-    async def subscribe_reading(self, callback: Optional[Callable] = None):
+    async def subscribe_reading(self, callback: Optional[Callable] = None, run_once: Optional[bool] = False):
         """
         Fake async reading producer task, emulating responses to a BLE subscribe/notify.
         """
         logger.info("Subscribing to readings")
-        rate = aiorate.Rate(self.datarate.value)
+        rate = aiorate.Rate(float(self.datarate.value))
         while True:
             reading = await self.produce_fake_reading()
-            callback(reading)
+            if callback is not None:
+                callback(reading)
             await rate.sleep()
+            if run_once:
+                break
 
     async def produce_fake_reading(self):
         """

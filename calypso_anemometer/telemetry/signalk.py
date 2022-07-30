@@ -8,8 +8,6 @@ import typing as t
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.model import CalypsoReading
-from calypso_anemometer.telemetry import NetworkTelemetry
-from calypso_anemometer.telemetry.model import NetworkProtocol
 
 logger = logging.getLogger(__name__)
 
@@ -79,40 +77,3 @@ class SignalKDeltaMessage:
 
     def render(self):
         return json.dumps(self.asdict())
-
-
-def signalk_telemetry_demo():
-    """
-    Demonstrate submitting telemetry data in SignalK Delta Format
-    over UDP to SignalK server `openplotter.local:4123`.
-
-    Synopsis::
-
-        python -m calypso_anemometer.telemetry.signalk
-    """
-
-    # Setup logging.
-    from calypso_anemometer.util import setup_logging
-
-    setup_logging(level=logging.DEBUG)
-
-    # Define example reading.
-    reading = CalypsoReading(
-        wind_speed=5.69,
-        wind_direction=206,
-        battery_level=90,
-        temperature=33,
-        roll=30,
-        pitch=-60,
-        compass=235,
-    )
-
-    # Submit telemetry message to SignalK.
-    telemetry = NetworkTelemetry(host="openplotter.local", port=4123, protocol=NetworkProtocol.UDP)
-    msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
-    msg.set_reading(reading)
-    telemetry.send(msg.render())
-
-
-if __name__ == "__main__":
-    signalk_telemetry_demo()

@@ -134,5 +134,8 @@ class CalypsoReading:
     def asdict(self):
         return dataclasses.asdict(self)
 
+    def asjson(self):
+        return to_json(self)
+
     def print(self):
-        print(to_json(self))
+        print(self.asjson())

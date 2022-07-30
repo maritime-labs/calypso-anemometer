@@ -60,10 +60,11 @@ Iteration +2.2
 **************
 Iteration +2.3
 **************
+- [o] Add more software tests
 - [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
 - [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
+- [o] BLE: Unlock ``--ble-timeout`` or ``CALYPSO_BLE_TIMEOUT``
 - [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``
-- [o] Add more software tests
 
 
 **************
@@ -79,13 +80,15 @@ Topic: Going into production
 ************
 Iteration +3
 ************
+- [o] Scan for ``FIXME`` and ``TODO`` markers
+- [o] Unlock support for compass
 - [o] Make up ``NMEA-0183`` messages for other parameters ``battery_level``,
   ``temperature``, ``roll``, ``pitch``, and ``compass``
   - What about ``$IIXDR,C,20,C,TempAir``? -- https://forum.arduino.cc/t/nmea0183-checksum/559531
 - [o] Unlock adjusting offset and calibration values
-- [o] Improve SignalK telemetry measurement ``path`` attributes,
+- [o] Improve naming of SignalK telemetry measurement ``path`` attributes,
   like ``electrical.batteries.99``
 - [o] Improve inline documentation
 - [o] Improve "naming things"
 - [o] Make more yet hardcoded details configurable
-- [o] Add SignalK WebSocket client
+- [o] Add SignalK WebSocket client (documentation)

@@ -4,8 +4,9 @@
 import logging
 
 from calypso_anemometer.model import CalypsoReading
-from calypso_anemometer.telemetry import NetworkTelemetry, SignalKDeltaMessage
 from calypso_anemometer.telemetry.model import NetworkProtocol
+from calypso_anemometer.telemetry.network import NetworkTelemetry
+from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 
 logger = logging.getLogger(__name__)
 

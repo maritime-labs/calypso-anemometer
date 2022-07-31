@@ -25,9 +25,9 @@ class NetworkTelemetry:
         self.port = port
         self.protocol = protocol
         if self.protocol == NetworkProtocol.TCP:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
+            self.socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM, proto=socket.IPPROTO_TCP)
         elif self.protocol == NetworkProtocol.UDP:
-            self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+            self.socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP)
         if mode == NetworkProtocolMode.BROADCAST:
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             if hasattr(socket, "SO_REUSEPORT"):

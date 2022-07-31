@@ -9,7 +9,7 @@ import typing as t
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
 from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading
-from calypso_anemometer.telemetry import TelemetryAdapter
+from calypso_anemometer.telemetry.adapter import TelemetryAdapter
 from calypso_anemometer.util import wait_forever
 
 logger = logging.getLogger(__name__)

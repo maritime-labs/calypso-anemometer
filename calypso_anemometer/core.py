@@ -69,6 +69,8 @@ class CalypsoDeviceApi:
         self.ble_address = settings.ble_address
         self.client: BleakClient
 
+        logger.info(f"Initializing client with {self.settings}")
+
     async def __aenter__(self):
 
         if self.ble_address is None:

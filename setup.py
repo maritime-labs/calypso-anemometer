@@ -82,6 +82,7 @@ setup(
         "test": [
             "pytest<8",
             "pytest-asyncio<1",
+            "pytest-mock<4",
             "pytest-cov<4",
         ],
         "fake": [

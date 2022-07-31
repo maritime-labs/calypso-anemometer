@@ -11,6 +11,7 @@ in progress
 - Add a few example programs
 - Drop support for Python 3.6
 - Add ``make lint`` sandbox utility task
+- Emit ``CalypsoDecodingError`` exceptions when decoding wire data fails
 
 
 2022-07-25 0.4.0

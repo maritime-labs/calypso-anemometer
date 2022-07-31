@@ -7,6 +7,10 @@ class CalypsoError(Exception):
     pass
 
 
+class CalypsoDecodingError(CalypsoError):
+    pass
+
+
 class BluetoothAdapterError(CalypsoError):
     pass
 

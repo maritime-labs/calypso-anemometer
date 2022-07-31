@@ -23,6 +23,7 @@ from calypso_anemometer.exception import (
     BluetoothConversationError,
     BluetoothDiscoveryError,
     BluetoothTimeoutError,
+    CalypsoDecodingError,
 )
 from calypso_anemometer.model import (
     BleCharSpec,
@@ -233,8 +234,13 @@ class CalypsoDeviceApi:
     @staticmethod
     def decode_reading(data: bytearray, sender: Optional[int] = None):
         logger.debug(f"Received buffer:  {data}")
-        reading = CalypsoReading.from_buffer(data)
-        logger.debug(f"Received reading: {reading}")
+        try:
+            reading = CalypsoReading.from_buffer(data)
+        except Exception as ex:
+            msg = f"Decoding reading failed. Reason: {ex}. Data: {data}"
+            logger.exception(msg)
+            raise CalypsoDecodingError(msg)
+        logger.debug(f"Decoded reading: {reading}")
         return reading
 
     def on_reading(self, reading: CalypsoReading):

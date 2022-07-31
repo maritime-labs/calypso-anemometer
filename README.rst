@@ -37,6 +37,14 @@ Hardware device
 The `Calypso UP10 ultrasonic portable solar wind meter`_ is a Bluetooth, solar-powered,
 pocket-sized, ultrasonic anemometer. No power cords or data wires needed.
 
+Pictures:
+
+.. figure:: https://user-images.githubusercontent.com/453543/182049443-385c2a79-621e-41a3-b5ef-ee61f9c14b11.png
+    :alt: Calypso UP10
+    :target: `Calypso UP10 full size images`_
+
+    Calypso UP10.
+
 Resources:
 
 - `Product page <https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2>`_
@@ -44,6 +52,7 @@ Resources:
 - `Instruction's manual <https://calypsoinstruments.com/web/content/39973?access_token=a4fb3216-7abd-483d-b2d5-129e86d54142&unique=eb0f37d09f58423b9cac15d4dfa2ecd93d7d5bb3&download=true>`_
 - `User manual <https://www.r-p-r.co.uk/downloads/calypso/Ultrasonic_Portable_User_Manual_EN.pdf>`_
 - `Developer manual <https://www.instrumentchoice.com.au/attachment/download/81440/5f62c29c10d3c987351591.pdf>`_
+
 
 Software library
 ================
@@ -80,7 +89,7 @@ To install the latest development version from the repository, invoke::
 Pre-flight checks
 *****************
 
-There is some documentation about investigating and configuring your Bluetooth/BLE
+We have some documentation about investigating and configuring your Bluetooth/BLE
 stack and about simulating the telemetry messaging. On this matter, you might want
 to run through a sequence of `preflight checks`_ before going into `production`_.
 
@@ -230,8 +239,8 @@ Project information
 Contributions
 =============
 
-Any kind of contribution, feedback or patches are very much welcome! Just `create
-an issue`_ or submit a patch if you think we should include a new feature, or to
+Every kind of contribution, feedback, or patch, is much welcome. `Create an
+issue`_ or submit a patch if you think we should include a new feature, or to
 report or fix a bug.
 
 Development
@@ -256,6 +265,7 @@ The project is licensed under the terms of the GNU AGPL license.
 
 
 .. _Bleak: https://github.com/hbldh/bleak
+.. _Calypso UP10 full size images: https://user-images.githubusercontent.com/453543/182049424-9a249add-c94b-4077-91bf-c864f2ed0e95.png
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
 .. _CalypsoUltrasonicAPI: https://github.com/volkerpetersen/CalypsoUltrasonicAPI
 .. _create an issue: https://github.com/maritime-labs/calypso-anemometer/issues

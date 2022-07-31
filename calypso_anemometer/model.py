@@ -13,6 +13,14 @@ logger = logging.getLogger(__name__)
 
 
 @dataclasses.dataclass
+class ApplicationSettings:
+    ble_adapter: Optional[str] = "hci0"
+    ble_address: Optional[str] = None
+    ble_discovery_timeout: Optional[float] = 10.0
+    ble_connect_timeout: Optional[float] = 10.0
+
+
+@dataclasses.dataclass
 class BleCharSpec:
     name: str
     uuid: str

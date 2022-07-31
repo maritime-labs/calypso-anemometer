@@ -212,6 +212,26 @@ def test_cli_read_telemetry_success(caplog):
     AsyncMock(return_value=BLEDevice(name="foo", address="bar")),
 )
 @mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+@mock.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
+def test_cli_read_ble_adapter_success(mocker, caplog):
+    """
+    Test successful `calypso-anemometer read --ble-adapter=...`.
+    """
+
+    mocker.patch("calypso_anemometer.core.get_adapter_name", return_value="hci99")
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["read", "--ble-adapter=hci99"], catch_exceptions=False)
+    assert result.exit_code == 0
+
+    assert "Connecting to device at 'bar' with adapter 'hci99'" in caplog.messages
+
+
+@mock.patch(
+    "calypso_anemometer.core.BleakScanner.find_device_by_filter",
+    AsyncMock(return_value=BLEDevice(name="foo", address="bar")),
+)
+@mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
 @mock.patch("calypso_anemometer.core.BleakClient.write_gatt_char", AsyncMock(return_value=None))
 @mock.patch("calypso_anemometer.core.CalypsoDeviceApi.get_info", AsyncMock(return_value=dummy_device_info))
 @mock.patch("calypso_anemometer.core.CalypsoDeviceApi.get_status", AsyncMock(return_value=dummy_device_status))

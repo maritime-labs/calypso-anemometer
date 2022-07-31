@@ -26,6 +26,7 @@ from calypso_anemometer.exception import (
     CalypsoDecodingError,
 )
 from calypso_anemometer.model import (
+    ApplicationSettings,
     BleCharSpec,
     CalypsoDeviceDataRate,
     CalypsoDeviceInfo,
@@ -47,11 +48,6 @@ class CalypsoDeviceApi:
     DESCRIPTION = "Calypso UP10 anemometer"
     BLUETOOTH_DEVICE_NAME = "ULTRASONIC"
 
-    # FIXME: Parameterize those constants.
-    DISCOVERY_TIMEOUT = 10.0
-    CONNECT_TIMEOUT = 10.0
-    BLUETOOTH_ADAPTER = "hci0"
-
     DEVICE_INFO_CHARACTERISTICS = [
         CalypsoDeviceInfoCharacteristic.manufacturer_name,
         CalypsoDeviceInfoCharacteristic.model_number,
@@ -66,8 +62,11 @@ class CalypsoDeviceApi:
         CalypsoDeviceStatusCharacteristic.compass,
     ]
 
-    def __init__(self, ble_address: Optional[str] = None):
-        self.ble_address = ble_address
+    def __init__(self, settings: Optional[ApplicationSettings] = None, ble_address: Optional[str] = None):
+        if settings is None:
+            settings = ApplicationSettings(ble_address=ble_address)
+        self.settings = settings
+        self.ble_address = settings.ble_address
         self.client: BleakClient
 
     async def __aenter__(self):
@@ -97,8 +96,8 @@ class CalypsoDeviceApi:
         try:
             device = await BleakScanner.find_device_by_filter(
                 filterfunc=lambda d, ad: d.name == self.BLUETOOTH_DEVICE_NAME,
-                timeout=self.DISCOVERY_TIMEOUT,
-                adapter=self.BLUETOOTH_ADAPTER,
+                timeout=self.settings.ble_discovery_timeout,
+                adapter=self.settings.ble_adapter,
             )
         except BleakError as ex:
             message = f"{ex.__class__.__name__}: {ex}"
@@ -116,7 +115,9 @@ class CalypsoDeviceApi:
             return False
 
     async def connect(self):
-        self.client = BleakClient(self.ble_address, timeout=self.CONNECT_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)
+        self.client = BleakClient(
+            self.ble_address, timeout=self.settings.ble_connect_timeout, adapter=self.settings.ble_adapter
+        )
         logger.info(f"Connecting to device at '{self.ble_address}' with adapter '{get_adapter_name(self.client)}'")
         try:
             await self.client.connect()

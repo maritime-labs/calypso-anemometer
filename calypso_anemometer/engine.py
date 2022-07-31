@@ -8,19 +8,19 @@ import typing as t
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading
+from calypso_anemometer.model import ApplicationSettings, CalypsoDeviceDataRate, CalypsoReading
 from calypso_anemometer.telemetry.adapter import TelemetryAdapter
 from calypso_anemometer.util import wait_forever
 
 logger = logging.getLogger(__name__)
 
 
-async def run_engine(workhorse, handler: t.Callable):
+async def run_engine(workhorse, handler: t.Callable, settings: t.Optional[ApplicationSettings] = None):
     """
     Create a workhorse engine and connect it with the asynchronous handler function for processing readings.
     """
     try:
-        worker = workhorse(ble_address=os.getenv("CALYPSO_ADDRESS"))
+        worker = workhorse(settings=settings, ble_address=os.getenv("CALYPSO_ADDRESS"))
         async with worker as calypso:
             await handler(calypso)
     except CalypsoError as ex:

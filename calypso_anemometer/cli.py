@@ -28,20 +28,6 @@ def cli(ctx, quiet: t.Optional[bool], verbose: t.Optional[bool], debug: t.Option
     setup_logging(level=log_level)
 
 
-@click.command()
-@click.pass_context
-@make_sync
-async def info(ctx):
-    await run_engine(workhorse=CalypsoDeviceApi, handler=lambda calypso: calypso.about())
-
-
-@click.command()
-@click.pass_context
-@make_sync
-async def explore(ctx):
-    await run_engine(workhorse=CalypsoDeviceApi, handler=lambda calypso: calypso.explore())
-
-
 ble_adapter_option = click.option(
     "--ble-adapter",
     envvar="CALYPSO_BLE_ADAPTER",
@@ -81,6 +67,52 @@ rate_option = click.option(
 )
 subscribe_option = click.option("--subscribe", is_flag=True, required=False, help="Continuously receive readings")
 target_option = click.option("--target", type=str, required=False, help="Submit telemetry data to target")
+
+
+@click.command()
+@ble_adapter_option
+@ble_address_option
+@ble_discovery_timeout_option
+@ble_connect_timeout_option
+@click.pass_context
+@make_sync
+async def info(
+    ctx,
+    ble_adapter: t.Optional[str] = None,
+    ble_address: t.Optional[str] = None,
+    ble_discovery_timeout: t.Optional[float] = None,
+    ble_connect_timeout: t.Optional[float] = None,
+):
+    settings = Settings(
+        ble_adapter=ble_adapter,
+        ble_address=ble_address,
+        ble_discovery_timeout=ble_discovery_timeout,
+        ble_connect_timeout=ble_connect_timeout,
+    )
+    await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=lambda calypso: calypso.about())
+
+
+@click.command()
+@ble_adapter_option
+@ble_address_option
+@ble_discovery_timeout_option
+@ble_connect_timeout_option
+@click.pass_context
+@make_sync
+async def explore(
+    ctx,
+    ble_adapter: t.Optional[str] = None,
+    ble_address: t.Optional[str] = None,
+    ble_discovery_timeout: t.Optional[float] = None,
+    ble_connect_timeout: t.Optional[float] = None,
+):
+    settings = Settings(
+        ble_adapter=ble_adapter,
+        ble_address=ble_address,
+        ble_discovery_timeout=ble_discovery_timeout,
+        ble_connect_timeout=ble_connect_timeout,
+    )
+    await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=lambda calypso: calypso.explore())
 
 
 @click.command()

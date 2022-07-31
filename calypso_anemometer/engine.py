@@ -15,16 +15,18 @@ from calypso_anemometer.util import wait_forever
 logger = logging.getLogger(__name__)
 
 
-async def run_engine(workhorse, handler: t.Callable) -> None:
+async def run_engine(workhorse, handler: t.Callable):
     """
     Create a workhorse engine and connect it with the asynchronous handler function for processing readings.
     """
     try:
-        async with workhorse(ble_address=os.getenv("CALYPSO_ADDRESS")) as calypso:
+        worker = workhorse(ble_address=os.getenv("CALYPSO_ADDRESS"))
+        async with worker as calypso:
             await handler(calypso)
     except CalypsoError as ex:
         logger.error(ex)
         sys.exit(1)
+    return worker
 
 
 async def handler_factory(

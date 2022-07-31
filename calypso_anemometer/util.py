@@ -68,7 +68,7 @@ class EnumChoice(click.Choice):
 
     def convert(self, value: t.Any, param: t.Optional[click.Parameter], ctx: t.Optional[click.Context]) -> t.Any:
         value = super().convert(value=value, param=param, ctx=ctx)
-        if value is None:
+        if value is None:  # pragma: no cover
             return None
         return self.enum_type[value]
 

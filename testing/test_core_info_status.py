@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
+import json
 import sys
 from unittest import mock
 
@@ -118,5 +119,6 @@ async def test_about_success(mocker: MockerFixture, caplog, capsys):
         await calypso.about()
 
     stdout, stderr = capsys.readouterr()
-    assert '"ble_address": "bar"' in stdout
-    assert '"rate": "HZ_8"' in stdout
+    response = json.loads(stdout)
+    assert response["info"]["ble_address"] == "bar"
+    assert response["status"]["rate"] == "HZ_8"

@@ -176,11 +176,11 @@ class CalypsoDeviceApi:
                     logger.info(f"    Value: {value}")
 
     async def about(self):
-        # TODO: Rework - output a single result document to improve testing.
-        device_info = await self.get_info()
-        print(to_json(device_info))
-        device_status = await self.get_status()
-        print(to_json(device_status.aslabeldict()))
+        response = {
+            "info": await self.get_info(),
+            "status": (await self.get_status()).aslabeldict(),
+        }
+        print(to_json(response))
 
     async def get_info(self) -> CalypsoDeviceInfo:
         logger.info("Getting device information")

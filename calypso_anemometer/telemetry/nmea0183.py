@@ -164,7 +164,7 @@ class Nmea0183MessageIIVWR:
 
 
 @dataclasses.dataclass
-class Nmea0183Messages:
+class Nmea0183Envelope:
     """
     Represent and render a list of NMEA-0183 messages.
     """

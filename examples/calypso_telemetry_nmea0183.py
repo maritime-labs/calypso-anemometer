@@ -6,7 +6,7 @@ import logging
 from calypso_anemometer.model import CalypsoReading
 from calypso_anemometer.telemetry.model import NetworkProtocol, NetworkProtocolMode
 from calypso_anemometer.telemetry.network import NetworkTelemetry
-from calypso_anemometer.telemetry.nmea0183 import Nmea0183Messages
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183Envelope
 
 logger = logging.getLogger(__name__)
 
@@ -39,9 +39,9 @@ def calypso_nmea0183_telemetry_demo(host="255.255.255.255", port=10110):
 
     # Broadcast telemetry message, e.g. to OpenCPN.
     telemetry = NetworkTelemetry(host=host, port=port, protocol=NetworkProtocol.UDP, mode=NetworkProtocolMode.BROADCAST)
-    msg = Nmea0183Messages()
-    msg.set_reading(reading)
-    telemetry.send(msg.render())
+    bucket = Nmea0183Envelope()
+    bucket.set_reading(reading)
+    telemetry.send(bucket.render())
 
 
 if __name__ == "__main__":  # pragma: nocover

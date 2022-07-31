@@ -3,6 +3,19 @@ calypso-anemometer troubleshooting
 ##################################
 
 
+***************************
+Increase BLE timeout values
+***************************
+
+BLE knows two timeout options, the *discovery timeout* and the *connect
+timeout*. Following the default settings from the Bleak library, both values
+are *10.0* seconds by default. In order to adjust them, use the corresponding
+command line options or environment variables.
+
+- ``--ble-discovery-timeout`` / ``CALYPSO_BLE_DISCOVERY_TIMEOUT``
+- ``--ble-connect-timeout`` / ``CALYPSO_BLE_CONNECT_TIMEOUT``
+
+
 ************************************************
 Submitting telemetry data to ``255.255.255.255``
 ************************************************

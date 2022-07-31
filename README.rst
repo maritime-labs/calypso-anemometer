@@ -93,9 +93,12 @@ Usage
 Command line
 ============
 
-Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
+Discover the ``ULTRASONIC`` BLE device and run a conversation on it. By
+default, the Bluetooth adapter ``hci0`` will be used.
 
-    # Get device information.
+::
+
+    # Get device information with discovery.
     calypso-anemometer info
 
     # Get device reading.
@@ -114,12 +117,31 @@ Discover the ``ULTRASONIC`` BLE device and run a conversation on it::
 If you already discovered your device, know its address, and want to connect
 directly without automatic device discovery, see `skip discovery`_.
 
+Likewise, when your system has multiple Bluetooth adapters, you may want to
+choose a specific one, see `increase BLE timeout values`_.
+
+::
+
+    # Get device information w/o discovery.
+    calypso-anemometer info --ble-address=F8:C7:2C:EC:13:D0
+
+    # Get device information w/o discovery, using a specific Bluetooth adapter.
+    calypso-anemometer info --ble-adapter=hci1 --ble-address=F8:C7:2C:EC:13:D0
+
 
 Library
 =======
 
 In order to use the library API, please consult the programs in the
 ``examples`` folder.
+
+Synopsis::
+
+    from calypso_anemometer.core import CalypsoDeviceApi
+
+    async with CalypsoDeviceApi() as calypso:
+        reading = await calypso.get_reading()
+        reading.print()
 
 
 
@@ -188,7 +210,8 @@ Troubleshooting
 ***************
 
 For helping you to find solutions for known problems, we are maintaining
-a dedicated page at `troubleshooting`_.
+a dedicated page at `troubleshooting`_. The topic range is from permission
+errors to BLE timeouts.
 
 
 ****************
@@ -239,6 +262,7 @@ The project is licensed under the terms of the GNU AGPL license.
 .. _David Lechner: https://github.com/dlech
 .. _Fabian Tollenaar: https://github.com/fabdrol
 .. _Henrik Blidh: https://github.com/hbldh
+.. _increase BLE timeout values: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/troubleshooting.rst#increase-ble-timeout-values
 .. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
 .. _preflight checks: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/preflight.rst

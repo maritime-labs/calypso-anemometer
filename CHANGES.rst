@@ -24,6 +24,8 @@ Changes
   - ``--ble-address`` / ``CALYPSO_BLE_ADDRESS``
   - ``--ble-discovery-timeout`` / ``CALYPSO_BLE_DISCOVERY_TIMEOUT``
   - ``--ble-connect-timeout`` / ``CALYPSO_BLE_CONNECT_TIMEOUT``
+- Add ``--quiet`` option / ``CALYPSO_QUIET`` environment variable for
+  silencing output to STDOUT
 
 Breaking changes
 ----------------

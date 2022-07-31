@@ -52,8 +52,12 @@ Run a BLE device scan on a specific adapter using ``hcitool``::
 
 Run a BLE device scan using Bleak::
 
+    # Use different Bluetooth adapters.
     bleak-lescan -i hci0
     bleak-lescan -i hci1
+
+    # Increase discovery timeout.
+    bleak-lescan -t 30
 
 
 

@@ -11,12 +11,12 @@ setup-virtualenv:
 	@test -e $(python) || python3 -m venv $(venv)
 
 format: setup-virtualenv
-	$(pip) install black isort
+	$(pip) install --requirement=requirements-utils.txt
 	$(black) .
 	$(isort) .
 
 lint: setup-virtualenv
-	$(pip) install pyproject-flake8
+	$(pip) install --requirement=requirements-utils.txt
 	$(flake8) calypso_anemometer examples testing
 
 test: setup-virtualenv

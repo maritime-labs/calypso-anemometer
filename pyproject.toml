@@ -6,6 +6,9 @@ profile = "black"
 line_length = 120
 multi_line_output = 3
 
+[tool.flake8]
+max-line-length = 120
+
 [tool.pytest.ini_options]
 minversion = "2.0"
 addopts = "-rfEX -p pytester --strict-markers --verbosity=3 --cov --cov-report=term-missing --cov-report=xml"

@@ -73,18 +73,27 @@ Topic: QA
 **************
 Iteration +2.5
 **************
-Topic: Production
+Topic: Production I
 
 - [x] Introduce ``Settings`` container entity, for the following three options/settings
 - [x] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
 - [x] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
 - [x] BLE: Unlock ``--ble-*-timeout`` or ``CALYPSO_BLE_*_TIMEOUT``
-- [o] Turn off logging to STDOUT
-- [o] Systemd unit, with installer
-- [o] Day/night switching
-- [o] NMEA-0183: Review if sentence termination ``<CR><LF>`` is properly sent.
+- [x] CLI: Turn off logging to STDOUT
+- [x] CLI: Use extended settings also for CLI entrypoints ``info`` and ``explore``
+
+
+**************
+Iteration +2.7
+**************
+Topic: Production II
+
+- [o] Engine: Do we need a retry logic, or should this just be handed over to ``systemd``?
 - [o] Engine: Do we need a thread-based watchdog to kill the asyncio domain
   when it stalls completely? Is there any chance to recover at all?
+- [o] Auxiliary: Add systemd unit file, optionally with installer
+- [o] Auxiliary: Day/night switching
+- [o] NMEA-0183: Review if sentence termination ``<CR><LF>`` is properly sent.
 
 
 ************

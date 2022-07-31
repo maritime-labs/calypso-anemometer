@@ -53,7 +53,6 @@ import typing as t
 from binascii import hexlify
 
 from calypso_anemometer.model import CalypsoReading
-from calypso_anemometer.telemetry import NetworkProtocol, NetworkProtocolMode, NetworkTelemetry
 
 logger = logging.getLogger(__name__)
 

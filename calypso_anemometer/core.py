@@ -2,7 +2,7 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 """
-Discover the Calypso UP10 ``ULTRASONIC`` BLE device and run a conversation on it.
+Discover the Calypso UP10 ultrasonic BLE device and run a conversation on it.
 
 References
 ==========
@@ -34,16 +34,18 @@ from calypso_anemometer.model import (
     CalypsoDeviceStatus,
     CalypsoReading,
 )
-
-# Configuration section.
 from calypso_anemometer.util import to_json
 
-logger = logging.getLogger(__name__)
-
-
+# Configuration section.
 CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
 CHARSPEC_DATARATE = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate)
+CHARSPEC_COMPASS_STATUS = BleCharSpec(
+    uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus
+)
 CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="data")
+
+
+logger = logging.getLogger(__name__)
 
 
 class CalypsoDeviceApi:
@@ -52,6 +54,7 @@ class CalypsoDeviceApi:
     DESCRIPTION = "Calypso UP10 anemometer"
     BLUETOOTH_DEVICE_NAME = "ULTRASONIC"
 
+    # FIXME: Parameterize those constants.
     DISCOVERY_TIMEOUT = 10.0
     CONNECT_TIMEOUT = 10.0
     BLUETOOTH_ADAPTER = "hci0"
@@ -67,7 +70,7 @@ class CalypsoDeviceApi:
     DEVICE_STATUS_CHARACTERISTICS = [
         CHARSPEC_MODE,
         CHARSPEC_DATARATE,
-        BleCharSpec(uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus),
+        CHARSPEC_COMPASS_STATUS,
     ]
 
     def __init__(self, ble_address: Optional[str] = None):
@@ -85,7 +88,7 @@ class CalypsoDeviceApi:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.disconnect()
-        if exc_val is not None:
+        if exc_val is not None:  # pragma: no cover
             raise exc_val
 
     async def discover(self, force=False) -> bool:
@@ -121,7 +124,7 @@ class CalypsoDeviceApi:
 
     async def connect(self):
         self.client = BleakClient(self.ble_address, timeout=self.CONNECT_TIMEOUT, adapter=self.BLUETOOTH_ADAPTER)
-        logger.info(f"Connecting to device at {self.ble_address} with adapter {get_adapter_name(self.client)}")
+        logger.info(f"Connecting to device at '{self.ble_address}' with adapter '{get_adapter_name(self.client)}'")
         try:
             await self.client.connect()
         except BleakError as ex:
@@ -166,7 +169,7 @@ class CalypsoDeviceApi:
                 if "read" in char.properties:
                     try:
                         value = bytes(await self.client.read_gatt_char(char.uuid))
-                    except Exception as e:
+                    except Exception:
                         logger.exception(f"  Reading characteristic failed: {char}")
                 logger.info(f"  Value: {value}")
 
@@ -175,11 +178,12 @@ class CalypsoDeviceApi:
                     value = None
                     try:
                         value = bytes(await self.client.read_gatt_descriptor(descriptor.handle))
-                    except Exception as e:
+                    except Exception:
                         logger.exception(f"    Reading descriptor failed: {descriptor}")
                     logger.info(f"    Value: {value}")
 
     async def about(self):
+        # TODO: Rework - output a single result document to improve testing.
         device_info = await self.get_info()
         print(to_json(device_info))
         device_status = await self.get_status()
@@ -205,9 +209,11 @@ class CalypsoDeviceApi:
         return status
 
     async def set_mode(self, mode: CalypsoDeviceMode):
+        logger.info(f"Setting device mode to {mode}")
         await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
 
     async def set_datarate(self, rate: CalypsoDeviceDataRate):
+        logger.info(f"Setting data rate to {rate}")
         await self.client.write_gatt_char(CHARSPEC_DATARATE.uuid, data=bytes([rate.value]), response=True)
 
     async def get_reading(self):
@@ -228,7 +234,7 @@ class CalypsoDeviceApi:
         await self.client.start_notify(CHARSPEC_DATA.uuid, handler)
 
     async def unsubscribe_reading(self):
-        logger.info("Unsubscribing to readings")
+        logger.info("Unsubscribing from readings")
         await self.client.stop_notify(CHARSPEC_DATA.uuid)
 
     @staticmethod
@@ -244,9 +250,10 @@ class CalypsoDeviceApi:
         return reading
 
     def on_reading(self, reading: CalypsoReading):
-        logger.debug(f"Received reading: {reading}")
+        pass
 
-    async def read_characteristic(self, characteristic_id: str) -> str:
+    async def read_characteristic_string(self, characteristic_id: str) -> str:
+        logger.info(f"Reading the characteristic {characteristic_id} as string")
         char = await self.client.read_gatt_char(characteristic_id)
         return char.decode()
 

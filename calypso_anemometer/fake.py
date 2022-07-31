@@ -49,7 +49,7 @@ class CalypsoDeviceApiFake:
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         await self.disconnect()
-        if exc_val is not None:
+        if exc_val is not None:  # pragma: no cover
             raise exc_val
 
     async def discover(self, force=False) -> bool:

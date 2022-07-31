@@ -6,6 +6,7 @@ $(eval isort        := $(venv)/bin/isort)
 $(eval pytest       := $(venv)/bin/pytest)
 $(eval twine        := $(venv)/bin/twine)
 $(eval flake8       := $(venv)/bin/pflake8)
+$(eval proselint    := $(venv)/bin/proselint)
 
 setup-virtualenv:
 	@test -e $(python) || python3 -m venv $(venv) || python -m venv $(venv)
@@ -18,6 +19,10 @@ format: setup-virtualenv
 lint: setup-virtualenv
 	$(pip) install --requirement=requirements-utils.txt
 	$(flake8) calypso_anemometer examples testing
+	$(MAKE) proselint
+
+proselint:
+	$(proselint) *.rst doc/**.rst
 
 test: setup-virtualenv
 	$(pip) install --editable=.[test,fake]

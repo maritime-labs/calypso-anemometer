@@ -131,7 +131,7 @@ class CalypsoReading:
         """
 
         # Decode from binary.
-        data = struct.unpack("HHBBBBH", buffer)
+        data = struct.unpack("<HHBBBBH", buffer)
 
         # Decompose.
         (wind_speed, wind_direction, battery_level, temperature, roll, pitch, compass) = data

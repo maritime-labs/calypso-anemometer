@@ -73,8 +73,9 @@ def test_cli_info(caplog):
     runner = CliRunner()
     result = runner.invoke(cli, ["info"], catch_exceptions=False)
 
-    assert '"ble_address": "bar"' in result.stdout
-    assert '"rate": "HZ_8"' in result.stdout
+    response = json.loads(result.stdout)
+    assert response["info"]["ble_address"] == "bar"
+    assert response["status"]["rate"] == "HZ_8"
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
@@ -223,9 +224,9 @@ def test_cli_set_option_rate_success(caplog):
     result = runner.invoke(cli, ["set-option", "--rate=HZ_8"], catch_exceptions=False)
     assert result.exit_code == 0
 
-    # TODO: Decode unified JSON output.
-    # print("stdout:", result.stdout)
-    # response = json.loads(result.stdout)
+    response = json.loads(result.stdout)
+    assert response["info"]["ble_address"] == "bar"
+    assert response["status"]["rate"] == "HZ_8"
 
     assert "Setting device data rate to 8" in caplog.messages
     assert "Setting data rate to 8" in caplog.messages

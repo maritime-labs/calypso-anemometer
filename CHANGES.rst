@@ -25,7 +25,6 @@ Changes
   - ``--ble-discovery-timeout`` / ``CALYPSO_BLE_DISCOVERY_TIMEOUT``
   - ``--ble-connect-timeout`` / ``CALYPSO_BLE_CONNECT_TIMEOUT``
 
-
 Breaking changes
 ----------------
 - The ``CALYPSO_ADDRESS`` environment variable has been renamed to

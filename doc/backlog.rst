@@ -66,7 +66,7 @@ Topic: QA
 - [x] Tests: Don't use port 10110 within software tests
 - [x] Naming things: Telemetry subsystem
 - [x] Naming things: ``Nmea0183Envelope``
-- [x] Add test for ``CALYPSO_ADDRESS`` environment variable
+- [x] Add test for ``CALYPSO_BLE_ADDRESS`` environment variable
 - [x] CLI: Rework ``about`` command: Output a single result document to improve testing
 
 
@@ -75,10 +75,10 @@ Iteration +2.5
 **************
 Topic: Production
 
-- [o] Introduce ``ApplicationSettings`` container entity, for the following three options/settings
-- [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
-- [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
-- [o] BLE: Unlock ``--ble-timeout`` or ``CALYPSO_BLE_TIMEOUT``
+- [x] Introduce ``ApplicationSettings`` container entity, for the following three options/settings
+- [x] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
+- [x] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
+- [x] BLE: Unlock ``--ble-*-timeout`` or ``CALYPSO_BLE_*_TIMEOUT``
 - [o] Turn off logging to STDOUT
 - [o] Systemd unit, with installer
 - [o] Day/night switching

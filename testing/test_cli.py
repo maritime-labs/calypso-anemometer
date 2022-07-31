@@ -2,12 +2,14 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 import json
+import os
 import re
 import shlex
 import sys
 from unittest import mock
 
 import pytest
+from pytest_mock import MockerFixture
 
 if sys.version_info < (3, 8, 0):
     raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
@@ -225,6 +227,36 @@ def test_cli_read_ble_adapter_success(mocker, caplog):
     assert result.exit_code == 0
 
     assert "Connecting to device at 'bar' with adapter 'hci99'" in caplog.messages
+
+
+@mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+@mock.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
+def test_cli_read_ble_address_option_success(caplog):
+    """
+    Test successful `calypso-anemometer read --ble-address=...`.
+    """
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["read", "--ble-address=F8:C7:2C:EC:13:D0"], catch_exceptions=False)
+    assert result.exit_code == 0
+
+    assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
+
+
+@mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+@mock.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
+def test_cli_read_ble_address_envvar_success(mocker: MockerFixture, caplog):
+    """
+    Test successful `calypso-anemometer read`, with environment variable `CALYPSO_BLE_ADDRESS`.
+    """
+
+    mocker.patch.dict(os.environ, {"CALYPSO_BLE_ADDRESS": "F8:C7:2C:EC:13:D0"})
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["read"], catch_exceptions=False)
+    assert result.exit_code == 0
+
+    assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
 
 
 @mock.patch(

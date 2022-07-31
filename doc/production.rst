@@ -16,18 +16,18 @@ wrong device. This scenario also applies when you are using multiple devices on
 your own site.
 
 In this case, make sure to shortcut the device discovery procedure by pinning the
-BLE peripheral. For that purpose, you can use the ``CALYPSO_ADDRESS`` environment
+BLE peripheral. For that purpose, you can use the ``CALYPSO_BLE_ADDRESS`` environment
 variable, like::
 
     # Linux
-    export CALYPSO_ADDRESS=F8:C7:2C:EC:13:D0
+    export CALYPSO_BLE_ADDRESS=F8:C7:2C:EC:13:D0
 
     # macOS
-    export CALYPSO_ADDRESS=0C3E4A46-BFCB-52E5-BC57-DE1D60C3A2B2
+    export CALYPSO_BLE_ADDRESS=0C3E4A46-BFCB-52E5-BC57-DE1D60C3A2B2
 
 In order to activate automatic device discovery again, invoke::
 
-    unset CALYPSO_ADDRESS
+    unset CALYPSO_BLE_ADDRESS
 
 
 *********************

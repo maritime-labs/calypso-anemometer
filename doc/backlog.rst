@@ -60,28 +60,38 @@ Iteration +2.2
 **************
 Iteration +2.3
 **************
-- [o] Add more software tests
-- [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
-- [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
-- [o] BLE: Unlock ``--ble-timeout`` or ``CALYPSO_BLE_TIMEOUT``
-- [o] NMEA-0183: Properly send sentence termination ``<CR><LF>``
+Topic: QA
+
+- [x] Tests: Add more software tests, significantly improve code coverage
+- [x] Tests: Don't use port 10110 within software tests
+- [x] Naming things: Telemetry subsystem
+- [x] Naming things: ``Nmea0183Envelope``
+- [x] Add test for ``CALYPSO_ADDRESS`` environment variable
+- [x] CLI: Rework ``about`` command: Output a single result document to improve testing
 
 
 **************
 Iteration +2.5
 **************
-Topic: Going into production
+Topic: Production
 
+- [o] Introduce ``ApplicationSettings`` container entity, for the following three options/settings
+- [o] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
+- [o] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
+- [o] BLE: Unlock ``--ble-timeout`` or ``CALYPSO_BLE_TIMEOUT``
+- [o] Turn off logging to STDOUT
 - [o] Systemd unit, with installer
 - [o] Day/night switching
-- [o] Turn off logging to STDOUT
+- [o] NMEA-0183: Review if sentence termination ``<CR><LF>`` is properly sent.
+- [o] Engine: Do we need a thread-based watchdog to kill the asyncio domain
+  when it stalls completely? Is there any chance to recover at all?
 
 
 ************
 Iteration +3
 ************
 - [o] Scan for ``FIXME`` and ``TODO`` markers
-- [o] Unlock support for compass
+- [o] Unlock support for device's "compass" feature
 - [o] Make up ``NMEA-0183`` messages for other parameters ``battery_level``,
   ``temperature``, ``roll``, ``pitch``, and ``compass``
   - What about ``$IIXDR,C,20,C,TempAir``? -- https://forum.arduino.cc/t/nmea0183-checksum/559531

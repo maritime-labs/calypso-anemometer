@@ -7,7 +7,7 @@ import typing as t
 from calypso_anemometer.model import CalypsoReading
 from calypso_anemometer.telemetry.model import NetworkProtocol, NetworkProtocolMode, TelemetryProtocol
 from calypso_anemometer.telemetry.network import NetworkTelemetry
-from calypso_anemometer.telemetry.nmea0183 import Nmea0183Messages
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183Envelope
 from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 
 logger = logging.getLogger(__name__)
@@ -60,12 +60,12 @@ class TelemetryAdapter:
             raise KeyError("No telemetry handler established")
         if self.protocol == TelemetryProtocol.UDP_SIGNALK_DELTA:
             # TODO: Parameterize `source` and `location`.
-            msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
-            msg.set_reading(reading)
-            self.handler.send(msg.render())
-            return msg
+            bucket = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
+            bucket.set_reading(reading)
+            self.handler.send(bucket.render())
+            return bucket
         elif self.protocol == TelemetryProtocol.UDP_BROADCAST_NMEA0183:
-            msg = Nmea0183Messages()
-            msg.set_reading(reading)
-            self.handler.send(msg.render())
-            return msg
+            bucket = Nmea0183Envelope()
+            bucket.set_reading(reading)
+            self.handler.send(bucket.render())
+            return bucket

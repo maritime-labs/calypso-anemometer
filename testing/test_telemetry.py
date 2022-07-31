@@ -8,15 +8,15 @@ from copy import deepcopy
 import pytest
 
 from calypso_anemometer.telemetry.adapter import TelemetryAdapter
-from calypso_anemometer.telemetry.nmea0183 import Nmea0183MessageIIVWR, Nmea0183Messages
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183Envelope, Nmea0183MessageIIVWR
 from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 from testing.data import dummy_reading
 
 
 def test_telemetry_signalk_message():
-    msg = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
-    msg.set_reading(dummy_reading)
-    assert msg.asdict() == {
+    bucket = SignalKDeltaMessage(source="Calypso UP10", location="Mast")
+    bucket.set_reading(dummy_reading)
+    assert bucket.asdict() == {
         "updates": [
             {
                 "$source": "calypso-up10",
@@ -35,47 +35,47 @@ def test_telemetry_signalk_message():
             }
         ]
     }
-    assert "updates" in json.loads(msg.render())
+    assert "updates" in json.loads(bucket.render())
 
 
 def test_telemetry_nmea0183_wind_into():
-    msg = Nmea0183Messages()
+    bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 0
-    msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,0.0,,11.06,N,5.69,M,20.48,K*29"
+    bucket.set_reading(reading)
+    assert bucket.render() == "$IIVWR,0.0,,11.06,N,5.69,M,20.48,K*29"
 
 
 def test_telemetry_nmea0183_wind_downwind():
-    msg = Nmea0183Messages()
+    bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 180
-    msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,180.0,,11.06,N,5.69,M,20.48,K*20"
+    bucket.set_reading(reading)
+    assert bucket.render() == "$IIVWR,180.0,,11.06,N,5.69,M,20.48,K*20"
 
 
 def test_telemetry_nmea0183_wind_left_of_bow():
-    msg = Nmea0183Messages()
+    bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 206
-    msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65"
+    bucket.set_reading(reading)
+    assert bucket.render() == "$IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65"
 
 
 def test_telemetry_nmea0183_wind_right_of_bow():
-    msg = Nmea0183Messages()
+    bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 42
-    msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K*4D"
+    bucket.set_reading(reading)
+    assert bucket.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K*4D"
 
 
 def test_telemetry_nmea0183_wind_zero():
-    msg = Nmea0183Messages()
+    bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
     reading.wind_speed = 0
-    msg.set_reading(reading)
-    assert msg.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K*1B"
+    bucket.set_reading(reading)
+    assert bucket.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K*1B"
 
 
 def test_nmea0183messageiivwr_convert_value():
@@ -84,20 +84,20 @@ def test_nmea0183messageiivwr_convert_value():
 
 
 def test_nmea0183messageiivwr_render_success():
-    msg = Nmea0183MessageIIVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
-    assert msg.to_message().render() == "$IIVWR,42.42,R,10.54,N,5.42,M,19.51,K*76"
+    bucket = Nmea0183MessageIIVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
+    assert bucket.to_message().render() == "$IIVWR,42.42,R,10.54,N,5.42,M,19.51,K*76"
 
 
 def test_telemetry_adapter_signalk_success():
     telemetry = TelemetryAdapter(uri="udp+signalk+delta://localhost:64123")
-    msg = telemetry.submit(dummy_reading)
-    assert isinstance(msg, SignalKDeltaMessage)
+    bucket = telemetry.submit(dummy_reading)
+    assert isinstance(bucket, SignalKDeltaMessage)
 
 
 def test_telemetry_adapter_nmea0183_success():
     telemetry = TelemetryAdapter(uri="udp+broadcast+nmea0183://255.255.255.255:60110")
-    msg = telemetry.submit(dummy_reading)
-    assert isinstance(msg, Nmea0183Messages)
+    bucket = telemetry.submit(dummy_reading)
+    assert isinstance(bucket, Nmea0183Envelope)
 
 
 def test_telemetry_adapter_unknown_failure():

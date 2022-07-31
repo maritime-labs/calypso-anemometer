@@ -112,6 +112,10 @@ def test_cli_read_stdout_success(caplog):
         "wind_speed": 5.69,
     }
 
+    assert (
+        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address=None, "
+        "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
+    )
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
     assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
@@ -226,6 +230,10 @@ def test_cli_read_ble_adapter_success(mocker, caplog):
     result = runner.invoke(cli, ["read", "--ble-adapter=hci99"], catch_exceptions=False)
     assert result.exit_code == 0
 
+    assert (
+        "Initializing client with ApplicationSettings(ble_adapter='hci99', ble_address=None, "
+        "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
+    )
     assert "Connecting to device at 'bar' with adapter 'hci99'" in caplog.messages
 
 
@@ -240,6 +248,10 @@ def test_cli_read_ble_address_option_success(caplog):
     result = runner.invoke(cli, ["read", "--ble-address=F8:C7:2C:EC:13:D0"], catch_exceptions=False)
     assert result.exit_code == 0
 
+    assert (
+        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
+    )
     assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
 
 
@@ -256,7 +268,32 @@ def test_cli_read_ble_address_envvar_success(mocker: MockerFixture, caplog):
     result = runner.invoke(cli, ["read"], catch_exceptions=False)
     assert result.exit_code == 0
 
+    assert (
+        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
+    )
     assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
+
+
+@mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+@mock.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
+def test_cli_read_ble_timeout_success(mocker: MockerFixture, caplog):
+    """
+    Test successful `calypso-anemometer read`, with `--ble-discovery-timeout` option and
+    `CALYPSO_BLE_CONNECT_TIMEOUT` environment variable.
+    """
+
+    mocker.patch.dict(os.environ, {"CALYPSO_BLE_ADDRESS": "F8:C7:2C:EC:13:D0"})
+    mocker.patch.dict(os.environ, {"CALYPSO_BLE_CONNECT_TIMEOUT": "7.7"})
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["read", "--ble-discovery-timeout=8.8"], catch_exceptions=False)
+    assert result.exit_code == 0
+
+    assert (
+        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "ble_discovery_timeout=8.8, ble_connect_timeout=7.7)" in caplog.messages
+    )
 
 
 @mock.patch(

@@ -53,6 +53,22 @@ ble_address_option = click.option(
     required=False,
     help="Calypso peripheral BLE address, for connection without discovery.",
 )
+ble_discovery_timeout_option = click.option(
+    "--ble-discovery-timeout",
+    envvar="CALYPSO_BLE_DISCOVERY_TIMEOUT",
+    type=float,
+    required=False,
+    default=10.0,
+    help="Timeout for BLE discovery in seconds. Default: 10.0",
+)
+ble_connect_timeout_option = click.option(
+    "--ble-connect-timeout",
+    envvar="CALYPSO_BLE_CONNECT_TIMEOUT",
+    type=float,
+    required=False,
+    default=10.0,
+    help="Timeout for BLE connect in seconds. Default: 10.0",
+)
 rate_option = click.option(
     "--rate",
     type=EnumChoice(CalypsoDeviceDataRate, case_sensitive=False),
@@ -66,6 +82,8 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 @click.command()
 @ble_adapter_option
 @ble_address_option
+@ble_discovery_timeout_option
+@ble_connect_timeout_option
 @click.option(
     "--mode",
     type=EnumChoice(CalypsoDeviceMode, case_sensitive=False),
@@ -77,8 +95,10 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 @make_sync
 async def set_option(
     ctx,
-    ble_adapter: str = None,
-    ble_address: str = None,
+    ble_adapter: t.Optional[str] = None,
+    ble_address: t.Optional[str] = None,
+    ble_discovery_timeout: t.Optional[float] = None,
+    ble_connect_timeout: t.Optional[float] = None,
     mode: t.Optional[CalypsoDeviceMode] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
@@ -91,13 +111,20 @@ async def set_option(
             await calypso.set_datarate(rate)
         await calypso.about()
 
-    settings = ApplicationSettings(ble_adapter=ble_adapter, ble_address=ble_address)
+    settings = ApplicationSettings(
+        ble_adapter=ble_adapter,
+        ble_address=ble_address,
+        ble_discovery_timeout=ble_discovery_timeout,
+        ble_connect_timeout=ble_connect_timeout,
+    )
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
 @click.command()
 @ble_adapter_option
 @ble_address_option
+@ble_discovery_timeout_option
+@ble_connect_timeout_option
 @subscribe_option
 @target_option
 @rate_option
@@ -105,13 +132,20 @@ async def set_option(
 @make_sync
 async def read(
     ctx,
-    ble_adapter: str = None,
-    ble_address: str = None,
-    subscribe: bool = False,
+    ble_adapter: t.Optional[str] = None,
+    ble_address: t.Optional[str] = None,
+    ble_discovery_timeout: t.Optional[float] = None,
+    ble_connect_timeout: t.Optional[float] = None,
+    subscribe: t.Optional[bool] = False,
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
-    settings = ApplicationSettings(ble_adapter=ble_adapter, ble_address=ble_address)
+    settings = ApplicationSettings(
+        ble_adapter=ble_adapter,
+        ble_address=ble_address,
+        ble_discovery_timeout=ble_discovery_timeout,
+        ble_connect_timeout=ble_connect_timeout,
+    )
     handler = await handler_factory(subscribe=subscribe, target=target, rate=rate)
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 

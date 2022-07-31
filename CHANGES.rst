@@ -22,6 +22,8 @@ Changes
 
   - ``--ble-adapter`` / ``CALYPSO_BLE_ADAPTER``
   - ``--ble-address`` / ``CALYPSO_BLE_ADDRESS``
+  - ``--ble-discovery-timeout`` / ``CALYPSO_BLE_DISCOVERY_TIMEOUT``
+  - ``--ble-connect-timeout`` / ``CALYPSO_BLE_CONNECT_TIMEOUT``
 
 
 Breaking changes

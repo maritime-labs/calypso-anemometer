@@ -72,7 +72,7 @@ def test_cli_info(caplog):
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Getting device information" in caplog.messages
     assert "Disconnecting" in caplog.messages
 
@@ -105,7 +105,7 @@ def test_cli_read_stdout_success(caplog):
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Requesting reading" in caplog.messages
     assert "Received buffer:  b'9\\x02\\xce\\x00\\t\\x85x\\x1e}\\x00'" in caplog.messages
     assert (
@@ -138,7 +138,7 @@ def test_cli_subscribe_stdout_success(caplog):
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Setting data rate to 8" in caplog.messages
     assert "Subscribing to readings" in caplog.messages
     assert "Disconnecting" in caplog.messages
@@ -162,7 +162,7 @@ def test_cli_read_failure(caplog):
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Requesting reading" in caplog.messages
     assert "Received buffer:  b'\\xaa'" in caplog.messages
     assert "Decoding reading failed. Reason: unpack requires a buffer of 10 bytes. Data: b'\\xaa'" in caplog.messages

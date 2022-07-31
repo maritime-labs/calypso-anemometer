@@ -37,7 +37,7 @@ async def test_info_success(caplog):
 
         assert device_info_mocked == device_info_reference
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Getting device information" in caplog.messages
     assert "Disconnecting" in caplog.messages
 
@@ -70,7 +70,7 @@ async def test_status_success(mocker: MockerFixture, caplog):
 
         assert device_status_mocked == device_status_reference
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Getting status information" in caplog.messages
     assert "Disconnecting" in caplog.messages
 
@@ -97,7 +97,7 @@ async def test_status_failure(mocker: MockerFixture, caplog):
             await calypso.get_status()
         ex.match("66 is not a valid CalypsoDeviceMode")
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Getting status information" in caplog.messages
     assert "Disconnecting" in caplog.messages
 

@@ -26,7 +26,7 @@ async def test_reading_success(mocker: MockerFixture, caplog):
 
     assert spy.mock_calls == [call("00002a39-0000-1000-8000-00805f9b34fb")]
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Requesting reading" in caplog.messages
     assert "Received buffer:  b'9\\x02\\xce\\x00\\t\\x85x\\x1e}\\x00'" in caplog.messages
     assert (
@@ -52,7 +52,7 @@ async def test_reading_failure(mocker: MockerFixture, caplog):
 
     assert spy.mock_calls == [call("00002a39-0000-1000-8000-00805f9b34fb")]
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Requesting reading" in caplog.messages
     assert "Received buffer:  b'\\xaa'" in caplog.messages
     assert "Decoding reading failed. Reason: unpack requires a buffer of 10 bytes. Data: b'\\xaa'" in caplog.messages
@@ -76,7 +76,7 @@ async def test_subscribe_success(mocker: MockerFixture, caplog):
     # FIXME: Not yet.
     # assert callback.assert_called_once_with()
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Subscribing to readings" in caplog.messages
     assert "Disconnecting" in caplog.messages
 
@@ -97,7 +97,7 @@ async def test_unsubscribe_success(mocker: MockerFixture, caplog):
     assert spy_start_notify.mock_calls == [call("00002a39-0000-1000-8000-00805f9b34fb", ANY)]
     assert spy_stop_notify.mock_calls == [call("00002a39-0000-1000-8000-00805f9b34fb")]
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Subscribing to readings" in caplog.messages
     assert "Unsubscribing from readings" in caplog.messages
     assert "Disconnecting" in caplog.messages

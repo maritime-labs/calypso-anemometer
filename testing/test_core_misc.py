@@ -24,7 +24,7 @@ async def test_read_characteristic_string_success(mocker: MockerFixture, caplog)
 
     assert spy.mock_calls == [call("7511CFCC-0B20-4E20-82B5-BC94969768B6")]
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Reading the characteristic 7511CFCC-0B20-4E20-82B5-BC94969768B6 as string" in caplog.messages
     assert "Disconnecting" in caplog.messages
 

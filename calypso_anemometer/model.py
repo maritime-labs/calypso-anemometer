@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 @dataclasses.dataclass
-class ApplicationSettings:
+class Settings:
     ble_adapter: Optional[str] = "hci0"
     ble_address: Optional[str] = None
     ble_discovery_timeout: Optional[float] = 10.0

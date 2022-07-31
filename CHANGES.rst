@@ -17,7 +17,7 @@ Changes
 - Emit ``CalypsoDecodingError`` exceptions when decoding wire data fails
 - Refactor workhorse functions from ``cli.py`` to ``engine.py``
 - Significantly improve test coverage
-- Introduce ``ApplicationSettings``, to bundle configuration settings
+- Introduce ``Settings``, to bundle configuration settings
   through command line options or environment variables.
 
   - ``--ble-adapter`` / ``CALYPSO_BLE_ADAPTER``

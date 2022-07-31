@@ -75,7 +75,7 @@ Iteration +2.5
 **************
 Topic: Production
 
-- [x] Introduce ``ApplicationSettings`` container entity, for the following three options/settings
+- [x] Introduce ``Settings`` container entity, for the following three options/settings
 - [x] BLE: Select BLE adapter, using ``--ble-adapter`` or ``CALYPSO_BLE_ADAPTER``
 - [x] BLE: Obtain peripheral address from both ``--ble-address`` or ``CALYPSO_BLE_ADDRESS``
 - [x] BLE: Unlock ``--ble-*-timeout`` or ``CALYPSO_BLE_*_TIMEOUT``

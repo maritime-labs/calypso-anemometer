@@ -26,7 +26,6 @@ from calypso_anemometer.exception import (
     CalypsoDecodingError,
 )
 from calypso_anemometer.model import (
-    ApplicationSettings,
     BleCharSpec,
     CalypsoDeviceDataRate,
     CalypsoDeviceInfo,
@@ -36,6 +35,7 @@ from calypso_anemometer.model import (
     CalypsoDeviceStatus,
     CalypsoDeviceStatusCharacteristic,
     CalypsoReading,
+    Settings,
 )
 from calypso_anemometer.util import to_json
 
@@ -62,9 +62,9 @@ class CalypsoDeviceApi:
         CalypsoDeviceStatusCharacteristic.compass,
     ]
 
-    def __init__(self, settings: Optional[ApplicationSettings] = None, ble_address: Optional[str] = None):
+    def __init__(self, settings: Optional[Settings] = None, ble_address: Optional[str] = None):
         if settings is None:
-            settings = ApplicationSettings(ble_address=ble_address)
+            settings = Settings(ble_address=ble_address)
         self.settings = settings
         self.ble_address = settings.ble_address
         self.client: BleakClient

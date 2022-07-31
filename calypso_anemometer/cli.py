@@ -9,7 +9,7 @@ import click
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.engine import handler_factory, run_engine
 from calypso_anemometer.fake import CalypsoDeviceApiFake
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode
+from calypso_anemometer.model import ApplicationSettings, CalypsoDeviceDataRate, CalypsoDeviceMode
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging
 
 logger = logging.getLogger(__name__)
@@ -38,6 +38,14 @@ async def explore(ctx):
     await run_engine(workhorse=CalypsoDeviceApi, handler=lambda calypso: calypso.explore())
 
 
+ble_adapter_option = click.option(
+    "--ble-adapter",
+    envvar="CALYPSO_BLE_ADAPTER",
+    type=str,
+    required=False,
+    default="hci0",
+    help="Which Bluetooth adapter to use, e.g. `hci1`. Default: `hci0`",
+)
 rate_option = click.option(
     "--rate",
     type=EnumChoice(CalypsoDeviceDataRate, case_sensitive=False),
@@ -49,6 +57,7 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 
 
 @click.command()
+@ble_adapter_option
 @click.option(
     "--mode",
     type=EnumChoice(CalypsoDeviceMode, case_sensitive=False),
@@ -58,7 +67,12 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 @rate_option
 @click.pass_context
 @make_sync
-async def set_option(ctx, mode: t.Optional[CalypsoDeviceMode] = None, rate: t.Optional[CalypsoDeviceDataRate] = None):
+async def set_option(
+    ctx,
+    ble_adapter: str = None,
+    mode: t.Optional[CalypsoDeviceMode] = None,
+    rate: t.Optional[CalypsoDeviceDataRate] = None,
+):
     async def handler(calypso: CalypsoDeviceApi):
         if mode is not None:
             logger.info(f"Setting device mode to {mode}")
@@ -68,20 +82,27 @@ async def set_option(ctx, mode: t.Optional[CalypsoDeviceMode] = None, rate: t.Op
             await calypso.set_datarate(rate)
         await calypso.about()
 
-    await run_engine(workhorse=CalypsoDeviceApi, handler=handler)
+    settings = ApplicationSettings(ble_adapter=ble_adapter)
+    await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
 @click.command()
+@ble_adapter_option
 @subscribe_option
 @target_option
 @rate_option
 @click.pass_context
 @make_sync
 async def read(
-    ctx, subscribe: bool = False, target: t.Optional[str] = None, rate: t.Optional[CalypsoDeviceDataRate] = None
+    ctx,
+    ble_adapter: str = None,
+    subscribe: bool = False,
+    target: t.Optional[str] = None,
+    rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
+    settings = ApplicationSettings(ble_adapter=ble_adapter)
     handler = await handler_factory(subscribe=subscribe, target=target, rate=rate)
-    await run_engine(workhorse=CalypsoDeviceApi, handler=handler)
+    await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
 @click.command()

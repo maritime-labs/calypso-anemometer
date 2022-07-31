@@ -5,14 +5,15 @@ calypso-anemometer changelog
 
 in progress
 ===========
-- Fix import error on Python 3.7.
+- Fix import error on Python 3.7
   ``AttributeError: module 'asyncio' has no attribute 'exceptions'``
-- Add more software tests
+- Add a few more software tests
 - Add a few example programs
 - Drop support for Python 3.6
 - Add ``make lint`` sandbox utility task
 - Emit ``CalypsoDecodingError`` exceptions when decoding wire data fails
 - Refactor workhorse functions from ``cli.py`` to ``engine.py``
+- Significantly improve test coverage
 
 
 2022-07-25 0.4.0

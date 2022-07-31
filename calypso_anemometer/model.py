@@ -33,6 +33,15 @@ class CalypsoDeviceInfo:
         return dataclasses.asdict(self)
 
 
+class CalypsoDeviceInfoCharacteristic(Enum):
+    manufacturer_name = BleCharSpec(uuid="00002a29-0000-1000-8000-00805f9b34fb", name="manufacturer_name")
+    model_number = BleCharSpec(uuid="00002a24-0000-1000-8000-00805f9b34fb", name="model_number")
+    serial_number = BleCharSpec(uuid="00002a25-0000-1000-8000-00805f9b34fb", name="serial_number")
+    hardware_revision = BleCharSpec(uuid="00002a27-0000-1000-8000-00805f9b34fb", name="hardware_revision")
+    firmware_revision = BleCharSpec(uuid="00002a26-0000-1000-8000-00805f9b34fb", name="firmware_revision")
+    software_revision = BleCharSpec(uuid="00002a28-0000-1000-8000-00805f9b34fb", name="software_revision")
+
+
 class CalypsoDeviceMode(IntEnum):
     SLEEP = 0x00
     LOW_POWER = 0x01
@@ -62,6 +71,14 @@ class CalypsoDeviceStatus:
             "rate": self.rate.name,
             "compass": self.compass.name,
         }
+
+
+class CalypsoDeviceStatusCharacteristic(Enum):
+    mode = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
+    rate = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate)
+    compass = BleCharSpec(
+        uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus
+    )
 
 
 @dataclasses.dataclass
@@ -139,3 +156,7 @@ class CalypsoReading:
 
     def print(self):
         print(self.asjson())
+
+
+class CalypsoDeviceReadingCharacteristic(Enum):
+    data = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="data")

@@ -27,23 +27,16 @@ from calypso_anemometer.exception import (
 )
 from calypso_anemometer.model import (
     BleCharSpec,
-    CalypsoDeviceCompassStatus,
     CalypsoDeviceDataRate,
     CalypsoDeviceInfo,
+    CalypsoDeviceInfoCharacteristic,
     CalypsoDeviceMode,
+    CalypsoDeviceReadingCharacteristic,
     CalypsoDeviceStatus,
+    CalypsoDeviceStatusCharacteristic,
     CalypsoReading,
 )
 from calypso_anemometer.util import to_json
-
-# Configuration section.
-CHARSPEC_MODE = BleCharSpec(uuid="0000a001-0000-1000-8000-00805f9b34fb", name="mode", decoder=CalypsoDeviceMode)
-CHARSPEC_DATARATE = BleCharSpec(uuid="0000a002-0000-1000-8000-00805f9b34fb", name="rate", decoder=CalypsoDeviceDataRate)
-CHARSPEC_COMPASS_STATUS = BleCharSpec(
-    uuid="0000a003-0000-1000-8000-00805f9b34fb", name="compass", decoder=CalypsoDeviceCompassStatus
-)
-CHARSPEC_DATA = BleCharSpec(uuid="00002a39-0000-1000-8000-00805f9b34fb", name="data")
-
 
 logger = logging.getLogger(__name__)
 
@@ -60,17 +53,17 @@ class CalypsoDeviceApi:
     BLUETOOTH_ADAPTER = "hci0"
 
     DEVICE_INFO_CHARACTERISTICS = [
-        BleCharSpec(uuid="00002a29-0000-1000-8000-00805f9b34fb", name="manufacturer_name"),
-        BleCharSpec(uuid="00002a24-0000-1000-8000-00805f9b34fb", name="model_number"),
-        BleCharSpec(uuid="00002a25-0000-1000-8000-00805f9b34fb", name="serial_number"),
-        BleCharSpec(uuid="00002a27-0000-1000-8000-00805f9b34fb", name="hardware_revision"),
-        BleCharSpec(uuid="00002a26-0000-1000-8000-00805f9b34fb", name="firmware_revision"),
-        BleCharSpec(uuid="00002a28-0000-1000-8000-00805f9b34fb", name="software_revision"),
+        CalypsoDeviceInfoCharacteristic.manufacturer_name,
+        CalypsoDeviceInfoCharacteristic.model_number,
+        CalypsoDeviceInfoCharacteristic.serial_number,
+        CalypsoDeviceInfoCharacteristic.hardware_revision,
+        CalypsoDeviceInfoCharacteristic.firmware_revision,
+        CalypsoDeviceInfoCharacteristic.software_revision,
     ]
     DEVICE_STATUS_CHARACTERISTICS = [
-        CHARSPEC_MODE,
-        CHARSPEC_DATARATE,
-        CHARSPEC_COMPASS_STATUS,
+        CalypsoDeviceStatusCharacteristic.mode,
+        CalypsoDeviceStatusCharacteristic.rate,
+        CalypsoDeviceStatusCharacteristic.compass,
     ]
 
     def __init__(self, ble_address: Optional[str] = None):
@@ -192,7 +185,8 @@ class CalypsoDeviceApi:
     async def get_info(self) -> CalypsoDeviceInfo:
         logger.info("Getting device information")
         data = {}
-        for charspec in self.DEVICE_INFO_CHARACTERISTICS:
+        for charspec_item in self.DEVICE_INFO_CHARACTERISTICS:
+            charspec: BleCharSpec = charspec_item.value
             value = (await self.client.read_gatt_char(charspec.uuid)).decode()
             data[charspec.name] = value
         return CalypsoDeviceInfo(ble_address=self.ble_address, **data)
@@ -200,7 +194,8 @@ class CalypsoDeviceApi:
     async def get_status(self) -> CalypsoDeviceStatus:
         logger.info("Getting status information")
         status = CalypsoDeviceStatus()
-        for charspec in self.DEVICE_STATUS_CHARACTERISTICS:
+        for charspec_item in self.DEVICE_STATUS_CHARACTERISTICS:
+            charspec: BleCharSpec = charspec_item.value
             rawvalue: bytearray = await self.client.read_gatt_char(charspec.uuid)
             value: int = rawvalue[0]
             if isinstance(charspec.decoder, Callable):
@@ -210,15 +205,19 @@ class CalypsoDeviceApi:
 
     async def set_mode(self, mode: CalypsoDeviceMode):
         logger.info(f"Setting device mode to {mode}")
-        await self.client.write_gatt_char(CHARSPEC_MODE.uuid, data=bytes([mode.value]), response=True)
+        await self.client.write_gatt_char(
+            CalypsoDeviceStatusCharacteristic.mode.value.uuid, data=bytes([mode.value]), response=True
+        )
 
     async def set_datarate(self, rate: CalypsoDeviceDataRate):
         logger.info(f"Setting data rate to {rate}")
-        await self.client.write_gatt_char(CHARSPEC_DATARATE.uuid, data=bytes([rate.value]), response=True)
+        await self.client.write_gatt_char(
+            CalypsoDeviceStatusCharacteristic.rate.value.uuid, data=bytes([rate.value]), response=True
+        )
 
     async def get_reading(self):
         logger.info("Requesting reading")
-        data: bytearray = await self.client.read_gatt_char(CHARSPEC_DATA.uuid)
+        data: bytearray = await self.client.read_gatt_char(CalypsoDeviceReadingCharacteristic.data.value.uuid)
         reading = self.decode_reading(data)
         self.on_reading(reading)
         return reading
@@ -231,11 +230,11 @@ class CalypsoDeviceApi:
             reading = self.decode_reading(data, sender=sender)
             callback(reading)
 
-        await self.client.start_notify(CHARSPEC_DATA.uuid, handler)
+        await self.client.start_notify(CalypsoDeviceReadingCharacteristic.data.value.uuid, handler)
 
     async def unsubscribe_reading(self):
         logger.info("Unsubscribing from readings")
-        await self.client.stop_notify(CHARSPEC_DATA.uuid)
+        await self.client.stop_notify(CalypsoDeviceReadingCharacteristic.data.value.uuid)
 
     @staticmethod
     def decode_reading(data: bytearray, sender: Optional[int] = None):

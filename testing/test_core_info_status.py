@@ -12,13 +12,14 @@ from unittest.mock import AsyncMock
 
 from pytest_mock import MockerFixture
 
-from calypso_anemometer.core import CHARSPEC_COMPASS_STATUS, CHARSPEC_DATARATE, CHARSPEC_MODE, CalypsoDeviceApi
+from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.model import (
     CalypsoDeviceCompassStatus,
     CalypsoDeviceDataRate,
     CalypsoDeviceInfo,
     CalypsoDeviceMode,
     CalypsoDeviceStatus,
+    CalypsoDeviceStatusCharacteristic,
 )
 from testing.data import dummy_device_info, dummy_device_status
 
@@ -51,9 +52,9 @@ async def test_info_success(caplog):
 async def test_status_success(mocker: MockerFixture, caplog):
 
     char_value_map = {
-        CHARSPEC_MODE.uuid: 0x02,
-        CHARSPEC_DATARATE.uuid: 0x08,
-        CHARSPEC_COMPASS_STATUS.uuid: 0x01,
+        CalypsoDeviceStatusCharacteristic.mode.value.uuid: 0x02,
+        CalypsoDeviceStatusCharacteristic.rate.value.uuid: 0x08,
+        CalypsoDeviceStatusCharacteristic.compass.value.uuid: 0x01,
     }
 
     async def read_gatt_char(client, char_specifier):
@@ -84,9 +85,9 @@ async def test_status_success(mocker: MockerFixture, caplog):
 async def test_status_failure(mocker: MockerFixture, caplog):
 
     char_value_map = {
-        CHARSPEC_MODE.uuid: 0x42,
-        CHARSPEC_DATARATE.uuid: 0x43,
-        CHARSPEC_COMPASS_STATUS.uuid: 0x44,
+        CalypsoDeviceStatusCharacteristic.mode.value.uuid: 0x42,
+        CalypsoDeviceStatusCharacteristic.rate.value.uuid: 0x43,
+        CalypsoDeviceStatusCharacteristic.compass.value.uuid: 0x44,
     }
 
     async def read_gatt_char(client, char_specifier):

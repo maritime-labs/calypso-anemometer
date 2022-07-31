@@ -32,7 +32,7 @@ def test_cli_version():
     assert re.match(r"cli, version \d+\.\d+\.\d+", result.stdout) is not None
 
 
-def test_cli_fake_default(caplog):
+def test_cli_fake_verbose(caplog):
     """
     Test `calypso-anemometer --verbose fake`
     """
@@ -43,6 +43,17 @@ def test_cli_fake_default(caplog):
     result = runner.invoke(cli, shlex.split("--verbose fake"), catch_exceptions=False)
     stdout = result.stdout.strip()
     assert stdout == fake_reading.asjson()
+    assert "Producing reading" in caplog.messages
+
+
+def test_cli_fake_quiet(caplog):
+    """
+    Test `calypso-anemometer --quiet fake`
+    """
+    runner = CliRunner()
+    result = runner.invoke(cli, shlex.split("--quiet fake"), catch_exceptions=False)
+    stdout = result.stdout.strip()
+    assert stdout == ""
     assert "Producing reading" in caplog.messages
 
 

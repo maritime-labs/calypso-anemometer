@@ -29,7 +29,10 @@ async def run_engine(workhorse, handler: t.Callable, settings: t.Optional[Settin
 
 
 async def handler_factory(
-    subscribe: bool = False, target: t.Optional[str] = None, rate: t.Optional[CalypsoDeviceDataRate] = None
+    subscribe: bool = False,
+    target: t.Optional[str] = None,
+    rate: t.Optional[CalypsoDeviceDataRate] = None,
+    quiet: bool = False,
 ) -> t.Callable:
     """
     Create an asynchronous handler function for processing readings.
@@ -37,20 +40,29 @@ async def handler_factory(
     :param subscribe: Whether to run in one-shot or continuous mode.
     :param target: Where to submit telemetry data to, and how.
     :param rate: At which rate to sample the readings.
+    :param quiet: Do not print to stdout or stderr.
 
     :return: An asynchronous handler function accepting a reference to a workhorse instance.
     """
 
-    # Optionally enabled telemetry.
+    message_counter = 0
+    message_counter_log_each = 25
+
+    # Optionally enable telemetry.
     telemetry = None
     if target is not None:
         telemetry = TelemetryAdapter(uri=target)
 
-    # When a reading is received, display it on STDOUT and submit to telemetry adapter.
+    # When a reading is received, optionally display on STDOUT or hand over to telemetry adapter.
     def process_reading(reading: CalypsoReading):
-        reading.print()
+        nonlocal message_counter
+        message_counter += 1
+        if not quiet:
+            reading.print()
         if telemetry is not None:
             telemetry.submit(reading)
+        if message_counter % message_counter_log_each == 0:
+            logger.info(f"Processed readings: {message_counter}")
 
     # Main handler, which receives readings.
     async def handler(calypso: CalypsoDeviceApi):

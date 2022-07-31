@@ -17,11 +17,15 @@ logger = logging.getLogger(__name__)
 
 @click.group()
 @click.version_option()
+@click.option("--quiet", envvar="CALYPSO_QUIET", is_flag=True, required=False, help="Do not print to stdout or stderr.")
 @click.option("--verbose", is_flag=True, required=False, help="Increase log verbosity.")
 @click.option("--debug", is_flag=True, required=False, help="Enable debug messages.")
 @click.pass_context
-def cli(ctx, verbose, debug):
-    setup_logging(level=logging.INFO)
+def cli(ctx, quiet: t.Optional[bool], verbose: t.Optional[bool], debug: t.Optional[bool]):
+    log_level = logging.INFO
+    if verbose or debug:
+        log_level = logging.DEBUG
+    setup_logging(level=log_level)
 
 
 @click.command()
@@ -140,13 +144,14 @@ async def read(
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
+    quiet = ctx.parent.params.get("quiet")
     settings = Settings(
         ble_adapter=ble_adapter,
         ble_address=ble_address,
         ble_discovery_timeout=ble_discovery_timeout,
         ble_connect_timeout=ble_connect_timeout,
     )
-    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate)
+    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
@@ -157,9 +162,13 @@ async def read(
 @click.pass_context
 @make_sync
 async def fake(
-    ctx, subscribe: bool = False, target: t.Optional[str] = None, rate: t.Optional[CalypsoDeviceDataRate] = None
+    ctx,
+    subscribe: bool = False,
+    target: t.Optional[str] = None,
+    rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
-    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate)
+    quiet = ctx.parent.params.get("quiet")
+    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApiFake, handler=handler)
 
 

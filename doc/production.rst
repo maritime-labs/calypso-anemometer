@@ -59,6 +59,21 @@ In order to activate automatic device discovery again, invoke::
     unset CALYPSO_BLE_ADDRESS
 
 
+*************************
+Suppress output to STDOUT
+*************************
+
+The ``--quiet`` option will silence anything printed to STDOUT. You can exercise this
+option by trying the command::
+
+    calypso-anemometer --quiet fake --subscribe --rate=hz_8
+
+Alternatively, you can also use the ``CALYPSO_QUIET`` environment variable::
+
+    export CALYPSO_QUIET=true
+    calypso-anemometer fake --subscribe --rate=hz_8
+
+
 *********************
 Run as system service
 *********************

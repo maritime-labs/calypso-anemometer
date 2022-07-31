@@ -33,7 +33,7 @@ async def test_connect_contextmanager_success(mocker: MockerFixture, caplog):
     ]
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Disconnecting" in caplog.messages
 
 
@@ -51,7 +51,7 @@ async def test_connect_adapter_off_failure(mocker: MockerFixture, caplog):
 
     assert ex.match("Bluetooth device is turned off")
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Conversation went south: BleakError: Bluetooth device is turned off" in caplog.messages
 
 
@@ -68,7 +68,7 @@ async def test_connect_any_error_failure(mocker: MockerFixture, caplog):
 
     assert ex.match("Something went wrong")
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Conversation went south: BleakError: Something went wrong" in caplog.messages
 
 
@@ -86,7 +86,7 @@ async def test_connect_asyncio_timeout_failure(mocker: MockerFixture, caplog):
 
     assert ex.match("Device did not respond in time")
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "TimeoutError: Device did not respond in time" in caplog.messages
 
 
@@ -104,7 +104,7 @@ async def test_connect_futures_timeout_failure(mocker: MockerFixture, caplog):
 
     assert ex.match("Device did not respond in time")
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "TimeoutError: Device did not respond in time" in caplog.messages
 
 
@@ -120,6 +120,6 @@ async def test_connect_disconnect_failure(mocker: MockerFixture, caplog):
     await calypso.connect()
     await calypso.disconnect()
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Disconnecting" in caplog.messages
     assert "Disconnect failed" in caplog.messages

@@ -23,6 +23,6 @@ async def test_set_datarate_success(mocker: MockerFixture, caplog):
 
     assert spy.mock_calls == [call("0000a002-0000-1000-8000-00805f9b34fb", data=b"\x08", response=True)]
 
-    assert "Connecting to device at 'bar' with adapter 'None'" in caplog.messages
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Setting data rate to 8" in caplog.messages
     assert "Disconnecting" in caplog.messages

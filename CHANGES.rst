@@ -12,6 +12,7 @@ in progress
 - Drop support for Python 3.6
 - Add ``make lint`` sandbox utility task
 - Emit ``CalypsoDecodingError`` exceptions when decoding wire data fails
+- Refactor workhorse functions from ``cli.py`` to ``engine.py``
 
 
 2022-07-25 0.4.0

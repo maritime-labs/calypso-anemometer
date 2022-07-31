@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
-from unittest import mock
-from unittest.mock import AsyncMock
+import sys
 
 import pytest
 
@@ -25,6 +24,12 @@ def test_json_encoder_dataclass():
 
 
 @pytest.mark.asyncio
-@mock.patch("calypso_anemometer.util.asyncio.wait_for", AsyncMock(return_value=None))
-async def test_wait_forever():
+async def test_wait_forever(mocker):
+    if sys.version_info < (3, 8, 0):
+        raise pytest.skip(reason="AsyncMock not supported on Python 3.7")
+
+    from unittest.mock import AsyncMock
+
+    mocker.patch("calypso_anemometer.util.asyncio.wait_for", AsyncMock(return_value=None))
+
     await wait_forever()

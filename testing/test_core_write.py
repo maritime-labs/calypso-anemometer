@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
-from unittest.mock import AsyncMock, call
+import sys
 
 import pytest
+
+if sys.version_info < (3, 8, 0):
+    raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
+from unittest.mock import AsyncMock, call
+
 from pytest_mock import MockerFixture
 
 import calypso_anemometer

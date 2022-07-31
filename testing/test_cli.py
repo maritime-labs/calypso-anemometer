@@ -4,7 +4,13 @@
 import json
 import re
 import shlex
+import sys
 from unittest import mock
+
+import pytest
+
+if sys.version_info < (3, 8, 0):
+    raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
 from unittest.mock import AsyncMock
 
 from bleak.backends.device import BLEDevice

@@ -40,11 +40,13 @@ jobs:
 
       - name: Run linter
         run: |
-          make lint
+          pip install --requirement=requirements-utils.txt
+          pflake8 calypso_anemometer examples testing
 
       - name: Run tests, with coverage
         run: |
-          make test
+          pip install --editable=.[test,fake]
+          pytest
 
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@v3

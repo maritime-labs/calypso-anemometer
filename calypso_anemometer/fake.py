@@ -8,7 +8,7 @@ from typing import Callable, Optional
 
 import aiorate
 
-from calypso_anemometer.model import ApplicationSettings, CalypsoDeviceDataRate, CalypsoReading
+from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading, Settings
 
 logger = logging.getLogger(__name__)
 
@@ -38,9 +38,9 @@ class CalypsoDeviceApiFake:
     NAME = "calypso-up10-fake"
     DESCRIPTION = "Calypso UP10 anemometer fake device"
 
-    def __init__(self, settings: Optional[ApplicationSettings] = None, ble_address: Optional[str] = None):
+    def __init__(self, settings: Optional[Settings] = None, ble_address: Optional[str] = None):
         if settings is None:
-            settings = ApplicationSettings(ble_address=ble_address)
+            settings = Settings(ble_address=ble_address)
         self.settings = settings
         self.ble_address = settings.ble_address
         self.datarate: CalypsoDeviceDataRate = CalypsoDeviceDataRate.HZ_4

@@ -5,7 +5,7 @@ import sys
 
 import pytest
 
-from calypso_anemometer.model import ApplicationSettings
+from calypso_anemometer.model import Settings
 
 if sys.version_info < (3, 8, 0):
     raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
@@ -41,7 +41,7 @@ async def test_run_engine_with_address_success(mocker: MockerFixture):
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
 
-    settings = ApplicationSettings(ble_address="F8:C7:2C:EC:13:D0")
+    settings = Settings(ble_address="F8:C7:2C:EC:13:D0")
     handler = await handler_factory()
     worker: CalypsoDeviceApi = await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
     assert worker.ble_address == "F8:C7:2C:EC:13:D0"

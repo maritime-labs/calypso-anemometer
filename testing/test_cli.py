@@ -113,7 +113,7 @@ def test_cli_read_stdout_success(caplog):
     }
 
     assert (
-        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address=None, "
+        "Initializing client with Settings(ble_adapter='hci0', ble_address=None, "
         "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
     )
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
@@ -231,7 +231,7 @@ def test_cli_read_ble_adapter_success(mocker, caplog):
     assert result.exit_code == 0
 
     assert (
-        "Initializing client with ApplicationSettings(ble_adapter='hci99', ble_address=None, "
+        "Initializing client with Settings(ble_adapter='hci99', ble_address=None, "
         "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
     )
     assert "Connecting to device at 'bar' with adapter 'hci99'" in caplog.messages
@@ -249,7 +249,7 @@ def test_cli_read_ble_address_option_success(caplog):
     assert result.exit_code == 0
 
     assert (
-        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "Initializing client with Settings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
         "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
     )
     assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
@@ -269,7 +269,7 @@ def test_cli_read_ble_address_envvar_success(mocker: MockerFixture, caplog):
     assert result.exit_code == 0
 
     assert (
-        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "Initializing client with Settings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
         "ble_discovery_timeout=10.0, ble_connect_timeout=10.0)" in caplog.messages
     )
     assert "Connecting to device at 'F8:C7:2C:EC:13:D0' with adapter 'hci0'" in caplog.messages
@@ -291,7 +291,7 @@ def test_cli_read_ble_timeout_success(mocker: MockerFixture, caplog):
     assert result.exit_code == 0
 
     assert (
-        "Initializing client with ApplicationSettings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
+        "Initializing client with Settings(ble_adapter='hci0', ble_address='F8:C7:2C:EC:13:D0', "
         "ble_discovery_timeout=8.8, ble_connect_timeout=7.7)" in caplog.messages
     )
 

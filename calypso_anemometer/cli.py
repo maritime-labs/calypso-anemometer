@@ -9,7 +9,7 @@ import click
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.engine import handler_factory, run_engine
 from calypso_anemometer.fake import CalypsoDeviceApiFake
-from calypso_anemometer.model import ApplicationSettings, CalypsoDeviceDataRate, CalypsoDeviceMode
+from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode, Settings
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging
 
 logger = logging.getLogger(__name__)
@@ -111,7 +111,7 @@ async def set_option(
             await calypso.set_datarate(rate)
         await calypso.about()
 
-    settings = ApplicationSettings(
+    settings = Settings(
         ble_adapter=ble_adapter,
         ble_address=ble_address,
         ble_discovery_timeout=ble_discovery_timeout,
@@ -140,7 +140,7 @@ async def read(
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
-    settings = ApplicationSettings(
+    settings = Settings(
         ble_adapter=ble_adapter,
         ble_address=ble_address,
         ble_discovery_timeout=ble_discovery_timeout,

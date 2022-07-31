@@ -8,7 +8,7 @@ $(eval twine        := $(venv)/bin/twine)
 $(eval flake8       := $(venv)/bin/pflake8)
 
 setup-virtualenv:
-	@test -e $(python) || python3 -m venv $(venv)
+	@test -e $(python) || python3 -m venv $(venv) || python -m venv $(venv)
 
 format: setup-virtualenv
 	$(pip) install --requirement=requirements-utils.txt

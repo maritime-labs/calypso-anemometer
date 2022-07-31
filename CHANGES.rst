@@ -5,6 +5,9 @@ calypso-anemometer changelog
 
 in progress
 ===========
+
+Changes
+-------
 - Fix import error on Python 3.7
   ``AttributeError: module 'asyncio' has no attribute 'exceptions'``
 - Add a few more software tests
@@ -18,6 +21,13 @@ in progress
   through command line options or environment variables.
 
   - ``--ble-adapter`` / ``CALYPSO_BLE_ADAPTER``
+  - ``--ble-address`` / ``CALYPSO_BLE_ADDRESS``
+
+
+Breaking changes
+----------------
+- The ``CALYPSO_ADDRESS`` environment variable has been renamed to
+  ``CALYPSO_BLE_ADDRESS``.
 
 
 2022-07-25 0.4.0

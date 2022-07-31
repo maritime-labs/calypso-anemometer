@@ -2,7 +2,6 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 import logging
-import os
 import sys
 import typing as t
 
@@ -20,7 +19,7 @@ async def run_engine(workhorse, handler: t.Callable, settings: t.Optional[Applic
     Create a workhorse engine and connect it with the asynchronous handler function for processing readings.
     """
     try:
-        worker = workhorse(settings=settings, ble_address=os.getenv("CALYPSO_ADDRESS"))
+        worker = workhorse(settings=settings)
         async with worker as calypso:
             await handler(calypso)
     except CalypsoError as ex:

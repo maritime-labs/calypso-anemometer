@@ -46,6 +46,13 @@ ble_adapter_option = click.option(
     default="hci0",
     help="Which Bluetooth adapter to use, e.g. `hci1`. Default: `hci0`",
 )
+ble_address_option = click.option(
+    "--ble-address",
+    envvar="CALYPSO_BLE_ADDRESS",
+    type=str,
+    required=False,
+    help="Calypso peripheral BLE address, for connection without discovery.",
+)
 rate_option = click.option(
     "--rate",
     type=EnumChoice(CalypsoDeviceDataRate, case_sensitive=False),
@@ -58,6 +65,7 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 
 @click.command()
 @ble_adapter_option
+@ble_address_option
 @click.option(
     "--mode",
     type=EnumChoice(CalypsoDeviceMode, case_sensitive=False),
@@ -70,6 +78,7 @@ target_option = click.option("--target", type=str, required=False, help="Submit 
 async def set_option(
     ctx,
     ble_adapter: str = None,
+    ble_address: str = None,
     mode: t.Optional[CalypsoDeviceMode] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
@@ -82,12 +91,13 @@ async def set_option(
             await calypso.set_datarate(rate)
         await calypso.about()
 
-    settings = ApplicationSettings(ble_adapter=ble_adapter)
+    settings = ApplicationSettings(ble_adapter=ble_adapter, ble_address=ble_address)
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
 @click.command()
 @ble_adapter_option
+@ble_address_option
 @subscribe_option
 @target_option
 @rate_option
@@ -96,11 +106,12 @@ async def set_option(
 async def read(
     ctx,
     ble_adapter: str = None,
+    ble_address: str = None,
     subscribe: bool = False,
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
-    settings = ApplicationSettings(ble_adapter=ble_adapter)
+    settings = ApplicationSettings(ble_adapter=ble_adapter, ble_address=ble_address)
     handler = await handler_factory(subscribe=subscribe, target=target, rate=rate)
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 

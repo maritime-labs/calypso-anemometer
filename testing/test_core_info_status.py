@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
+import sys
 from unittest import mock
-from unittest.mock import AsyncMock
 
 import pytest
+
+if sys.version_info < (3, 8, 0):
+    raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
+from unittest.mock import AsyncMock
+
 from pytest_mock import MockerFixture
 
 from calypso_anemometer.core import CHARSPEC_COMPASS_STATUS, CHARSPEC_DATARATE, CHARSPEC_MODE, CalypsoDeviceApi

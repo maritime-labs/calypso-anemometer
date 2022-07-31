@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
+import sys
 from unittest import mock
 
 import pytest
+
+if sys.version_info < (3, 8, 0):
+    raise pytest.skip(reason="AsyncMock not supported on Python 3.7", allow_module_level=True)
+
 from bleak import BleakError
 from bleak.backends.device import BLEDevice
 

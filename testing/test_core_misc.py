@@ -2,7 +2,8 @@
 # (c) 2022 Andreas Motl <andreas.motl@panodata.org>
 # License: GNU Affero General Public License, Version 3
 import dataclasses
-from unittest.mock import AsyncMock, call
+import sys
+from unittest.mock import call
 
 import pytest
 from pytest_mock import MockerFixture
@@ -13,6 +14,10 @@ from calypso_anemometer.core import CalypsoDeviceApi, get_adapter_name
 
 @pytest.mark.asyncio
 async def test_read_characteristic_string_success(mocker: MockerFixture, caplog):
+    if sys.version_info < (3, 8, 0):
+        raise pytest.skip(reason="AsyncMock not supported on Python 3.7")
+
+    from unittest.mock import AsyncMock
 
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=b"hello world"))

@@ -81,6 +81,8 @@ Topic: Production I
 - [x] BLE: Unlock ``--ble-*-timeout`` or ``CALYPSO_BLE_*_TIMEOUT``
 - [x] CLI: Turn off logging to STDOUT
 - [x] CLI: Use extended settings also for CLI entrypoints ``info`` and ``explore``
+- [x] Endianness
+- [x] Docs: Picture
 
 
 **************

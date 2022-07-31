@@ -26,6 +26,7 @@ Changes
   - ``--ble-connect-timeout`` / ``CALYPSO_BLE_CONNECT_TIMEOUT``
 - Add ``--quiet`` option / ``CALYPSO_QUIET`` environment variable for
   silencing output to STDOUT
+- Explicitly use little-endian byte order for decoding binary data
 
 Breaking changes
 ----------------

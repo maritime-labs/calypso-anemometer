@@ -29,8 +29,9 @@ class NetworkTelemetry:
         elif self.protocol == NetworkProtocol.UDP:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
         if mode == NetworkProtocolMode.BROADCAST:
-            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            if hasattr(socket, "SO_REUSEPORT"):
+                self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 
     def send(self, payload: str, newline=True):
         logger.info(f"Sending message to {self.protocol.value}://{self.host}:{self.port}. {payload}")

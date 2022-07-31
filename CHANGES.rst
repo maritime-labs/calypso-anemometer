@@ -6,6 +6,10 @@ calypso-anemometer changelog
 in progress
 ===========
 
+
+2022-08-01 0.5.0
+================
+
 Changes
 -------
 - Fix import error on Python 3.7

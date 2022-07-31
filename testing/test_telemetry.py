@@ -7,8 +7,9 @@ from copy import deepcopy
 
 import pytest
 
-from calypso_anemometer.telemetry import Nmea0183Messages, SignalKDeltaMessage, TelemetryAdapter
-from calypso_anemometer.telemetry.nmea0183 import Nmea0183MessageIIVWR
+from calypso_anemometer.telemetry.adapter import TelemetryAdapter
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183MessageIIVWR, Nmea0183Messages
+from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 from testing.data import dummy_reading
 
 

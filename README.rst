@@ -127,7 +127,7 @@ If you already discovered your device, know its address, and want to connect
 directly without automatic device discovery, see `skip discovery`_.
 
 Likewise, when your system has multiple Bluetooth adapters, you may want to
-choose a specific one, see `increase BLE timeout values`_.
+choose a specific one, see `select Bluetooth adapter`_.
 
 ::
 
@@ -270,14 +270,14 @@ The project is licensed under the terms of the GNU AGPL license.
 .. _CalypsoUltrasonicAPI: https://github.com/volkerpetersen/CalypsoUltrasonicAPI
 .. _create an issue: https://github.com/maritime-labs/calypso-anemometer/issues
 .. _David Lechner: https://github.com/dlech
+.. _development sandbox: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/sandbox.rst
 .. _Fabian Tollenaar: https://github.com/fabdrol
 .. _Henrik Blidh: https://github.com/hbldh
-.. _increase BLE timeout values: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/troubleshooting.rst#increase-ble-timeout-values
 .. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
 .. _preflight checks: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/preflight.rst
 .. _production: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst
-.. _development sandbox: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/sandbox.rst
+.. _select Bluetooth adapter: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst#multiple-bluetooth-adapters
 .. _Server » Data Connections: http://openplotter.local:3000/admin/#/serverConfiguration/connections/-
 .. _signalk-calypso-ultrasonic: https://github.com/decipherindustries/signalk-calypso-ultrasonic
 .. _SignalK server: https://github.com/SignalK/signalk-server

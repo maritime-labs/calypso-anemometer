@@ -83,6 +83,7 @@ Topic: Production I
 - [x] CLI: Use extended settings also for CLI entrypoints ``info`` and ``explore``
 - [x] Endianness
 - [x] Docs: Picture
+- [x] Fix ``ModuleNotFoundError: No module named 'aiorate'``
 
 
 **************

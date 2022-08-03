@@ -84,6 +84,7 @@ Topic: Production I
 - [x] Endianness
 - [x] Docs: Picture
 - [x] Fix ``ModuleNotFoundError: No module named 'aiorate'``
+- [/] Add option ``--log-level`` to complement ``--quiet``
 
 
 **************

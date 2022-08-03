@@ -22,6 +22,8 @@ logger = logging.getLogger(__name__)
 @click.pass_context
 def cli(ctx, quiet: t.Optional[bool], verbose: t.Optional[bool], debug: t.Optional[bool]):
     log_level = logging.INFO
+    if quiet:
+        log_level = logging.WARNING
     if verbose or debug:
         log_level = logging.DEBUG
     setup_logging(level=log_level)

@@ -5,6 +5,10 @@ calypso-anemometer changelog
 
 in progress
 ===========
+
+
+2022-08-03 0.5.1
+================
 - Fix import error ``ModuleNotFoundError: No module named 'aiorate'``
 - Configure minimum log level to ``WARNING`` when using the ``--quiet`` option
 

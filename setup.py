@@ -8,7 +8,7 @@ README = open(os.path.join(here, "README.rst")).read()
 
 setup(
     name="calypso-anemometer",
-    version="0.5.0",
+    version="0.5.1",
     author="Andreas Motl",
     author_email="andreas.motl@panodata.org",
     url="https://github.com/maritime-labs/calypso-anemometer",

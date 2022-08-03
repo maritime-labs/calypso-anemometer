@@ -5,6 +5,7 @@ calypso-anemometer changelog
 
 in progress
 ===========
+- Fix import error ``ModuleNotFoundError: No module named 'aiorate'``
 
 
 2022-08-01 0.5.0

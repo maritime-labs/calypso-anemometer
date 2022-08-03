@@ -8,7 +8,6 @@ import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.engine import handler_factory, run_engine
-from calypso_anemometer.fake import CalypsoDeviceApiFake
 from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode, Settings
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging
 
@@ -199,6 +198,7 @@ async def fake(
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
+    from calypso_anemometer.fake import CalypsoDeviceApiFake
     quiet = ctx.parent.params.get("quiet")
     handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApiFake, handler=handler)

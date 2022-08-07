@@ -260,8 +260,16 @@ Resources
 License
 =======
 
-The project is licensed under the terms of the GNU AGPL license.
+The project is licensed under the terms of the GNU AGPL license, see `LICENSE`_.
 
+Warranty and liability
+======================
+
+There is no warranty for the program. In no event will any copyright holder, or
+any other party who modifies and/or conveys the program, be liable for any
+damages arising out of the use or inability to use the program.
+
+See also sections 15, 16, and 17 of the `LICENSE`_ file.
 
 
 .. _Bleak: https://github.com/hbldh/bleak
@@ -273,6 +281,7 @@ The project is licensed under the terms of the GNU AGPL license.
 .. _development sandbox: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/sandbox.rst
 .. _Fabian Tollenaar: https://github.com/fabdrol
 .. _Henrik Blidh: https://github.com/hbldh
+.. _LICENSE: https://github.com/maritime-labs/calypso-anemometer/blob/main/LICENSE
 .. _OpenCPN: https://opencpn.org/
 .. _OpenPlotter: https://open-boat-projects.org/en/openplotter/
 .. _preflight checks: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/preflight.rst

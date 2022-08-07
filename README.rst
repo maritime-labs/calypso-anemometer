@@ -207,11 +207,20 @@ An example NMEA-0183 sentence emitted is::
 Other projects
 **************
 
-- `signalk-calypso-ultrasonic`_ is a Signal K server plugin for the Calypso
-  Ultrasonic wireless anemometer, written in JavaScript.
+- `AocpnUltrasonicLink`_ is an Android app for linking Calypso Ultrasonic
+  wind data to OpenCPN, written in Java.
+
+- `BLE_Wind`_ is an Arduino firmware for reading data from a Calypso anemometer,
+  written in C++.
 
 - `CalypsoUltrasonicAPI`_ is a library for the Calypso Ultrasonic Anemometer,
   written in Visual Basic .NET and Java, (also) for Android.
+
+- `signalk-calypso-ultrasonic`_ is a Signal K server plugin for the Calypso
+  Ultrasonic wireless anemometer, written in JavaScript.
+
+- `ultrasonic-ble-react`_ is a React native test app for the Calypso UltraSonic
+  wind sensor, written in JavaScript.
 
 
 ***************
@@ -272,7 +281,9 @@ damages arising out of the use or inability to use the program.
 See also sections 15, 16, and 17 of the `LICENSE`_ file.
 
 
+.. _AocpnUltrasonicLink: https://github.com/okriof/AocpnUltrasonicLink
 .. _Bleak: https://github.com/hbldh/bleak
+.. _BLE_Wind: https://github.com/stephpen/BLE_Wind
 .. _Calypso UP10 full size images: https://user-images.githubusercontent.com/453543/182049424-9a249add-c94b-4077-91bf-c864f2ed0e95.png
 .. _Calypso UP10 ultrasonic portable solar wind meter: https://calypsoinstruments.com/shop/product/ultrasonic-portable-solar-wind-meter-2
 .. _CalypsoUltrasonicAPI: https://github.com/volkerpetersen/CalypsoUltrasonicAPI
@@ -292,3 +303,4 @@ See also sections 15, 16, and 17 of the `LICENSE`_ file.
 .. _SignalK server: https://github.com/SignalK/signalk-server
 .. _skip discovery: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/production.rst#device-discovery-vs-multiple-devices
 .. _troubleshooting: https://github.com/maritime-labs/calypso-anemometer/blob/main/doc/troubleshooting.rst
+.. _ultrasonic-ble-react: https://github.com/kapejod/ultrasonic-ble-react

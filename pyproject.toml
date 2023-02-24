@@ -6,7 +6,7 @@
 
 [project]
 name = "calypso-anemometer"
-version = "0.5.1"
+version = "0.6.0"
 description = "Python driver for the Calypso UP10 anemometer"
 readme = "README.rst"
 keywords = [

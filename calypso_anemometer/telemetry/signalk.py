@@ -52,7 +52,9 @@ class SignalKDeltaMessage:
             # TODO: Improve `path` naming.
             SignalKDeltaItem(path="electrical.batteries.99.name", value=self.source),
             SignalKDeltaItem(path="electrical.batteries.99.location", value=self.location),
-            SignalKDeltaItem(path="electrical.batteries.99.capacity.stateOfCharge", value=reading.battery_level),
+            SignalKDeltaItem(
+                path="electrical.batteries.99.capacity.stateOfCharge", value=round(reading.battery_level / 100, 2)
+            ),
         ]
 
     def asdict(self):

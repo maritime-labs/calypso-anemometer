@@ -201,6 +201,7 @@ async def fake(
     rate: t.Optional[CalypsoDeviceDataRate] = None,
 ):
     from calypso_anemometer.fake import CalypsoDeviceApiFake
+
     quiet = ctx.parent.params.get("quiet")
     handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApiFake, handler=handler)

@@ -20,7 +20,6 @@ from testing.data import dummy_reading, dummy_wire_message_bad, dummy_wire_messa
 
 @pytest.mark.asyncio
 async def test_reading_success(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
 
@@ -43,7 +42,6 @@ async def test_reading_success(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_reading_failure(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_bad))
 
@@ -66,7 +64,6 @@ async def test_reading_failure(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_subscribe_success(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.start_notify", AsyncMock(return_value=None))
 
@@ -79,7 +76,7 @@ async def test_subscribe_success(mocker: MockerFixture, caplog):
     assert spy.mock_calls == [call("00002a39-0000-1000-8000-00805f9b34fb", ANY)]
 
     # FIXME: Not yet.
-    # assert callback.assert_called_once_with()
+    # assert callback.assert_called_once_with()  # noqa: ERA001
 
     assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Subscribing to readings" in caplog.messages
@@ -88,7 +85,6 @@ async def test_subscribe_success(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_unsubscribe_success(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.start_notify", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.stop_notify", AsyncMock(return_value=None))

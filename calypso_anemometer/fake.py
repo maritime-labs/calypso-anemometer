@@ -34,7 +34,6 @@ MAXIMUM_VALUES = CalypsoReading(
 
 
 class CalypsoDeviceApiFake:
-
     NAME = "calypso-up10-fake"
     DESCRIPTION = "Calypso UP10 anemometer fake device"
 

@@ -22,7 +22,6 @@ from testing.data import dummy_wire_message_good
 
 @pytest.mark.asyncio
 async def test_run_engine_vanilla_success(mocker: MockerFixture):
-
     mocker.patch(
         "calypso_anemometer.core.BleakScanner.find_device_by_filter",
         AsyncMock(return_value=BLEDevice(name="foo", address="bar")),
@@ -37,7 +36,6 @@ async def test_run_engine_vanilla_success(mocker: MockerFixture):
 
 @pytest.mark.asyncio
 async def test_run_engine_with_address_success(mocker: MockerFixture):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=dummy_wire_message_good))
 

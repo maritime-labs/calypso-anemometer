@@ -21,7 +21,6 @@ from calypso_anemometer.exception import BluetoothAdapterError, BluetoothConvers
 
 @pytest.mark.asyncio
 async def test_connect_contextmanager_success(mocker: MockerFixture, caplog):
-
     mocker.patch(
         "calypso_anemometer.core.BleakScanner.find_device_by_filter",
         AsyncMock(return_value=BLEDevice(name="foo", address="bar")),
@@ -44,7 +43,6 @@ async def test_connect_contextmanager_success(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_connect_adapter_off_failure(mocker: MockerFixture, caplog):
-
     mocker.patch(
         "calypso_anemometer.core.BleakClient.connect",
         AsyncMock(side_effect=BleakError("Bluetooth device is turned off")),
@@ -62,7 +60,6 @@ async def test_connect_adapter_off_failure(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_connect_any_error_failure(mocker: MockerFixture, caplog):
-
     mocker.patch(
         "calypso_anemometer.core.BleakClient.connect", AsyncMock(side_effect=BleakError("Something went wrong"))
     )
@@ -79,7 +76,6 @@ async def test_connect_any_error_failure(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_connect_asyncio_timeout_failure(mocker: MockerFixture, caplog):
-
     mocker.patch(
         "calypso_anemometer.core.BleakClient.connect",
         AsyncMock(side_effect=asyncio.TimeoutError("Device did not respond in time")),
@@ -97,7 +93,6 @@ async def test_connect_asyncio_timeout_failure(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_connect_futures_timeout_failure(mocker: MockerFixture, caplog):
-
     mocker.patch(
         "calypso_anemometer.core.BleakClient.connect",
         AsyncMock(side_effect=concurrent.futures.TimeoutError("Device did not respond in time")),
@@ -115,7 +110,6 @@ async def test_connect_futures_timeout_failure(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_connect_disconnect_failure(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch(
         "calypso_anemometer.core.BleakClient.disconnect", AsyncMock(side_effect=BleakError("Error on disconnect"))

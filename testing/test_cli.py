@@ -158,7 +158,7 @@ def test_cli_subscribe_stdout_success(caplog):
 
     # TODO: Currently no reading is emitted and processed, because `start_notify` is mocked
     #       and actually does nothing. Is there a way to emulate emitting readings easily?
-    # response = json.loads(result.stdout)
+    # response = json.loads(result.stdout)  # noqa: ERA001
 
     assert "Using BLE discovery to find Calypso UP10 anemometer" in caplog.messages
     assert "Found device at address: bar: foo" in caplog.messages

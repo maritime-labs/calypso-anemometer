@@ -25,7 +25,6 @@ async def test_discover_vanilla_unneeded_success(caplog):
 @pytest.mark.asyncio
 @mock.patch("calypso_anemometer.core.BleakScanner", autospec=True)
 async def test_discover_vanilla_found_success(scanner, caplog):
-
     scanner.find_device_by_filter.return_value = BLEDevice(name="foo", address="bar")
 
     calypso = CalypsoDeviceApi()

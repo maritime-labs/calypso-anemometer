@@ -18,7 +18,6 @@ from calypso_anemometer.model import CalypsoDeviceDataRate
 
 @pytest.mark.asyncio
 async def test_set_datarate_success(mocker: MockerFixture, caplog):
-
     mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
     mocker.patch("calypso_anemometer.core.BleakClient.write_gatt_char", AsyncMock(return_value=None))
 

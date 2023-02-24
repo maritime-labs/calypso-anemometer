@@ -58,7 +58,7 @@ async def handler_factory(
         nonlocal message_counter
         message_counter += 1
         if not quiet:
-            reading.print()
+            reading.dump()
         if telemetry is not None:
             telemetry.submit(reading)
         if message_counter % message_counter_log_each == 0:
@@ -66,7 +66,6 @@ async def handler_factory(
 
     # Main handler, which receives readings.
     async def handler(calypso: CalypsoDeviceApi):
-
         # One-shot reading.
         if not subscribe:
             reading = await calypso.get_reading()

@@ -206,6 +206,64 @@ class Nmea0183MessageVWR(Nmea0183MessageBase):
 
 
 @dataclasses.dataclass
+class Nmea0183MessageXDRPitchRoll(Nmea0183MessageBase):
+    """
+    Represent and serialize NMEA-0183 XDR message.
+
+    XDR - Transducer Measurements
+
+    Different kinds of values like temperature, pressure, and angle.
+
+    Here, it will be used to emit compass/gyro pitch and roll data:
+    $MLXDR,A,-42.42,D,PTCH#CAL,A,30.07,D,ROLL#CAL
+
+                1 2   3 4       n
+    |   |   |   |       |
+    *  $--XDR,a,x.x,a,c--c, ..... *hh<CR><LF>
+
+    Field Number:
+    1) Transducer Type
+    2) Measurement Data
+    3) Units of measurement
+    4) Name of transducer
+    x) More of the same
+    n) Checksum
+
+    Examples:
+    $IIXDR,C,19.52,C,TempAir*19
+    $IIXDR,P,1.02481,B,Barometer*29
+
+    References:
+    - https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:advanced_features:nmea_sentences#xdr
+    - https://github.com/maritime-labs/calypso-anemometer/issues/12
+    """
+
+    IDENTIFIER = "$MLXDR"
+    pitch_degrees: float
+    roll_degrees: float
+
+    def to_message(self):
+        """
+        Factory for generic `Nmea0183Message`.
+        """
+        return Nmea0183GenericMessage(
+            identifier=self.IDENTIFIER,
+            fields=[
+                # Pitch
+                "A",
+                self.float_value(self.pitch_degrees),
+                "D",
+                "PTCH#CAL",
+                # Roll
+                "A",
+                self.float_value(self.roll_degrees),
+                "D",
+                "ROLL#CAL",
+            ],
+        )
+
+
+@dataclasses.dataclass
 class Nmea0183Envelope:
     """
     Represent and render a list of NMEA-0183 messages.
@@ -225,9 +283,14 @@ class Nmea0183Envelope:
             direction_degrees=reading.wind_direction,
             speed_meters_per_second=reading.wind_speed,
         )
+        xdr_pitch_roll = Nmea0183MessageXDRPitchRoll(
+            pitch_degrees=reading.pitch,
+            roll_degrees=reading.roll,
+        )
         self.items = [
             hdt.to_message(),
             vwr.to_message(),
+            xdr_pitch_roll.to_message(),
         ]
 
     def aslist(self):

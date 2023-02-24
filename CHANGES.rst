@@ -12,6 +12,7 @@ in progress
 - Compass: Add ``--compass=on`` option to enable compass
 - NMEA0183 telemetry: Use ``$MLVWR`` sentence prefix for wind data
 - NMEA0183 telemetry: Emit compass/heading data using ``$MLHDT`` sentence
+- NMEA0183 telemetry: Emit compass/pitch+roll data using ``$MLXDR`` sentence
 
 
 2022-08-03 0.5.1

@@ -8,7 +8,7 @@ from copy import deepcopy
 import pytest
 
 from calypso_anemometer.telemetry.adapter import TelemetryAdapter
-from calypso_anemometer.telemetry.nmea0183 import Nmea0183Envelope, Nmea0183MessageIIVWR
+from calypso_anemometer.telemetry.nmea0183 import Nmea0183Envelope, Nmea0183MessageVWR
 from calypso_anemometer.telemetry.signalk import SignalKDeltaMessage
 from testing.data import dummy_reading
 
@@ -43,7 +43,7 @@ def test_telemetry_nmea0183_wind_into():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 0
     bucket.set_reading(reading)
-    assert bucket.render() == "$IIVWR,0.0,,11.06,N,5.69,M,20.48,K*29"
+    assert bucket.render() == "$MLVWR,0.0,,11.06,N,5.69,M,20.48,K*28"
 
 
 def test_telemetry_nmea0183_wind_downwind():
@@ -51,7 +51,7 @@ def test_telemetry_nmea0183_wind_downwind():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 180
     bucket.set_reading(reading)
-    assert bucket.render() == "$IIVWR,180.0,,11.06,N,5.69,M,20.48,K*20"
+    assert bucket.render() == "$MLVWR,180.0,,11.06,N,5.69,M,20.48,K*21"
 
 
 def test_telemetry_nmea0183_wind_left_of_bow():
@@ -59,7 +59,7 @@ def test_telemetry_nmea0183_wind_left_of_bow():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 206
     bucket.set_reading(reading)
-    assert bucket.render() == "$IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65"
+    assert bucket.render() == "$MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64"
 
 
 def test_telemetry_nmea0183_wind_right_of_bow():
@@ -67,7 +67,7 @@ def test_telemetry_nmea0183_wind_right_of_bow():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 42
     bucket.set_reading(reading)
-    assert bucket.render() == "$IIVWR,42.0,R,11.06,N,5.69,M,20.48,K*4D"
+    assert bucket.render() == "$MLVWR,42.0,R,11.06,N,5.69,M,20.48,K*4C"
 
 
 def test_telemetry_nmea0183_wind_zero():
@@ -75,17 +75,17 @@ def test_telemetry_nmea0183_wind_zero():
     reading = deepcopy(dummy_reading)
     reading.wind_speed = 0
     bucket.set_reading(reading)
-    assert bucket.render() == "$IIVWR,0.0,,0.0,N,0.0,M,0.0,K*1B"
+    assert bucket.render() == "$MLVWR,0.0,,0.0,N,0.0,M,0.0,K*1A"
 
 
-def test_nmea0183messageiivwr_convert_value():
-    assert Nmea0183MessageIIVWR.convert_value(42.42) == 42.42
-    assert Nmea0183MessageIIVWR.convert_value(None) == ""
+def test_nmea0183message_vwr_convert_value():
+    assert Nmea0183MessageVWR.convert_value(42.42) == 42.42
+    assert Nmea0183MessageVWR.convert_value(None) == ""
 
 
-def test_nmea0183messageiivwr_render_success():
-    bucket = Nmea0183MessageIIVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
-    assert bucket.to_message().render() == "$IIVWR,42.42,R,10.54,N,5.42,M,19.51,K*76"
+def test_nmea0183message_vwr_render_success():
+    bucket = Nmea0183MessageVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
+    assert bucket.to_message().render() == "$MLVWR,42.42,R,10.54,N,5.42,M,19.51,K*77"
 
 
 def test_telemetry_adapter_signalk_success():

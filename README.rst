@@ -203,7 +203,7 @@ like outlined in those screenshots.
 
 An example NMEA-0183 sentence emitted is::
 
-    $IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65
+    $MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*65
 
 
 **************

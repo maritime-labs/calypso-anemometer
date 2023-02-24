@@ -222,7 +222,7 @@ def test_cli_read_telemetry_success(caplog):
         "wind_speed": 5.69,
     }
 
-    assert "Sending message to udp://255.255.255.255:60110. $IIVWR,154.0,L,11.06,N,5.69,M,20.48,K*65" in caplog.messages
+    assert "Sending message to udp://255.255.255.255:60110. $MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64" in caplog.messages
 
 
 @mock.patch(

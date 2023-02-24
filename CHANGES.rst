@@ -10,6 +10,7 @@ in progress
 - SignalK telemetry: Use Kelvin unit for temperature
 - SignalK telemetry: Use ratio (percentage) for battery level
 - Compass: Add ``--compass=on`` option to enable compass
+- NMEA0183 telemetry: Use ``$MLVWR`` sentence prefix for wind data
 
 
 2022-08-03 0.5.1

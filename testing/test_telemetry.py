@@ -21,7 +21,7 @@ def test_telemetry_signalk_message():
             {
                 "$source": "calypso-up10",
                 "values": [
-                    {"path": "environment.outside.temperature", "value": 33},
+                    {"path": "environment.outside.temperature", "value": 306.15},
                     {"path": "environment.wind.angleApparent", "value": 3.5953782591083185},
                     {"path": "environment.wind.speedApparent", "value": 5.69},
                     {"path": "navigation.attitude.roll", "value": 0.5235987755982988},

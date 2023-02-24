@@ -86,3 +86,12 @@ def deg2rad(value: float) -> float:
     https://signalk.org/specification/1.7.0/doc/vesselsBranch.html
     """
     return value * math.pi / 180
+
+
+def celsius2kelvin(value: float) -> float:
+    """
+    Convert Celsius to Kelvin. SignalK needs it.
+
+    https://signalk.org/specification/1.7.0/doc/vesselsBranch.html
+    """
+    return value + 273.15

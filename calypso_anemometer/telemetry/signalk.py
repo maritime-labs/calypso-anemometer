@@ -8,7 +8,7 @@ import typing as t
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.model import CalypsoReading
-from calypso_anemometer.util import deg2rad
+from calypso_anemometer.util import celsius2kelvin, deg2rad
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ class SignalKDeltaMessage:
         """
         reading = reading.adjusted()
         self.items = [
-            SignalKDeltaItem(path="environment.outside.temperature", value=reading.temperature),
+            SignalKDeltaItem(path="environment.outside.temperature", value=celsius2kelvin(reading.temperature)),
             SignalKDeltaItem(path="environment.wind.angleApparent", value=deg2rad(reading.wind_direction)),
             SignalKDeltaItem(path="environment.wind.speedApparent", value=reading.wind_speed),
             SignalKDeltaItem(path="navigation.attitude.roll", value=deg2rad(reading.roll)),

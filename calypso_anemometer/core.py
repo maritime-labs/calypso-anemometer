@@ -27,6 +27,7 @@ from calypso_anemometer.exception import (
 )
 from calypso_anemometer.model import (
     BleCharSpec,
+    CalypsoDeviceCompassStatus,
     CalypsoDeviceDataRate,
     CalypsoDeviceInfo,
     CalypsoDeviceInfoCharacteristic,
@@ -210,6 +211,14 @@ class CalypsoDeviceApi:
         logger.info(f"Setting data rate to {rate}")
         await self.client.write_gatt_char(
             CalypsoDeviceStatusCharacteristic.rate.value.uuid, data=bytes([rate.value]), response=True
+        )
+
+    async def set_compass(self, compass: CalypsoDeviceCompassStatus):
+        if compass is None:
+            return
+        logger.info(f"Setting compass status to {compass}")
+        await self.client.write_gatt_char(
+            CalypsoDeviceStatusCharacteristic.compass.value.uuid, data=bytes([compass.value]), response=True
         )
 
     async def get_reading(self):

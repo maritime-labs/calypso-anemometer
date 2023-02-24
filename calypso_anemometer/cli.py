@@ -8,7 +8,7 @@ import click
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.engine import handler_factory, run_engine
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoDeviceMode, Settings
+from calypso_anemometer.model import CalypsoDeviceCompassStatus, CalypsoDeviceDataRate, CalypsoDeviceMode, Settings
 from calypso_anemometer.util import EnumChoice, make_sync, setup_logging
 
 logger = logging.getLogger(__name__)
@@ -65,6 +65,12 @@ rate_option = click.option(
     type=EnumChoice(CalypsoDeviceDataRate, case_sensitive=False),
     required=False,
     help="Set device data rate to one of HZ_1, HZ_4, or HZ_8.",
+)
+compass_option = click.option(
+    "--compass",
+    type=EnumChoice(CalypsoDeviceCompassStatus, case_sensitive=False),
+    required=False,
+    help="Set device compass status to one of OFF, ON.",
 )
 subscribe_option = click.option("--subscribe", is_flag=True, required=False, help="Continuously receive readings")
 target_option = click.option("--target", type=str, required=False, help="Submit telemetry data to target")
@@ -128,6 +134,7 @@ async def explore(
     help="Set device mode to one of SLEEP, LOW_POWER, or NORMAL.",
 )
 @rate_option
+@compass_option
 @click.pass_context
 @make_sync
 async def set_option(
@@ -138,6 +145,7 @@ async def set_option(
     ble_connect_timeout: t.Optional[float] = None,
     mode: t.Optional[CalypsoDeviceMode] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
+    compass: t.Optional[CalypsoDeviceCompassStatus] = None,
 ):
     async def handler(calypso: CalypsoDeviceApi):
         if mode is not None:
@@ -146,6 +154,9 @@ async def set_option(
         if rate is not None:
             logger.info(f"Setting device data rate to {rate}")
             await calypso.set_datarate(rate)
+        if compass is not None:
+            logger.info(f"Setting device compass status to {compass}")
+            await calypso.set_compass(compass)
         await calypso.about()
 
     settings = Settings(
@@ -165,6 +176,7 @@ async def set_option(
 @subscribe_option
 @target_option
 @rate_option
+@compass_option
 @click.pass_context
 @make_sync
 async def read(
@@ -176,6 +188,7 @@ async def read(
     subscribe: t.Optional[bool] = False,
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
+    compass: t.Optional[CalypsoDeviceCompassStatus] = None,
 ):
     quiet = ctx.parent.params.get("quiet")
     settings = Settings(
@@ -184,7 +197,7 @@ async def read(
         ble_discovery_timeout=ble_discovery_timeout,
         ble_connect_timeout=ble_connect_timeout,
     )
-    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
+    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, compass=compass, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApi, settings=settings, handler=handler)
 
 
@@ -192,6 +205,7 @@ async def read(
 @subscribe_option
 @target_option
 @rate_option
+@compass_option
 @click.pass_context
 @make_sync
 async def fake(
@@ -199,11 +213,12 @@ async def fake(
     subscribe: bool = False,
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
+    compass: t.Optional[CalypsoDeviceCompassStatus] = None,
 ):
     from calypso_anemometer.fake import CalypsoDeviceApiFake
 
     quiet = ctx.parent.params.get("quiet")
-    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, quiet=quiet)
+    handler = await handler_factory(subscribe=subscribe, target=target, rate=rate, compass=compass, quiet=quiet)
     await run_engine(workhorse=CalypsoDeviceApiFake, handler=handler)
 
 

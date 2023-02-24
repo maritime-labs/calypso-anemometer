@@ -147,13 +147,13 @@ def test_cli_read_stdout_success(caplog):
 @mock.patch("calypso_anemometer.core.BleakClient.write_gatt_char", AsyncMock(return_value=None))
 @mock.patch("calypso_anemometer.core.BleakClient.start_notify", AsyncMock(return_value=None))
 @mock.patch("calypso_anemometer.engine.wait_forever", AsyncMock(return_value=None))
-def test_cli_subscribe_stdout_success(caplog):
+def test_cli_subscribe_rate_compass_stdout_success(caplog):
     """
     Test successful `calypso-anemometer read --subscribe`
     """
 
     runner = CliRunner()
-    result = runner.invoke(cli, ["read", "--subscribe", "--rate=HZ_8"], catch_exceptions=False)
+    result = runner.invoke(cli, ["read", "--subscribe", "--rate=HZ_8", "--compass=on"], catch_exceptions=False)
     assert result.exit_code == 0
 
     # TODO: Currently no reading is emitted and processed, because `start_notify` is mocked
@@ -164,6 +164,7 @@ def test_cli_subscribe_stdout_success(caplog):
     assert "Found device at address: bar: foo" in caplog.messages
     assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Setting data rate to 8" in caplog.messages
+    assert "Setting compass status to 1" in caplog.messages
     assert "Subscribing to readings" in caplog.messages
     assert "Disconnecting" in caplog.messages
 

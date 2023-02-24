@@ -113,6 +113,9 @@ default, the Bluetooth adapter ``hci0`` will be used.
     # Get device reading.
     calypso-anemometer read
 
+    # Get device reading, with compass (roll, pitch, heading).
+    calypso-anemometer read --compass=on
+
     # Get device readings, continuously at 4 Hz (default).
     calypso-anemometer read --subscribe
 

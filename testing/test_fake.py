@@ -6,7 +6,7 @@ from unittest.mock import Mock
 import pytest
 
 from calypso_anemometer.fake import MAXIMUM_VALUES, MINIMUM_VALUES, CalypsoDeviceApiFake
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading
+from calypso_anemometer.model import CalypsoDeviceCompassStatus, CalypsoDeviceDataRate, CalypsoReading
 
 
 @pytest.mark.asyncio
@@ -26,6 +26,7 @@ async def test_set_datarate():
 async def test_subscribe_once():
     callback_mock = Mock()
     async with CalypsoDeviceApiFake() as fake:
+        await fake.set_compass(CalypsoDeviceCompassStatus.ON)
         await fake.set_datarate(CalypsoDeviceDataRate.HZ_8)
         await fake.subscribe_reading(callback=callback_mock, run_once=True)
 

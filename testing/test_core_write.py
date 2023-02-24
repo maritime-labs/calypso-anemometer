@@ -13,7 +13,7 @@ from pytest_mock import MockerFixture
 
 import calypso_anemometer
 from calypso_anemometer.core import CalypsoDeviceApi
-from calypso_anemometer.model import CalypsoDeviceDataRate
+from calypso_anemometer.model import CalypsoDeviceCompassStatus, CalypsoDeviceDataRate
 
 
 @pytest.mark.asyncio
@@ -29,4 +29,36 @@ async def test_set_datarate_success(mocker: MockerFixture, caplog):
 
     assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
     assert "Setting data rate to 8" in caplog.messages
+    assert "Disconnecting" in caplog.messages
+
+
+@pytest.mark.asyncio
+async def test_set_compass_enabled(mocker: MockerFixture, caplog):
+    mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+    mocker.patch("calypso_anemometer.core.BleakClient.write_gatt_char", AsyncMock(return_value=None))
+
+    spy = mocker.spy(calypso_anemometer.core.BleakClient, "write_gatt_char")
+    async with CalypsoDeviceApi(ble_address="bar") as calypso:
+        await calypso.set_compass(CalypsoDeviceCompassStatus.ON)
+
+    assert spy.mock_calls == [call("0000a003-0000-1000-8000-00805f9b34fb", data=b"\x01", response=True)]
+
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
+    assert "Setting compass status to 1" in caplog.messages
+    assert "Disconnecting" in caplog.messages
+
+
+@pytest.mark.asyncio
+async def test_set_compass_disabled(mocker: MockerFixture, caplog):
+    mocker.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
+    mocker.patch("calypso_anemometer.core.BleakClient.write_gatt_char", AsyncMock(return_value=None))
+
+    spy = mocker.spy(calypso_anemometer.core.BleakClient, "write_gatt_char")
+    async with CalypsoDeviceApi(ble_address="bar") as calypso:
+        await calypso.set_compass(CalypsoDeviceCompassStatus.OFF)
+
+    assert spy.mock_calls == [call("0000a003-0000-1000-8000-00805f9b34fb", data=b"\x00", response=True)]
+
+    assert "Connecting to device at 'bar' with adapter 'hci0'" in caplog.messages
+    assert "Setting compass status to 0" in caplog.messages
     assert "Disconnecting" in caplog.messages

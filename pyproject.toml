@@ -6,8 +6,39 @@ profile = "black"
 line_length = 120
 multi_line_output = 3
 
-[tool.flake8]
-max-line-length = 120
+[tool.ruff]
+line-length = 120
+
+select = [
+  # Bandit
+  "S",
+  # Bugbear
+  "B",
+  # Builtins
+  "A",
+  # comprehensions
+  "C4",
+  # eradicate
+  "ERA",
+  # flake8-2020
+  "YTT",
+  # isort
+  "I",
+  # pandas-vet
+  "PD",
+  # print
+  "T20",
+  # Pycodestyle
+  "E",
+  "W",
+  # Pyflakes
+  "F",
+  # return
+  # "RET",
+]
+
+[tool.ruff.per-file-ignores]
+"testing/*" = ["S101"]  # Use of `assert` detected
 
 [tool.pytest.ini_options]
 minversion = "2.0"

@@ -5,6 +5,7 @@ calypso-anemometer changelog
 
 in progress
 ===========
+- Rename ``reading.compass`` to ``reading.heading`` for better "naming things"
 
 
 2022-08-03 0.5.1

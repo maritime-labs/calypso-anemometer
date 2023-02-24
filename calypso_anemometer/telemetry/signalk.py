@@ -46,8 +46,8 @@ class SignalKDeltaMessage:
             SignalKDeltaItem(path="environment.wind.speedApparent", value=reading.wind_speed),
             SignalKDeltaItem(path="navigation.attitude.roll", value=reading.roll),
             SignalKDeltaItem(path="navigation.attitude.pitch", value=reading.pitch),
-            SignalKDeltaItem(path="navigation.attitude.yaw", value=reading.compass),
-            SignalKDeltaItem(path="navigation.headingMagnetic", value=reading.compass),
+            SignalKDeltaItem(path="navigation.attitude.yaw", value=reading.heading),
+            SignalKDeltaItem(path="navigation.headingMagnetic", value=reading.heading),
             # TODO: Improve `path` naming.
             SignalKDeltaItem(path="electrical.batteries.99.name", value=self.source),
             SignalKDeltaItem(path="electrical.batteries.99.location", value=self.location),

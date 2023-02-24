@@ -30,7 +30,7 @@ async def test_subscribe_once():
         await fake.subscribe_reading(callback=callback_mock, run_once=True)
 
     callback_mock.assert_called_once_with(
-        CalypsoReading(wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, compass=1)
+        CalypsoReading(wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, heading=1)
     )
 
 

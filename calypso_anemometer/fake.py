@@ -19,7 +19,7 @@ MINIMUM_VALUES = CalypsoReading(
     temperature=-100,
     roll=-90,
     pitch=-90,
-    compass=0,
+    heading=0,
 )
 
 MAXIMUM_VALUES = CalypsoReading(
@@ -29,7 +29,7 @@ MAXIMUM_VALUES = CalypsoReading(
     temperature=+100,
     roll=+90,
     pitch=+90,
-    compass=360,
+    heading=360,
 )
 
 

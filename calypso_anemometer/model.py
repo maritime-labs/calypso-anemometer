@@ -97,7 +97,7 @@ class CalypsoReading:
     temperature: int
     roll: int
     pitch: int
-    compass: int
+    heading: int
 
     @classmethod
     def from_buffer(cls, buffer: bytearray):
@@ -134,7 +134,7 @@ class CalypsoReading:
         data = struct.unpack("<HHBBBBH", buffer)
 
         # Decompose.
-        (wind_speed, wind_direction, battery_level, temperature, roll, pitch, compass) = data
+        (wind_speed, wind_direction, battery_level, temperature, roll, pitch, heading) = data
 
         # Apply adjustments.
         return cls(
@@ -144,7 +144,7 @@ class CalypsoReading:
             temperature=temperature - 100,
             roll=roll - 90,
             pitch=pitch - 90,
-            compass=360 - compass,
+            heading=360 - heading,
         )
 
     def adjusted(self):

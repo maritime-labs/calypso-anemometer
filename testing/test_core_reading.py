@@ -35,7 +35,7 @@ async def test_reading_success(mocker: MockerFixture, caplog):
     assert "Received buffer:  b'9\\x02\\xce\\x00\\t\\x85x\\x1e}\\x00'" in caplog.messages
     assert (
         "Decoded reading: CalypsoReading(wind_speed=5.69, wind_direction=206, battery_level=90, "
-        "temperature=33, roll=30, pitch=-60, compass=235)" in caplog.messages
+        "temperature=33, roll=30, pitch=-60, heading=235)" in caplog.messages
     )
     assert "Disconnecting" in caplog.messages
 

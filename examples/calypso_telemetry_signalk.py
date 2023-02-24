@@ -34,7 +34,7 @@ def calypso_signalk_telemetry_demo(host="localhost", port=4123):
         temperature=33,
         roll=30,
         pitch=-60,
-        compass=235,
+        heading=235,
     )
 
     # Submit telemetry message to SignalK.

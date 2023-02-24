@@ -37,7 +37,7 @@ def test_cli_fake_verbose(caplog):
     Test `calypso-anemometer --verbose fake`
     """
     fake_reading = CalypsoReading(
-        wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, compass=1
+        wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, heading=1
     )
     runner = CliRunner()
     result = runner.invoke(cli, shlex.split("--verbose fake"), catch_exceptions=False)
@@ -62,7 +62,7 @@ def test_cli_fake_rate(caplog):
     Test `calypso-anemometer --verbose fake --rate=hz_8`
     """
     fake_reading = CalypsoReading(
-        wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, compass=1
+        wind_speed=1, wind_direction=1, battery_level=1, temperature=-99, roll=-89, pitch=-89, heading=1
     )
     runner = CliRunner()
     result = runner.invoke(cli, shlex.split("--verbose fake --rate=hz_8"), catch_exceptions=False)
@@ -115,7 +115,7 @@ def test_cli_read_stdout_success(caplog):
     response = json.loads(result.stdout)
     assert response == {
         "battery_level": 90,
-        "compass": 235,
+        "heading": 235,
         "pitch": -60,
         "roll": 30,
         "temperature": 33,
@@ -134,7 +134,7 @@ def test_cli_read_stdout_success(caplog):
     assert "Received buffer:  b'9\\x02\\xce\\x00\\t\\x85x\\x1e}\\x00'" in caplog.messages
     assert (
         "Decoded reading: CalypsoReading(wind_speed=5.69, wind_direction=206, battery_level=90, "
-        "temperature=33, roll=30, pitch=-60, compass=235)" in caplog.messages
+        "temperature=33, roll=30, pitch=-60, heading=235)" in caplog.messages
     )
     assert "Disconnecting" in caplog.messages
 
@@ -213,7 +213,7 @@ def test_cli_read_telemetry_success(caplog):
     response = json.loads(result.stdout)
     assert response == {
         "battery_level": 90,
-        "compass": 235,
+        "heading": 235,
         "pitch": -60,
         "roll": 30,
         "temperature": 33,

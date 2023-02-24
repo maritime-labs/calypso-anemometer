@@ -51,19 +51,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: x64
           cache: 'pip'
-          cache-dependency-path: |
-            requirements-utils.txt
-            setup.py
+          cache-dependency-path: pyproject.toml
+
+      - name: Install project
+        run: pip install --editable=.[develop,fake,test]
 
       - name: Run linter
-        run: |
-          pip install --requirement=requirements-utils.txt
-          poe lint
+        run: poe lint
 
       - name: Run tests, with coverage
-        run: |
-          pip install --editable=.[test,fake]
-          pytest
+        run: poe test
 
       - name: Upload coverage results to Codecov
         uses: codecov/codecov-action@v3

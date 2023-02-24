@@ -19,7 +19,7 @@ It is recommended to use a Python virtualenv. In order to do so, invoke::
 Then, in order to install the project in development mode, and to invoke the
 test suite, run::
 
-    pip install --editable=.[test,fake] --requirement=requirements-utils.txt
+    pip install --editable=.[develop,fake,test]
     poe test
 
 

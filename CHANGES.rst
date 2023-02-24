@@ -7,6 +7,7 @@ in progress
 ===========
 - Rename ``reading.compass`` to ``reading.heading`` for better "naming things"
 - SignalK telemetry: Use Radian (rad) unit for angle values
+- SignalK telemetry: Use Kelvin unit for temperature
 
 
 2022-08-03 0.5.1

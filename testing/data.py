@@ -18,7 +18,7 @@ dummy_reading = CalypsoReading(
     temperature=33,
     roll=30,
     pitch=-60,
-    compass=235,
+    heading=235,
 )
 
 # Define example wire messages.

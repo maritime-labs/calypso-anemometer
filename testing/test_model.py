@@ -21,7 +21,7 @@ def test_decode_wiredata():
     buffer = dummy_wire_message_good
     data = CalypsoReading.from_buffer(buffer)
     assert data == CalypsoReading(
-        wind_speed=5.69, wind_direction=206, battery_level=90, temperature=33, roll=30, pitch=-60, compass=235
+        wind_speed=5.69, wind_direction=206, battery_level=90, temperature=33, roll=30, pitch=-60, heading=235
     )
 
 
@@ -34,7 +34,7 @@ def test_calypso_reading_vanilla():
         "temperature": 33,
         "roll": 30,
         "pitch": -60,
-        "compass": 235,
+        "heading": 235,
     }
 
 
@@ -53,7 +53,7 @@ def test_calypso_reading_adjusted():
         "temperature": 33,
         "roll": 30,
         "pitch": -60,
-        "compass": 235,
+        "heading": 235,
     }
 
 

@@ -34,7 +34,7 @@ def calypso_nmea0183_telemetry_demo(host="255.255.255.255", port=10110):
         temperature=33,
         roll=30,
         pitch=-60,
-        compass=235,
+        heading=235,
     )
 
     # Broadcast telemetry message, e.g. to OpenCPN.

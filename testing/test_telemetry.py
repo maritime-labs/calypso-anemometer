@@ -81,7 +81,6 @@ def test_telemetry_nmea0183_wind_zero():
 def test_telemetry_nmea0183_compass_heading():
     bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
-    reading.wind_speed = 0
     bucket.set_reading(reading)
     assert "$MLHDT,235.0,T*27" in bucket.render()
 
@@ -89,9 +88,22 @@ def test_telemetry_nmea0183_compass_heading():
 def test_telemetry_nmea0183_compass_pitch_roll():
     bucket = Nmea0183Envelope()
     reading = deepcopy(dummy_reading)
-    reading.wind_speed = 0
     bucket.set_reading(reading)
     assert "$MLXDR,A,-60.0,D,PTCH#CAL,A,30.0,D,ROLL#CAL*75" in bucket.render()
+
+
+def test_telemetry_nmea0183_air_temperature():
+    bucket = Nmea0183Envelope()
+    reading = deepcopy(dummy_reading)
+    bucket.set_reading(reading)
+    assert "$MLXDR,C,33.0,C,AIRTEMP#CAL*6A" in bucket.render()
+
+
+def test_telemetry_nmea0183_battery_level():
+    bucket = Nmea0183Envelope()
+    reading = deepcopy(dummy_reading)
+    bucket.set_reading(reading)
+    assert "$MLXDR,L,0.9,R,BATT#CAL*18" in bucket.render()
 
 
 def test_nmea0183message_vwr_float_value():

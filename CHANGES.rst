@@ -13,6 +13,7 @@ in progress
 - NMEA0183 telemetry: Use ``$MLVWR`` sentence prefix for wind data
 - NMEA0183 telemetry: Emit compass/heading data using ``$MLHDT`` sentence
 - NMEA0183 telemetry: Emit compass/pitch+roll data using ``$MLXDR`` sentence
+- NMEA0183 telemetry: Emit air temperature and battery level data using ``$MLXDR`` sentences
 
 
 2022-08-03 0.5.1

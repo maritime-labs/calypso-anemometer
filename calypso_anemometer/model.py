@@ -137,7 +137,7 @@ class CalypsoReading:
         (wind_speed, wind_direction, battery_level, temperature, roll, pitch, compass) = data
 
         # Apply adjustments.
-        reading = cls(
+        return cls(
             wind_speed=wind_speed / 100.0,
             wind_direction=wind_direction,
             battery_level=battery_level * 10,
@@ -146,7 +146,6 @@ class CalypsoReading:
             pitch=pitch - 90,
             compass=360 - compass,
         )
-        return reading
 
     def adjusted(self):
         """
@@ -162,8 +161,8 @@ class CalypsoReading:
     def asjson(self):
         return to_json(self)
 
-    def print(self):
-        print(self.asjson())
+    def dump(self):
+        print(self.asjson())  # noqa: T201
 
 
 class CalypsoDeviceReadingCharacteristic(Enum):

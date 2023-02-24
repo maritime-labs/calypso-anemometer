@@ -7,10 +7,9 @@ from calypso_anemometer.core import CalypsoDeviceApi
 
 
 async def calypso_read_demo():
-
     async with CalypsoDeviceApi() as calypso:
         reading = await calypso.get_reading()
-        reading.print()
+        reading.dump()
 
 
 if __name__ == "__main__":  # pragma: nocover

@@ -29,7 +29,6 @@ from testing.data import dummy_device_info, dummy_device_status
 @mock.patch("calypso_anemometer.core.BleakClient.connect", AsyncMock(return_value=None))
 @mock.patch("calypso_anemometer.core.BleakClient.read_gatt_char", AsyncMock(return_value=b"foobar"))
 async def test_info_success(caplog):
-
     async with CalypsoDeviceApi(ble_address="bar") as calypso:
         device_info_mocked = await calypso.get_info()
         device_info_reference = CalypsoDeviceInfo(
@@ -51,7 +50,6 @@ async def test_info_success(caplog):
 
 @pytest.mark.asyncio
 async def test_status_success(mocker: MockerFixture, caplog):
-
     char_value_map = {
         CalypsoDeviceStatusCharacteristic.mode.value.uuid: 0x02,
         CalypsoDeviceStatusCharacteristic.rate.value.uuid: 0x08,
@@ -66,7 +64,6 @@ async def test_status_success(mocker: MockerFixture, caplog):
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", read_gatt_char)
 
     async with CalypsoDeviceApi(ble_address="bar") as calypso:
-
         device_status_mocked = await calypso.get_status()
 
         device_status_reference = CalypsoDeviceStatus(
@@ -84,7 +81,6 @@ async def test_status_success(mocker: MockerFixture, caplog):
 
 @pytest.mark.asyncio
 async def test_status_failure(mocker: MockerFixture, caplog):
-
     char_value_map = {
         CalypsoDeviceStatusCharacteristic.mode.value.uuid: 0x42,
         CalypsoDeviceStatusCharacteristic.rate.value.uuid: 0x43,
@@ -99,7 +95,6 @@ async def test_status_failure(mocker: MockerFixture, caplog):
     mocker.patch("calypso_anemometer.core.BleakClient.read_gatt_char", read_gatt_char)
 
     async with CalypsoDeviceApi(ble_address="bar") as calypso:
-
         with pytest.raises(ValueError) as ex:
             await calypso.get_status()
         ex.match("66 is not a valid CalypsoDeviceMode")

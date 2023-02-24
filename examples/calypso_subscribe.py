@@ -10,7 +10,7 @@ from calypso_anemometer.util import wait_forever
 
 async def calypso_subscribe_demo():
     def process_reading(reading: CalypsoReading):
-        reading.print()
+        reading.dump()
 
     async with CalypsoDeviceApi() as calypso:
         await calypso.subscribe_reading(process_reading)

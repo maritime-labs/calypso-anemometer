@@ -43,7 +43,6 @@ logger = logging.getLogger(__name__)
 
 
 class CalypsoDeviceApi:
-
     NAME = "calypso-up10"
     DESCRIPTION = "Calypso UP10 anemometer"
     BLUETOOTH_DEVICE_NAME = "ULTRASONIC"
@@ -72,7 +71,6 @@ class CalypsoDeviceApi:
         logger.info(f"Initializing client with {self.settings}")
 
     async def __aenter__(self):
-
         if self.ble_address is None:
             if not await self.discover():
                 raise BluetoothDiscoveryError(f"Unable to discover device {self.DESCRIPTION}")
@@ -133,10 +131,7 @@ class CalypsoDeviceApi:
         except (concurrent.futures.TimeoutError, asyncio.TimeoutError) as ex:
             message = f"{ex.__class__.__name__}: {ex}"
             logger.error(message)
-            raise BluetoothTimeoutError(message)
-        # finally:
-        #    logger.info("Disconnecting")
-        #    await self.disconnect()
+            raise BluetoothTimeoutError(message) from None
 
     async def disconnect(self):
         logger.info("Disconnecting")
@@ -159,7 +154,6 @@ class CalypsoDeviceApi:
         for service in services:
             logger.info(f"Found service: {service}")
             for char in service.characteristics:
-
                 logger.info(f"  Found characteristic: {char}. properties={','.join(char.properties)}")
                 value = None
                 if "read" in char.properties:
@@ -183,7 +177,7 @@ class CalypsoDeviceApi:
             "info": await self.get_info(),
             "status": (await self.get_status()).aslabeldict(),
         }
-        print(to_json(response))
+        print(to_json(response))  # noqa: T201
 
     async def get_info(self) -> CalypsoDeviceInfo:
         logger.info("Getting device information")
@@ -247,7 +241,7 @@ class CalypsoDeviceApi:
         except Exception as ex:
             msg = f"Decoding reading failed. Reason: {ex}. Data: {data}"
             logger.exception(msg)
-            raise CalypsoDecodingError(msg)
+            raise CalypsoDecodingError(msg) from None
         logger.debug(f"Decoded reading: {reading}")
         return reading
 
@@ -263,3 +257,4 @@ class CalypsoDeviceApi:
 def get_adapter_name(client):
     if hasattr(client, "_adapter"):
         return client._adapter
+    return None

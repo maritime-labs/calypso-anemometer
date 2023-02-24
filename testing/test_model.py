@@ -27,15 +27,15 @@ def test_decode_wiredata():
 
 def test_calypso_reading_vanilla():
     reading = deepcopy(dummy_reading)
-    assert reading.asdict() == dict(
-        wind_speed=5.69,
-        wind_direction=206,
-        battery_level=90,
-        temperature=33,
-        roll=30,
-        pitch=-60,
-        compass=235,
-    )
+    assert reading.asdict() == {
+        "wind_speed": 5.69,
+        "wind_direction": 206,
+        "battery_level": 90,
+        "temperature": 33,
+        "roll": 30,
+        "pitch": -60,
+        "compass": 235,
+    }
 
 
 def test_calypso_reading_adjusted():
@@ -46,15 +46,15 @@ def test_calypso_reading_adjusted():
     """
     reading = deepcopy(dummy_reading)
     reading.wind_speed = 0.0
-    assert reading.adjusted().asdict() == dict(
-        wind_speed=0.0,
-        wind_direction=0,
-        battery_level=90,
-        temperature=33,
-        roll=30,
-        pitch=-60,
-        compass=235,
-    )
+    assert reading.adjusted().asdict() == {
+        "wind_speed": 0.0,
+        "wind_direction": 0,
+        "battery_level": 90,
+        "temperature": 33,
+        "roll": 30,
+        "pitch": -60,
+        "compass": 235,
+    }
 
 
 def test_device_info():

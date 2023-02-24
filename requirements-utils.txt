@@ -1,4 +1,4 @@
-black
-isort
-proselint
+black<24
+isort<6
+proselint==0.13.0
 ruff==0.0.252

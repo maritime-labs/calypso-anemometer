@@ -8,7 +8,7 @@ from typing import Callable, Optional
 
 import aiorate
 
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading, Settings
+from calypso_anemometer.model import CalypsoDeviceCompassStatus, CalypsoDeviceDataRate, CalypsoReading, Settings
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +43,7 @@ class CalypsoDeviceApiFake:
         self.settings = settings
         self.ble_address = settings.ble_address
         self.datarate: CalypsoDeviceDataRate = CalypsoDeviceDataRate.HZ_4
+        self.compass: CalypsoDeviceCompassStatus = CalypsoDeviceCompassStatus.OFF
         self.reading: Optional[CalypsoReading] = None
 
     async def __aenter__(self):
@@ -66,6 +67,9 @@ class CalypsoDeviceApiFake:
 
     async def set_datarate(self, rate: CalypsoDeviceDataRate):
         self.datarate = rate
+
+    async def set_compass(self, compass: CalypsoDeviceCompassStatus):
+        self.compass = compass
 
     async def get_reading(self):
         logger.info("Producing reading")

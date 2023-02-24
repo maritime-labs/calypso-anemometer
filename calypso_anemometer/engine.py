@@ -7,7 +7,7 @@ import typing as t
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.exception import CalypsoError
-from calypso_anemometer.model import CalypsoDeviceDataRate, CalypsoReading, Settings
+from calypso_anemometer.model import CalypsoDeviceCompassStatus, CalypsoDeviceDataRate, CalypsoReading, Settings
 from calypso_anemometer.telemetry.adapter import TelemetryAdapter
 from calypso_anemometer.util import wait_forever
 
@@ -32,6 +32,7 @@ async def handler_factory(
     subscribe: bool = False,
     target: t.Optional[str] = None,
     rate: t.Optional[CalypsoDeviceDataRate] = None,
+    compass: t.Optional[CalypsoDeviceCompassStatus] = None,
     quiet: bool = False,
 ) -> t.Callable:
     """
@@ -40,6 +41,7 @@ async def handler_factory(
     :param subscribe: Whether to run in one-shot or continuous mode.
     :param target: Where to submit telemetry data to, and how.
     :param rate: At which rate to sample the readings.
+    :param compass: If the compass should be enabled or not.
     :param quiet: Do not print to stdout or stderr.
 
     :return: An asynchronous handler function accepting a reference to a workhorse instance.
@@ -66,6 +68,9 @@ async def handler_factory(
 
     # Main handler, which receives readings.
     async def handler(calypso: CalypsoDeviceApi):
+        # Optionally enable compass.
+        await calypso.set_compass(compass)
+
         # One-shot reading.
         if not subscribe:
             reading = await calypso.get_reading()

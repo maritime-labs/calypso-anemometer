@@ -9,6 +9,7 @@ in progress
 - SignalK telemetry: Use Radian (rad) unit for angle values
 - SignalK telemetry: Use Kelvin unit for temperature
 - SignalK telemetry: Use ratio (percentage) for battery level
+- Compass: Add ``--compass=on`` option to enable compass
 
 
 2022-08-03 0.5.1

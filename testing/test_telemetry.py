@@ -86,6 +86,14 @@ def test_telemetry_nmea0183_compass_heading():
     assert "$MLHDT,235.0,T*27" in bucket.render()
 
 
+def test_telemetry_nmea0183_compass_pitch_roll():
+    bucket = Nmea0183Envelope()
+    reading = deepcopy(dummy_reading)
+    reading.wind_speed = 0
+    bucket.set_reading(reading)
+    assert "$MLXDR,A,-60.0,D,PTCH#CAL,A,30.0,D,ROLL#CAL*75" in bucket.render()
+
+
 def test_nmea0183message_vwr_float_value():
     assert Nmea0183MessageVWR.float_value(42.42) == 42.42
     assert Nmea0183MessageVWR.float_value(None) == ""

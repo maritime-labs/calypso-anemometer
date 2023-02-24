@@ -57,3 +57,35 @@ omit = [
 [tool.coverage.report]
 fail_under = 0
 show_missing = true
+
+
+
+# ===================
+# Tasks configuration
+# ===================
+
+[tool.poe.tasks]
+
+test = { cmd = "pytest" }
+
+format = [
+  { cmd = "black ." },
+  { cmd = "isort ." },
+  # Configure Ruff not to auto-fix (remove!) unused variables (F841) and `print` statements (T201).
+  { cmd = "ruff --fix --ignore=ERA --ignore=F401 --ignore=F841 --ignore=T20 ." },
+  { cmd = "pyproject-fmt pyproject.toml" },
+]
+lint = [
+  { cmd = "ruff check ." },
+  { cmd = "black --check ." },
+  { cmd = "isort --check ." },
+  { cmd = "validate-pyproject pyproject.toml" },
+  { cmd = "proselint *.rst doc/**.rst" },
+  # { cmd = "mypy" },
+]
+
+release = [
+  { cmd = "minibump bump --relax minor" },
+  { cmd = "python -m build" },
+  { cmd = "twine upload --skip-existing --verbose dist/*{.tar.gz,.whl}" },
+]

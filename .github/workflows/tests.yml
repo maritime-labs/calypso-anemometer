@@ -36,11 +36,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
           architecture: x64
           cache: 'pip'
-          cache-dependency-path: 'setup.py'
+          cache-dependency-path: |
+            requirements-utils.txt
+            setup.py
 
       - name: Run linter
         run: |
-          make lint
+          pip install --requirement=requirements-utils.txt
+          poe lint
 
       - name: Run tests, with coverage
         run: |

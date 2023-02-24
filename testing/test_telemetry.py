@@ -30,7 +30,7 @@ def test_telemetry_signalk_message():
                     {"path": "navigation.headingMagnetic", "value": 4.101523742186674},
                     {"path": "electrical.batteries.99.name", "value": "Calypso UP10"},
                     {"path": "electrical.batteries.99.location", "value": "Mast"},
-                    {"path": "electrical.batteries.99.capacity.stateOfCharge", "value": 90},
+                    {"path": "electrical.batteries.99.capacity.stateOfCharge", "value": 0.9},
                 ],
             }
         ]

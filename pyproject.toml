@@ -1,3 +1,118 @@
+# ==================
+# Project definition
+# ==================
+
+# Derived from https://peps.python.org/pep-0621/
+
+[project]
+name = "calypso-anemometer"
+version = "0.5.1"
+description = "Python driver for the Calypso UP10 anemometer"
+readme = "README.rst"
+keywords = [
+  "anemometer",
+  "ble",
+  "bluetooth",
+  "bluetooth-le",
+  "bluetooth-low-energy",
+  "calypso",
+  "environmental-monitoring",
+  "nmea",
+  "nmea-0183",
+  "opencpn",
+  "openplotter",
+  "signalk",
+  "signalk-plugin",
+  "solar",
+  "ultrasonic",
+  "ultrasonic-anemometry",
+  "ultrasonic-sensor",
+  "up10",
+  "wind-meter",
+]
+license = {text = "AGPL-3.0, EUPL-1.2"}
+authors = [
+  {name = "Andreas Motl", email = "andreas.motl@panodata.org"},
+  {name = "Holger Marseille"},
+]
+requires-python = ">=3.7"
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Customer Service",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: Manufacturing",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: System Administrators",
+  "Intended Audience :: Telecommunications Industry",
+  "License :: OSI Approved :: GNU Affero General Public License v3",
+  "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+  "Operating System :: MacOS :: MacOS X",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Unix",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Communications",
+  "Topic :: Education",
+  "Topic :: Home Automation",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Software Development :: Quality Assurance",
+  "Topic :: Software Development :: Object Brokering",
+  "Topic :: System :: Emulators",
+  "Topic :: System :: Hardware",
+  "Topic :: System :: Logging",
+  "Topic :: System :: Monitoring",
+  "Topic :: System :: Networking",
+  "Topic :: System :: Networking :: Monitoring",
+  "Topic :: System :: Systems Administration",
+  "Topic :: Utilities",
+]
+dependencies = [
+  "bleak<1",
+  "click<9",
+]
+[project.optional-dependencies]
+develop = [
+  "black<24",
+  "isort<6",
+  "poethepoet<0.19",
+  "proselint==0.13",
+  "pyproject-fmt<0.10",
+  "ruff==0.0.252",
+  "validate-pyproject<0.13",
+]
+fake = [
+  'aiorate<2,>1; python_version >= "3.7"',
+]
+release = [
+  "build<1",
+  'minibump<1; python_version >= "3.10"',
+  "twine<5",
+]
+test = [
+  "pytest<8",
+  "pytest-asyncio<1",
+  "pytest-cov<4",
+  "pytest-mock<4",
+]
+[project.urls]
+changelog = "https://github.com/maritime-labs/calypso-anemometer/blob/main/CHANGES.rst"
+documentation = "https://github.com/maritime-labs/calypso-anemometer"
+homepage = "https://github.com/maritime-labs/calypso-anemometer"
+repository = "https://github.com/maritime-labs/calypso-anemometer"
+[project.entry-points.console_scripts]
+calypso-anemometer = "calypso_anemometer.cli:cli"
+
+[tool.setuptools.packages]
+find = {}
+
 [tool.black]
 line-length = 120
 
@@ -65,8 +180,6 @@ select = [
 
 [tool.poe.tasks]
 
-test = { cmd = "pytest" }
-
 format = [
   { cmd = "black ." },
   { cmd = "isort ." },
@@ -74,6 +187,7 @@ format = [
   { cmd = "ruff --fix --ignore=ERA --ignore=F401 --ignore=F841 --ignore=T20 ." },
   { cmd = "pyproject-fmt pyproject.toml" },
 ]
+
 lint = [
   { cmd = "ruff check ." },
   { cmd = "black --check ." },
@@ -88,3 +202,5 @@ release = [
   { cmd = "python -m build" },
   { cmd = "twine upload --skip-existing --verbose dist/*{.tar.gz,.whl}" },
 ]
+
+test = { cmd = "pytest" }

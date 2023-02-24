@@ -5,6 +5,10 @@ calypso-anemometer changelog
 
 in progress
 ===========
+
+
+2023-02-24 0.6.0
+================
 - Rename ``reading.compass`` to ``reading.heading`` for better "naming things"
 - SignalK telemetry: Use Radian (rad) unit for angle values
 - SignalK telemetry: Use Kelvin unit for temperature
@@ -15,6 +19,9 @@ in progress
 - NMEA0183 telemetry: Emit compass/pitch+roll data using ``$MLXDR`` sentence
 - NMEA0183 telemetry: Emit air temperature and battery level data using ``$MLXDR`` sentences
 - Project metadata: Migrate from ``setup.py`` to ``pyproject.toml``
+
+Thanks to @UserMacUseface and @honigwald for providing excellent domain
+knowledge and bug reports.
 
 
 2022-08-03 0.5.1

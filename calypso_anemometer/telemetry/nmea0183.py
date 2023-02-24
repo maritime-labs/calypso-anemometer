@@ -206,6 +206,65 @@ class Nmea0183MessageVWR(Nmea0183MessageBase):
 
 
 @dataclasses.dataclass
+class Nmea0183MessageXDRGeneric(Nmea0183MessageBase):
+    """
+    Represent and serialize NMEA-0183 XDR message.
+
+    XDR - Transducer Measurements
+
+    Different kinds of values like temperature, pressure, and angle.
+
+    Here, it will be used to emit air temperature and battery level data:
+
+    # Air temperature
+    $MLXDR,C,42.42,C,AIRTEMP#CAL
+
+    # Battery level
+    $MLXDR,L,0.9,R,BATT#CAL
+
+                1 2   3 4       n
+    |   |   |   |       |
+    *  $--XDR,a,x.x,a,c--c, ..... *hh<CR><LF>
+
+    Field Number:
+    1) Transducer Type
+    2) Measurement Data
+    3) Units of measurement
+    4) Name of transducer
+    x) More of the same
+    n) Checksum
+
+    Examples:
+    $IIXDR,C,19.52,C,TempAir*19
+    $IIXDR,P,1.02481,B,Barometer*29
+
+    References:
+    - https://opencpn.org/wiki/dokuwiki/doku.php?id=opencpn:opencpn_user_manual:advanced_features:nmea_sentences#xdr
+    - https://github.com/maritime-labs/calypso-anemometer/issues/21
+    """
+
+    IDENTIFIER = "$MLXDR"
+    transducer_type: str
+    value: float
+    measurement_unit: str
+    name: str
+
+    def to_message(self):
+        """
+        Factory for generic `Nmea0183Message`.
+        """
+        return Nmea0183GenericMessage(
+            identifier=self.IDENTIFIER,
+            fields=[
+                self.transducer_type,
+                self.float_value(self.value),
+                self.measurement_unit,
+                self.name,
+            ],
+        )
+
+
+@dataclasses.dataclass
 class Nmea0183MessageXDRPitchRoll(Nmea0183MessageBase):
     """
     Represent and serialize NMEA-0183 XDR message.
@@ -283,6 +342,18 @@ class Nmea0183Envelope:
             direction_degrees=reading.wind_direction,
             speed_meters_per_second=reading.wind_speed,
         )
+        xdr_air_temperature = Nmea0183MessageXDRGeneric(
+            transducer_type="C",
+            value=reading.temperature,
+            measurement_unit="C",
+            name="AIRTEMP#CAL",
+        )
+        xdr_battery_level = Nmea0183MessageXDRGeneric(
+            transducer_type="L",
+            value=round(reading.battery_level / 100, 2),
+            measurement_unit="R",
+            name="BATT#CAL",
+        )
         xdr_pitch_roll = Nmea0183MessageXDRPitchRoll(
             pitch_degrees=reading.pitch,
             roll_degrees=reading.roll,
@@ -291,6 +362,8 @@ class Nmea0183Envelope:
             hdt.to_message(),
             vwr.to_message(),
             xdr_pitch_roll.to_message(),
+            xdr_air_temperature.to_message(),
+            xdr_battery_level.to_message(),
         ]
 
     def aslist(self):

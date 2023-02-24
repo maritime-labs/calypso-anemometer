@@ -226,7 +226,9 @@ def test_cli_read_telemetry_success(caplog):
         "Sending message to udp://255.255.255.255:60110\n"
         "$MLHDT,235.0,T*27\r\n"
         "$MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64\r\n"
-        "$MLXDR,A,-60.0,D,PTCH#CAL,A,30.0,D,ROLL#CAL*75" in caplog.messages
+        "$MLXDR,A,-60.0,D,PTCH#CAL,A,30.0,D,ROLL#CAL*75\r\n"
+        "$MLXDR,C,33.0,C,AIRTEMP#CAL*6A\r\n"
+        "$MLXDR,L,0.9,R,BATT#CAL*18" in caplog.messages
     )
 
 

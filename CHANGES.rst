@@ -6,6 +6,7 @@ calypso-anemometer changelog
 in progress
 ===========
 - Rename ``reading.compass`` to ``reading.heading`` for better "naming things"
+- SignalK telemetry: Use Radian (rad) unit for angle values
 
 
 2022-08-03 0.5.1

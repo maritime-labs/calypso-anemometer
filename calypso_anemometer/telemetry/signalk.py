@@ -8,6 +8,7 @@ import typing as t
 
 from calypso_anemometer.core import CalypsoDeviceApi
 from calypso_anemometer.model import CalypsoReading
+from calypso_anemometer.util import deg2rad
 
 logger = logging.getLogger(__name__)
 
@@ -42,12 +43,12 @@ class SignalKDeltaMessage:
         reading = reading.adjusted()
         self.items = [
             SignalKDeltaItem(path="environment.outside.temperature", value=reading.temperature),
-            SignalKDeltaItem(path="environment.wind.angleApparent", value=reading.wind_direction),
+            SignalKDeltaItem(path="environment.wind.angleApparent", value=deg2rad(reading.wind_direction)),
             SignalKDeltaItem(path="environment.wind.speedApparent", value=reading.wind_speed),
-            SignalKDeltaItem(path="navigation.attitude.roll", value=reading.roll),
-            SignalKDeltaItem(path="navigation.attitude.pitch", value=reading.pitch),
-            SignalKDeltaItem(path="navigation.attitude.yaw", value=reading.heading),
-            SignalKDeltaItem(path="navigation.headingMagnetic", value=reading.heading),
+            SignalKDeltaItem(path="navigation.attitude.roll", value=deg2rad(reading.roll)),
+            SignalKDeltaItem(path="navigation.attitude.pitch", value=deg2rad(reading.pitch)),
+            SignalKDeltaItem(path="navigation.attitude.yaw", value=deg2rad(reading.heading)),
+            SignalKDeltaItem(path="navigation.headingMagnetic", value=deg2rad(reading.heading)),
             # TODO: Improve `path` naming.
             SignalKDeltaItem(path="electrical.batteries.99.name", value=self.source),
             SignalKDeltaItem(path="electrical.batteries.99.location", value=self.location),

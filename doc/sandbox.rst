@@ -3,15 +3,6 @@ Sandbox installation
 ####################
 
 
-************
-Introduction
-************
-
-It is recommended to use a Python virtualenv. The ``make test`` command
-provided through the repository will automatically install a Python
-virtualenv into the ``.venv`` directory.
-
-
 *****
 Usage
 *****
@@ -19,7 +10,17 @@ Usage
 
     git clone https://github.com/maritime-labs/calypso-anemometer
     cd calypso-anemometer
-    make test
+
+It is recommended to use a Python virtualenv. In order to do so, invoke::
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+
+Then, in order to install the project in development mode, and to invoke the
+test suite, run::
+
+    pip install --editable=.[test,fake] --requirement=requirements-utils.txt
+    poe test
 
 
 *****

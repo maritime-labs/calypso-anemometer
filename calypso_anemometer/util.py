@@ -7,6 +7,7 @@ import enum
 import functools
 import json
 import logging
+import math
 import sys
 import typing as t
 
@@ -76,3 +77,12 @@ class EnumChoice(click.Choice):
 async def wait_forever():
     future = asyncio.Future()
     return await asyncio.wait_for(future, timeout=None)
+
+
+def deg2rad(value: float) -> float:
+    """
+    Convert angles from degrees to radians. SignalK needs it.
+
+    https://signalk.org/specification/1.7.0/doc/vesselsBranch.html
+    """
+    return value * math.pi / 180

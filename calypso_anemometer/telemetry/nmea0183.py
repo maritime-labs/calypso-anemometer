@@ -93,8 +93,58 @@ class Nmea0183GenericMessage:
         return hexlify(struct.pack("B", checksum)).decode().upper()
 
 
+class Nmea0183MessageBase:
+    @staticmethod
+    def float_value(value, default=""):
+        if value is None:
+            value = default
+        else:
+            value = float(value)
+        return value
+
+
 @dataclasses.dataclass
-class Nmea0183MessageVWR:
+class Nmea0183MessageHDT(Nmea0183MessageBase):
+    """
+    Represent and serialize NMEA-0183 HDT message.
+
+    HDT - Heading - True
+
+    Actual vessel heading in degrees Ture produced by any
+    device or system producing true heading.
+
+            1   2 3
+            |   | |
+     $--HDT,x.x,T*hh<CR><LF>
+
+     Field Number:
+      1) Heading Degrees, true
+      2) T = True
+      3) Checksum
+
+    References:
+    - http://aprs.gids.nl/nmea/#hdt
+    - https://github.com/maritime-labs/calypso-anemometer/issues/12
+    """
+
+    IDENTIFIER = "$MLHDT"
+    heading_degrees: float
+
+    def to_message(self):
+        """
+        Factory for generic `Nmea0183Message`.
+        """
+        return Nmea0183GenericMessage(
+            identifier=self.IDENTIFIER,
+            fields=[
+                self.float_value(self.heading_degrees),
+                "T",
+            ],
+        )
+
+
+@dataclasses.dataclass
+class Nmea0183MessageVWR(Nmea0183MessageBase):
     """
     Represent and serialize NMEA-0183 VWR message.
 
@@ -143,24 +193,16 @@ class Nmea0183MessageVWR:
         return Nmea0183GenericMessage(
             identifier=self.IDENTIFIER,
             fields=[
-                self.convert_value(self.direction_magnitude_in_degrees),
+                self.float_value(self.direction_magnitude_in_degrees),
                 self.direction_left_right_of_bow,
-                self.convert_value(self.speed_knots),
+                self.float_value(self.speed_knots),
                 "N",
-                self.convert_value(self.speed_meters_per_second),
+                self.float_value(self.speed_meters_per_second),
                 "M",
-                self.convert_value(self.speed_kilometers_per_hour),
+                self.float_value(self.speed_kilometers_per_hour),
                 "K",
             ],
         )
-
-    @staticmethod
-    def convert_value(value, converter=float, default=""):
-        if value is None:
-            value = default
-        else:
-            value = converter(value)
-        return value
 
 
 @dataclasses.dataclass
@@ -176,11 +218,17 @@ class Nmea0183Envelope:
         Derive NMEA-0183 VWR message from measurement reading.
         """
         reading = reading.adjusted()
+        hdt = Nmea0183MessageHDT(
+            heading_degrees=reading.heading,
+        )
         vwr = Nmea0183MessageVWR(
             direction_degrees=reading.wind_direction,
             speed_meters_per_second=reading.wind_speed,
         )
-        self.items = [vwr.to_message()]
+        self.items = [
+            hdt.to_message(),
+            vwr.to_message(),
+        ]
 
     def aslist(self):
         """
@@ -190,4 +238,4 @@ class Nmea0183Envelope:
         return messages
 
     def render(self):
-        return "\n".join(self.aslist())
+        return "\r\n".join(self.aslist())

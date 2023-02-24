@@ -43,7 +43,7 @@ def test_telemetry_nmea0183_wind_into():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 0
     bucket.set_reading(reading)
-    assert bucket.render() == "$MLVWR,0.0,,11.06,N,5.69,M,20.48,K*28"
+    assert "$MLVWR,0.0,,11.06,N,5.69,M,20.48,K*28" in bucket.render()
 
 
 def test_telemetry_nmea0183_wind_downwind():
@@ -51,7 +51,7 @@ def test_telemetry_nmea0183_wind_downwind():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 180
     bucket.set_reading(reading)
-    assert bucket.render() == "$MLVWR,180.0,,11.06,N,5.69,M,20.48,K*21"
+    assert "$MLVWR,180.0,,11.06,N,5.69,M,20.48,K*21" in bucket.render()
 
 
 def test_telemetry_nmea0183_wind_left_of_bow():
@@ -59,7 +59,7 @@ def test_telemetry_nmea0183_wind_left_of_bow():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 206
     bucket.set_reading(reading)
-    assert bucket.render() == "$MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64"
+    assert "$MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64" in bucket.render()
 
 
 def test_telemetry_nmea0183_wind_right_of_bow():
@@ -67,7 +67,7 @@ def test_telemetry_nmea0183_wind_right_of_bow():
     reading = deepcopy(dummy_reading)
     reading.wind_direction = 42
     bucket.set_reading(reading)
-    assert bucket.render() == "$MLVWR,42.0,R,11.06,N,5.69,M,20.48,K*4C"
+    assert "$MLVWR,42.0,R,11.06,N,5.69,M,20.48,K*4C" in bucket.render()
 
 
 def test_telemetry_nmea0183_wind_zero():
@@ -75,17 +75,25 @@ def test_telemetry_nmea0183_wind_zero():
     reading = deepcopy(dummy_reading)
     reading.wind_speed = 0
     bucket.set_reading(reading)
-    assert bucket.render() == "$MLVWR,0.0,,0.0,N,0.0,M,0.0,K*1A"
+    assert "$MLVWR,0.0,,0.0,N,0.0,M,0.0,K*1A" in bucket.render()
 
 
-def test_nmea0183message_vwr_convert_value():
-    assert Nmea0183MessageVWR.convert_value(42.42) == 42.42
-    assert Nmea0183MessageVWR.convert_value(None) == ""
+def test_telemetry_nmea0183_compass_heading():
+    bucket = Nmea0183Envelope()
+    reading = deepcopy(dummy_reading)
+    reading.wind_speed = 0
+    bucket.set_reading(reading)
+    assert "$MLHDT,235.0,T*27" in bucket.render()
+
+
+def test_nmea0183message_vwr_float_value():
+    assert Nmea0183MessageVWR.float_value(42.42) == 42.42
+    assert Nmea0183MessageVWR.float_value(None) == ""
 
 
 def test_nmea0183message_vwr_render_success():
     bucket = Nmea0183MessageVWR(direction_degrees=42.42, speed_meters_per_second=5.42)
-    assert bucket.to_message().render() == "$MLVWR,42.42,R,10.54,N,5.42,M,19.51,K*77"
+    assert "$MLVWR,42.42,R,10.54,N,5.42,M,19.51,K*77" in bucket.to_message().render()
 
 
 def test_telemetry_adapter_signalk_success():

@@ -34,12 +34,12 @@ class NetworkTelemetry:
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 
     def send(self, payload: str, newline=True):
-        logger.info(f"Sending message to {self.protocol.value}://{self.host}:{self.port}. {payload}")
+        logger.info(f"Sending message to {self.protocol.value}://{self.host}:{self.port}\n{payload}")
         address = (self.host, self.port)
         if isinstance(payload, str):
             payload = payload.encode("utf-8")
         if newline:
-            payload += b"\n"
+            payload += b"\r\n"
         if self.protocol == NetworkProtocol.TCP:
             self.socket.connect(address)
             self.socket.send(payload)

@@ -5,20 +5,22 @@ $(eval black        := $(venv)/bin/black)
 $(eval isort        := $(venv)/bin/isort)
 $(eval pytest       := $(venv)/bin/pytest)
 $(eval twine        := $(venv)/bin/twine)
-$(eval flake8       := $(venv)/bin/pflake8)
+$(eval ruff         := $(venv)/bin/ruff)
 $(eval proselint    := $(venv)/bin/proselint)
 
 setup-virtualenv:
 	@test -e $(python) || python3 -m venv $(venv) || python -m venv $(venv)
+	@$(pip) install --quiet --requirement=requirements-utils.txt
 
 format: setup-virtualenv
-	$(pip) install --requirement=requirements-utils.txt
 	$(black) .
 	$(isort) .
+	$(ruff) --fix --ignore=ERA --ignore=F401 --ignore=F841 --ignore=T20 .
 
 lint: setup-virtualenv
-	$(pip) install --requirement=requirements-utils.txt
-	$(flake8) calypso_anemometer examples testing
+	$(ruff) check .
+	$(black) --check .
+	$(isort) --check .
 	$(MAKE) proselint
 
 proselint:

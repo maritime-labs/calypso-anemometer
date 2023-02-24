@@ -40,8 +40,7 @@ jobs:
 
       - name: Run linter
         run: |
-          pip install --requirement=requirements-utils.txt
-          pflake8 calypso_anemometer examples testing
+          make lint
 
       - name: Run tests, with coverage
         run: |

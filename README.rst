@@ -201,9 +201,13 @@ like outlined in those screenshots.
 
     Configured NMEA-0183 UDP receiver on port 10110.
 
-An example NMEA-0183 sentence emitted is::
+An example NMEA-0183 payload, including multiple sentences, is::
 
-    $MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*65
+    $MLHDT,235.0,T*27
+    $MLVWR,154.0,L,11.06,N,5.69,M,20.48,K*64
+    $MLXDR,A,-60.0,D,PTCH#CAL,A,30.0,D,ROLL#CAL*75
+    $MLXDR,C,33.0,C,AIRTEMP#CAL*6A
+    $MLXDR,L,0.9,R,BATT#CAL*18
 
 
 **************

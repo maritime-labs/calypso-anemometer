@@ -74,7 +74,7 @@ Install::
 
 Submit::
 
-    echo '$IIVWR,045.0,L,12.6,N,6.5,M,23.3,K*52' | socat -u - udp-datagram:255.255.255.255:10110,bind=:56123,broadcast
+    echo '$MLVWR,045.0,L,12.6,N,6.5,M,23.3,K' | socat -u - udp-datagram:255.255.255.255:10110,bind=:56123,broadcast
 
 Receive::
 

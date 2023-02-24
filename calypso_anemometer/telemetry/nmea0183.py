@@ -94,14 +94,14 @@ class Nmea0183GenericMessage:
 
 
 @dataclasses.dataclass
-class Nmea0183MessageIIVWR:
+class Nmea0183MessageVWR:
     """
-    Represent and serialize NMEA-0183 IIVWR message.
+    Represent and serialize NMEA-0183 VWR message.
 
     VWR - Relative Wind Speed and Angle
     """
 
-    IDENTIFIER = "$IIVWR"
+    IDENTIFIER = "$MLVWR"
     direction_degrees: float
     speed_meters_per_second: float
 
@@ -173,14 +173,14 @@ class Nmea0183Envelope:
 
     def set_reading(self, reading: CalypsoReading):
         """
-        Derive NMEA-0183 IIVWR message from measurement reading.
+        Derive NMEA-0183 VWR message from measurement reading.
         """
         reading = reading.adjusted()
-        iivwr = Nmea0183MessageIIVWR(
+        vwr = Nmea0183MessageVWR(
             direction_degrees=reading.wind_direction,
             speed_meters_per_second=reading.wind_speed,
         )
-        self.items = [iivwr.to_message()]
+        self.items = [vwr.to_message()]
 
     def aslist(self):
         """

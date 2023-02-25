@@ -53,6 +53,7 @@ Resources:
 - `User manual <https://www.r-p-r.co.uk/downloads/calypso/Ultrasonic_Portable_User_Manual_EN.pdf>`_
 - `Developer manual 1.0 <https://calypsoinstruments.com/web/content/58404?access_token=f7918efc-ac78-46ba-bb6c-7c719e64f26f&download=true>`_
 - `Developer manual 1.8 <https://www.instrumentchoice.com.au/attachment/download/81440/5f62c29c10d3c987351591.pdf>`_
+- `FAQ <https://calypsoinstruments.com/web/content/884?unique=4fc29abd11ac390bd380e291dadd02f41af6f2b8&download=true>`_
 
 
 Software library
